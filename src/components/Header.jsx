@@ -73,7 +73,7 @@ const Header = () => {
         width={'100%'}
         styles={{
           bmMenu: {
-            background: 'var(--background)',
+            background: theme === 'dark' ? 'hsl(var(--background))' : 'hsl(var(--background))',
             padding: '2.5em 1.5em 0',
             fontSize: '1.15em',
             height: '100vh',
