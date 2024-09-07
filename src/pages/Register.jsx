@@ -24,7 +24,7 @@ const Register = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-[calc(100vh-4rem)]">
+    <div className="flex justify-center items-start pt-8 min-h-[calc(100vh-4rem)]">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>Register</CardTitle>
