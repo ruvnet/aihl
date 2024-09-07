@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Clock, Users, Award } from 'lucide-react';
 import EnrollmentModal from '../components/EnrollmentModal';
 
 const ChallengeDetails = () => {
@@ -14,17 +14,16 @@ const ChallengeDetails = () => {
     // TODO: Fetch challenge details from API
     setChallenge({
       id,
-      title: 'AI Image Recognition Challenge',
-      description: 'Develop an AI model to accurately recognize and classify images across various categories.',
+      title: 'Rapid AI Chatbot Development',
+      description: 'Build a functional AI chatbot in just 30 minutes using cutting-edge NLP models. Showcase your ability to quickly integrate APIs, implement natural language understanding, and create a responsive user interface.',
       difficulty: 'Medium',
-      participants: 120,
-      prize: '$10,000',
+      participants: 150,
+      prize: '$7,500',
+      sponsor: 'OpenAI',
+      duration: '30 minutes',
+      skills: ['NLP', 'API Integration', 'UI/UX Design'],
       enrollmentDeadline: '2024-04-01',
-      teamMembers: [
-        { id: 1, name: 'John Doe', role: 'Team Lead' },
-        { id: 2, name: 'Jane Smith', role: 'ML Engineer' },
-        { id: 3, name: 'Bob Johnson', role: 'Data Scientist' },
-      ],
+      teamSize: '1-3 members',
     });
   }, [id]);
 
@@ -54,29 +53,34 @@ const ChallengeDetails = () => {
         <CardHeader>
           <CardTitle>Challenge Details</CardTitle>
         </CardHeader>
-        <CardContent>
-          <p className="mb-2">{challenge.description}</p>
+        <CardContent className="space-y-4">
+          <p>{challenge.description}</p>
+          <div className="flex flex-wrap gap-4">
+            <div className="flex items-center">
+              <Clock className="mr-2 h-4 w-4" />
+              <span>Duration: {challenge.duration}</span>
+            </div>
+            <div className="flex items-center">
+              <Users className="mr-2 h-4 w-4" />
+              <span>Team Size: {challenge.teamSize}</span>
+            </div>
+            <div className="flex items-center">
+              <Award className="mr-2 h-4 w-4" />
+              <span>Prize: {challenge.prize}</span>
+            </div>
+          </div>
           <p><strong>Difficulty:</strong> {challenge.difficulty}</p>
           <p><strong>Participants:</strong> {challenge.participants}</p>
-          <p><strong>Prize:</strong> {challenge.prize}</p>
+          <p><strong>Sponsor:</strong> {challenge.sponsor}</p>
           <p><strong>Enrollment Deadline:</strong> {challenge.enrollmentDeadline}</p>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Team Members</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ul className="space-y-2">
-            {challenge.teamMembers.map((member) => (
-              <li key={member.id} className="flex justify-between items-center">
-                <span>{member.name}</span>
-                <span className="text-sm text-gray-500">{member.role}</span>
-              </li>
-            ))}
-          </ul>
-          <Button className="mt-4">View Team Page</Button>
+          <div>
+            <strong>Required Skills:</strong>
+            <ul className="list-disc list-inside">
+              {challenge.skills.map((skill, index) => (
+                <li key={index}>{skill}</li>
+              ))}
+            </ul>
+          </div>
         </CardContent>
       </Card>
 

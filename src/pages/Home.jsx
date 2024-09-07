@@ -10,47 +10,47 @@ const Home = () => {
   useEffect(() => {
     // TODO: Fetch upcoming challenges from API
     setUpcomingChallenges([
-      { id: 1, title: 'AI Image Recognition', date: '2024-03-15', difficulty: 'Medium' },
-      { id: 2, title: 'Natural Language Processing', date: '2024-03-22', difficulty: 'Hard' },
-      { id: 3, title: 'Reinforcement Learning', date: '2024-03-29', difficulty: 'Easy' },
+      { id: 1, title: 'Rapid AI Chatbot Development', date: '2024-03-15', difficulty: 'Medium' },
+      { id: 2, title: '15-Minute ML Model Deployment', date: '2024-03-22', difficulty: 'Hard' },
+      { id: 3, title: 'AI-Powered App Prototype', date: '2024-03-29', difficulty: 'Easy' },
     ]);
   }, []);
 
   const leagueFeatures = [
     {
       icon: <Trophy className="h-8 w-8 text-yellow-500" />,
-      title: "Competitive Challenges",
-      description: "Engage in high-stakes AI competitions across various domains and difficulty levels."
+      title: "Speed Challenges",
+      description: "Compete in high-intensity AI development sprints lasting 15, 30, or 60 minutes."
     },
     {
       icon: <Users className="h-8 w-8 text-blue-500" />,
       title: "Team Collaboration",
-      description: "Form powerful teams or compete solo to solve complex AI problems."
+      description: "Form agile teams or compete solo to rapidly prototype AI solutions."
     },
     {
       icon: <Clock className="h-8 w-8 text-green-500" />,
-      title: "Time-Constrained Sprints",
-      description: "Test your skills in 15, 30, or 60-minute coding sprints for maximum intensity."
+      title: "Real-Time Development",
+      description: "Build functional AI applications in record time using cutting-edge tools and APIs."
     },
     {
       icon: <Brain className="h-8 w-8 text-purple-500" />,
-      title: "Cutting-Edge AI Tools",
-      description: "Access the latest AI technologies and APIs to build innovative solutions."
+      title: "AI-Powered Tools",
+      description: "Leverage the latest AI technologies to accelerate your development process."
     },
     {
       icon: <Zap className="h-8 w-8 text-orange-500" />,
-      title: "Real-Time Evaluation",
-      description: "Get instant feedback on your submissions with our AI-powered judging system."
+      title: "Instant Evaluation",
+      description: "Get real-time feedback on your AI solutions with our automated judging system."
     },
     {
       icon: <Award className="h-8 w-8 text-red-500" />,
-      title: "Prizes and Recognition",
-      description: "Win exciting rewards and gain industry recognition for your AI expertise."
+      title: "Industry Recognition",
+      description: "Showcase your rapid AI development skills and gain visibility in the tech world."
     }
   ];
 
   const sponsors = [
-    "OpenAI", "DeepMind", "Google AI", "Microsoft Research", "IBM Watson", "NVIDIA AI"
+    "OpenAI", "Google Cloud", "Microsoft Azure", "AWS", "NVIDIA", "IBM Watson"
   ];
 
   return (
@@ -59,15 +59,15 @@ const Home = () => {
       <div className="bg-gradient-to-r from-blue-600 to-purple-700 text-white py-20 px-4 sm:px-6 lg:px-8 rounded-lg shadow-xl">
         <div className="max-w-7xl mx-auto">
           <h1 className="text-5xl font-extrabold tracking-tight sm:text-6xl mb-6">
-            Welcome to AI Hacker League
+            AI Hacker League: Speed Development Challenge
           </h1>
           <p className="text-xl mb-8 leading-relaxed max-w-3xl">
-            Join the AI Hacker League and compete with the world's top AI developers. 
-            Solve cutting-edge challenges, win prizes, and push the boundaries of artificial intelligence.
+            Join the ultimate AI speed coding competition. Build functional AI applications in minutes, 
+            showcase your rapid development skills, and compete with the world's top AI developers.
           </p>
           <div className="flex flex-wrap gap-4">
             <Button asChild size="lg" className="bg-white text-blue-600 hover:bg-blue-100 hover:text-blue-700">
-              <Link to="/challenges">Explore Challenges</Link>
+              <Link to="/challenges">View Challenges</Link>
             </Button>
             <Button asChild size="lg" variant="outline" className="text-white border-white hover:bg-white/10">
               <Link to="/register">Join Now</Link>
@@ -79,7 +79,7 @@ const Home = () => {
       {/* League Features Section */}
       <section className="py-16 bg-gray-50 dark:bg-gray-800 rounded-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-bold text-center mb-12">Experience the Future of AI Competitions</h2>
+          <h2 className="text-4xl font-bold text-center mb-12">Experience Lightning-Fast AI Development</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {leagueFeatures.map((feature, index) => (
               <Card key={index} className="hover:shadow-lg transition-shadow">
@@ -101,7 +101,7 @@ const Home = () => {
       {/* Upcoming Challenges Section */}
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-bold text-center mb-12">Upcoming Challenges</h2>
+          <h2 className="text-4xl font-bold text-center mb-12">Upcoming Speed Challenges</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {upcomingChallenges.map((challenge) => (
               <Card key={challenge.id} className="hover:shadow-lg transition-shadow">
@@ -124,10 +124,10 @@ const Home = () => {
       {/* Call to Action Section */}
       <section className="bg-blue-600 text-white py-16 rounded-lg">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-bold mb-6">Ready to Hack the Future?</h2>
+          <h2 className="text-4xl font-bold mb-6">Ready to Code at Warp Speed?</h2>
           <p className="text-xl mb-8">
-            Join thousands of AI enthusiasts and professionals in the ultimate coding battleground. 
-            Start your journey to becoming an AI champion today!
+            Join thousands of AI developers in the ultimate speed coding challenge. 
+            Prove your ability to build functional AI applications in record time!
           </p>
           <Button asChild size="lg" className="bg-white text-blue-600 hover:bg-blue-100 hover:text-blue-700">
             <Link to="/register">Sign Up Now</Link>
@@ -138,7 +138,7 @@ const Home = () => {
       {/* Sponsors Section */}
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-bold text-center mb-12">Backed by Industry Leaders</h2>
+          <h2 className="text-4xl font-bold text-center mb-12">Powered by Industry Leaders</h2>
           <div className="flex flex-wrap justify-center items-center gap-12">
             {sponsors.map((sponsor, index) => (
               <div key={index} className="text-2xl font-semibold text-gray-700 dark:text-gray-300">

@@ -9,37 +9,37 @@ const Challenges = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    // Simulating API fetch with sample data
+    // Simulating API fetch with updated sample data
     setChallenges([
       {
         id: 1,
-        title: 'AI Image Recognition',
+        title: 'Rapid AI Chatbot Development',
         difficulty: 'Medium',
-        participants: 120,
-        description: 'Develop an AI model to accurately recognize and classify images across various categories.',
-        icon: '🖼️',
-        reward: '$5,000',
-        sponsor: 'Google',
+        participants: 150,
+        description: 'Build a functional AI chatbot in just 30 minutes using cutting-edge NLP models.',
+        icon: '🤖',
+        reward: '$7,500',
+        sponsor: 'OpenAI',
       },
       {
         id: 2,
-        title: 'Natural Language Processing',
+        title: '15-Minute ML Model Deployment',
         difficulty: 'Hard',
-        participants: 85,
-        description: 'Create an advanced NLP system capable of understanding and generating human-like text.',
-        icon: '📝',
+        participants: 100,
+        description: 'Train and deploy a machine learning model for real-time predictions in just 15 minutes.',
+        icon: '🚀',
         reward: '$10,000',
-        sponsor: 'Microsoft',
+        sponsor: 'Google Cloud',
       },
       {
         id: 3,
-        title: 'Reinforcement Learning',
+        title: 'AI-Powered App Prototype',
         difficulty: 'Easy',
         participants: 200,
-        description: 'Implement a reinforcement learning algorithm to train an AI agent to play a simple game.',
-        icon: '🎮',
-        reward: '$3,000',
-        sponsor: 'OpenAI',
+        description: 'Create a working prototype of an AI-powered mobile app in 60 minutes.',
+        icon: '📱',
+        reward: '$5,000',
+        sponsor: 'Apple',
       },
     ]);
   }, []);
@@ -50,7 +50,7 @@ const Challenges = () => {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold">AI Challenges</h1>
+      <h1 className="text-3xl font-bold">AI Speed Development Challenges</h1>
       
       <div className="relative">
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
