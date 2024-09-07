@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -8,33 +8,47 @@ import { Trophy, Star, Zap, Award, Target, Cpu } from 'lucide-react';
 
 const SoloProfile = () => {
   const { id } = useParams();
+  const [profile, setProfile] = useState(null);
 
-  const profile = {
-    id,
-    username: 'NeuralNinja42',
-    avatar: '🥷',
-    level: 'Epic',
-    xp: 15000,
-    nextLevelXp: 20000,
-    rank: 2,
-    winRate: '82%',
-    badges: ['AI Mastermind', 'Speed Demon', 'Code Samurai'],
-    recentChallenges: [
-      { name: 'Quantum Quandary', score: 95, rank: 1 },
-      { name: 'Neural Network Nemesis', score: 88, rank: 3 },
-      { name: 'Algorithmic Avalanche', score: 92, rank: 2 },
-    ],
-    stats: {
-      totalChallenges: 42,
-      averageScore: 90,
-      highestStreak: 7,
-    },
-    achievements: [
-      { name: 'First Blood', description: 'Won your first challenge', icon: <Trophy className="h-6 w-6 text-yellow-500" /> },
-      { name: 'Unstoppable', description: 'Completed 10 challenges in a row', icon: <Zap className="h-6 w-6 text-blue-500" /> },
-      { name: 'AI Virtuoso', description: 'Achieved a perfect score in a Hard challenge', icon: <Star className="h-6 w-6 text-purple-500" /> },
-    ],
-  };
+  useEffect(() => {
+    // Simulating API call to fetch profile data
+    const fetchProfile = async () => {
+      // In a real app, you would fetch this data from an API
+      const mockProfile = {
+        id,
+        username: 'NeuralNinja42',
+        avatar: '🥷',
+        level: 'Epic',
+        xp: 15000,
+        nextLevelXp: 20000,
+        rank: 2,
+        winRate: '82%',
+        badges: ['AI Mastermind', 'Speed Demon', 'Code Samurai'],
+        recentChallenges: [
+          { name: 'Quantum Quandary', score: 95, rank: 1 },
+          { name: 'Neural Network Nemesis', score: 88, rank: 3 },
+          { name: 'Algorithmic Avalanche', score: 92, rank: 2 },
+        ],
+        stats: {
+          totalChallenges: 42,
+          averageScore: 90,
+          highestStreak: 7,
+        },
+        achievements: [
+          { name: 'First Blood', description: 'Won your first challenge', icon: <Trophy className="h-6 w-6 text-yellow-500" /> },
+          { name: 'Unstoppable', description: 'Completed 10 challenges in a row', icon: <Zap className="h-6 w-6 text-blue-500" /> },
+          { name: 'AI Virtuoso', description: 'Achieved a perfect score in a Hard challenge', icon: <Star className="h-6 w-6 text-purple-500" /> },
+        ],
+      };
+      setProfile(mockProfile);
+    };
+
+    fetchProfile();
+  }, [id]);
+
+  if (!profile) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="container mx-auto p-4 space-y-6">

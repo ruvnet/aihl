@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -9,38 +9,52 @@ import { Button } from "@/components/ui/button";
 
 const TeamProfile = () => {
   const { id } = useParams();
+  const [team, setTeam] = useState(null);
 
-  const team = {
-    id,
-    name: 'Quantum Quorum',
-    avatar: '⚛️',
-    level: 'Legendary',
-    xp: 50000,
-    nextLevelXp: 75000,
-    rank: 2,
-    winRate: '88%',
-    members: [
-      { id: 1, username: 'QuantumQueen', role: 'Team Lead', avatar: '👑' },
-      { id: 2, username: 'NeuralNinja', role: 'AI Specialist', avatar: '🥷' },
-      { id: 3, username: 'ByteBard', role: 'Full-Stack Dev', avatar: '🎭' },
-    ],
-    recentChallenges: [
-      { name: 'AI Singularity Sprint', score: 98, rank: 1 },
-      { name: 'Quantum Entanglement Enigma', score: 95, rank: 2 },
-      { name: 'Neural Network Nexus', score: 97, rank: 1 },
-    ],
-    stats: {
-      totalChallenges: 75,
-      averageScore: 94,
-      highestStreak: 12,
-    },
-    achievements: [
-      { name: 'Dream Team', description: 'Won 5 challenges in a row', icon: <Trophy className="h-6 w-6 text-yellow-500" /> },
-      { name: 'Synergy Surge', description: 'Achieved perfect teamwork score', icon: <Zap className="h-6 w-6 text-blue-500" /> },
-      { name: 'Quantum Leap', description: 'Completed the hardest challenge in record time', icon: <Award className="h-6 w-6 text-purple-500" /> },
-    ],
-    specializations: ['Quantum Computing', 'Neural Networks', 'Ethical AI'],
-  };
+  useEffect(() => {
+    // Simulating API call to fetch team data
+    const fetchTeam = async () => {
+      // In a real app, you would fetch this data from an API
+      const mockTeam = {
+        id,
+        name: 'Quantum Quorum',
+        avatar: '⚛️',
+        level: 'Legendary',
+        xp: 50000,
+        nextLevelXp: 75000,
+        rank: 2,
+        winRate: '88%',
+        members: [
+          { id: 1, username: 'QuantumQueen', role: 'Team Lead', avatar: '👑' },
+          { id: 2, username: 'NeuralNinja', role: 'AI Specialist', avatar: '🥷' },
+          { id: 3, username: 'ByteBard', role: 'Full-Stack Dev', avatar: '🎭' },
+        ],
+        recentChallenges: [
+          { name: 'AI Singularity Sprint', score: 98, rank: 1 },
+          { name: 'Quantum Entanglement Enigma', score: 95, rank: 2 },
+          { name: 'Neural Network Nexus', score: 97, rank: 1 },
+        ],
+        stats: {
+          totalChallenges: 75,
+          averageScore: 94,
+          highestStreak: 12,
+        },
+        achievements: [
+          { name: 'Dream Team', description: 'Won 5 challenges in a row', icon: <Trophy className="h-6 w-6 text-yellow-500" /> },
+          { name: 'Synergy Surge', description: 'Achieved perfect teamwork score', icon: <Zap className="h-6 w-6 text-blue-500" /> },
+          { name: 'Quantum Leap', description: 'Completed the hardest challenge in record time', icon: <Award className="h-6 w-6 text-purple-500" /> },
+        ],
+        specializations: ['Quantum Computing', 'Neural Networks', 'Ethical AI'],
+      };
+      setTeam(mockTeam);
+    };
+
+    fetchTeam();
+  }, [id]);
+
+  if (!team) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="container mx-auto p-4 space-y-6">
@@ -139,6 +153,7 @@ const TeamProfile = () => {
               ))}
             </div>
           </div>
+        
         </CardContent>
       </Card>
 
