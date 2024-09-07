@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Moon, Sun, Menu as MenuIcon, Home, Info, Book, BarChart2, UserPlus, LogIn, HelpCircle, Users, Trophy, Briefcase, User } from 'lucide-react';
+import { Moon, Sun, Menu as MenuIcon, Info, Book, BarChart2, UserPlus, LogIn, HelpCircle, Users, User } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { Link } from 'react-router-dom';
 import { slide as Menu } from 'react-burger-menu';
@@ -23,7 +23,6 @@ const Header = () => {
   };
 
   const menuItems = [
-    { to: "/", label: "Home", icon: Home },
     { to: "/about", label: "About", icon: Info },
     { to: "/rules", label: "Rules", icon: Book },
     { to: "/analytics", label: "Analytics", icon: BarChart2 },
@@ -31,9 +30,6 @@ const Header = () => {
     { to: "/login", label: "Login", icon: LogIn },
     { to: "/forgot-password", label: "Forgot Password", icon: HelpCircle },
     { to: "/team-wizard", label: "Create / Join Team", icon: Users },
-    { to: "/challenges", label: "Challenges", icon: Trophy },
-    { to: "/my-challenges", label: "My Challenges", icon: Briefcase },
-    { to: "/leaderboard", label: "Leaderboard", icon: BarChart2 },
     { to: "/profile", label: "Profile", icon: User },
   ];
 
@@ -85,7 +81,7 @@ const Header = () => {
           },
           bmItem: {
             display: 'flex',
-            justifyContent: 'space-between',
+            justifyContent: 'flex-start',
             alignItems: 'center',
             padding: '0.8em',
             color: 'var(--foreground)',
@@ -99,11 +95,11 @@ const Header = () => {
           <Link
             key={item.to}
             to={item.to}
-            className="flex justify-between items-center py-2 px-4 text-lg hover:bg-accent hover:text-accent-foreground transition-colors"
+            className="flex items-center py-2 px-4 text-lg hover:bg-accent hover:text-accent-foreground transition-colors"
             onClick={closeMenu}
           >
+            <item.icon className="h-5 w-5 mr-4" />
             <span>{item.label}</span>
-            <item.icon className="h-5 w-5 ml-2" />
           </Link>
         ))}
       </Menu>
