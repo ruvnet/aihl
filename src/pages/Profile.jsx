@@ -33,8 +33,8 @@ const Profile = () => {
       
       <Tabs defaultValue="info">
         <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="info">User Information</TabsTrigger>
-          <TabsTrigger value="achievements">Achievements & Badges</TabsTrigger>
+          <TabsTrigger value="info">Info</TabsTrigger>
+          <TabsTrigger value="achievements">Achievements</TabsTrigger>
           <TabsTrigger value="wallet">Wallet</TabsTrigger>
         </TabsList>
         <TabsContent value="info">
