@@ -1,24 +1,35 @@
 import { useState, useEffect } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { RealtimeLeaderboard } from 'realtime-leaderboard';
+import RealtimeLeaderboard from 'realtime-leaderboard';
 
 const Leaderboard = () => {
   const [leaderboardData, setLeaderboardData] = useState([]);
 
   useEffect(() => {
-    const leaderboard = new RealtimeLeaderboard({
-      apiKey: 'your-api-key', // Replace with your actual API key
-      leaderboardId: 'global-leaderboard',
-    });
+    const fetchLeaderboardData = async () => {
+      try {
+        const leaderboard = new RealtimeLeaderboard({
+          apiKey: 'your-api-key', // Replace with your actual API key
+          leaderboardId: 'global-leaderboard',
+        });
 
-    const unsubscribe = leaderboard.subscribe((data) => {
-      setLeaderboardData(data);
-    });
+        const initialData = await leaderboard.getLeaderboard();
+        setLeaderboardData(initialData);
 
-    return () => {
-      unsubscribe();
+        leaderboard.subscribe((data) => {
+          setLeaderboardData(data);
+        });
+
+        return () => {
+          leaderboard.unsubscribe();
+        };
+      } catch (error) {
+        console.error('Error initializing leaderboard:', error);
+      }
     };
+
+    fetchLeaderboardData();
   }, []);
 
   const sortedLeaderboard = [...leaderboardData].sort((a, b) => b.score - a.score);
