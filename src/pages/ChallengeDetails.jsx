@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Clock, Users, Award, Zap, Target, Brain, Code, GitBranch } from 'lucide-react';
+import { ArrowLeft, Clock, Users, Award, Zap, Target, Brain, Code, GitBranch, Trophy } from 'lucide-react';
 import EnrollmentModal from '../components/EnrollmentModal';
 
 const ChallengeDetails = () => {
