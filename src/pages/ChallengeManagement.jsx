@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Clock, GitBranch, GitCommit, GitPullRequest, Play, Pause, RotateCcw, Trophy, Target, Zap, Cpu } from 'lucide-react';
+import { Clock, GitBranch, GitCommit, GitPullRequest, Play, Pause, RotateCcw, Trophy, Target, Zap, Cpu, Users } from 'lucide-react';
 
 const ChallengeManagement = () => {
   const { id } = useParams();
@@ -163,7 +163,7 @@ const ChallengeManagement = () => {
                     <span className="text-gray-300">{contribution.type}</span>
                   </TableCell>
                   <TableCell className="text-gray-300">{contribution.message || contribution.name || contribution.title}</TableCell>
-                  <TableCell className="text-gray-400">{new Date(contribution.timestamp).toLocaleString()}</TableCell>
+                  <TableCell className="text-gray-400">{new Date(contribution.timestamp).toLocaleString()}</TableField>
                 </TableRow>
               ))}
             </TableBody>
