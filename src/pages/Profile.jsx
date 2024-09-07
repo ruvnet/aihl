@@ -3,7 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Trophy, Award, Star } from 'lucide-react';
+import { Trophy, Award, Star, Wallet } from 'lucide-react';
+import WalletSection from '../components/WalletSection';
 
 const Profile = () => {
   const [user, setUser] = useState({
@@ -11,6 +12,7 @@ const Profile = () => {
     username: 'johndoe',
     email: 'john@example.com',
     githubConnected: true,
+    balance: 1500,
   });
 
   const [achievements, setAchievements] = useState([
@@ -30,9 +32,10 @@ const Profile = () => {
       <h1 className="text-3xl font-bold">Profile</h1>
       
       <Tabs defaultValue="info">
-        <TabsList className="grid w-full grid-cols-2">
+        <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="info">User Information</TabsTrigger>
           <TabsTrigger value="achievements">Achievements & Badges</TabsTrigger>
+          <TabsTrigger value="wallet">Wallet</TabsTrigger>
         </TabsList>
         <TabsContent value="info">
           <Card>
@@ -94,6 +97,9 @@ const Profile = () => {
               </div>
             </CardContent>
           </Card>
+        </TabsContent>
+        <TabsContent value="wallet">
+          <WalletSection balance={user.balance} />
         </TabsContent>
       </Tabs>
     </div>
