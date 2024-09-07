@@ -57,29 +57,21 @@ const Home = () => {
     <div className="space-y-16">
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-blue-600 to-purple-700 text-white py-20 px-4 sm:px-6 lg:px-8 rounded-lg shadow-xl">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between">
-          <div className="md:w-1/2 mb-8 md:mb-0">
-            <h1 className="text-5xl font-extrabold tracking-tight sm:text-6xl mb-6">
-              Unleash Your AI Potential
-            </h1>
-            <p className="text-xl mb-8 leading-relaxed">
-              Join the AI Hacking League and compete with the world's top AI developers. 
-              Solve cutting-edge challenges, win prizes, and push the boundaries of artificial intelligence.
-            </p>
-            <div className="space-x-4">
-              <Button asChild size="lg" className="bg-white text-blue-600 hover:bg-blue-100">
-                <Link to="/challenges">Explore Challenges</Link>
-              </Button>
-              <Button asChild size="lg" variant="outline" className="text-white border-white hover:bg-white/10">
-                <Link to="/register">Join Now</Link>
-              </Button>
-            </div>
-          </div>
-          <div className="md:w-1/2 flex justify-center">
-            {/* Placeholder for a custom hero image or animation */}
-            <div className="w-full max-w-lg h-64 bg-white/10 rounded-lg flex items-center justify-center text-white text-2xl font-bold">
-              AI Hacking League
-            </div>
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-5xl font-extrabold tracking-tight sm:text-6xl mb-6">
+            Unleash Your AI Potential
+          </h1>
+          <p className="text-xl mb-8 leading-relaxed max-w-3xl">
+            Join the AI Hacking League and compete with the world's top AI developers. 
+            Solve cutting-edge challenges, win prizes, and push the boundaries of artificial intelligence.
+          </p>
+          <div className="flex flex-wrap gap-4">
+            <Button asChild size="lg" className="bg-white text-blue-600 hover:bg-blue-100">
+              <Link to="/challenges">Explore Challenges</Link>
+            </Button>
+            <Button asChild size="lg" variant="outline" className="text-white border-white hover:bg-white/10">
+              <Link to="/register">Join Now</Link>
+            </Button>
           </div>
         </div>
       </div>
