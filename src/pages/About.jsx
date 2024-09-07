@@ -1,61 +1,104 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Cpu, Zap, Trophy, Users, Code, Brain } from 'lucide-react';
 
 const About = () => {
   return (
-    <div className="container mx-auto p-4 space-y-8">
-      <h1 className="text-4xl font-bold mb-6">About AI Hacking League</h1>
+    <div className="container mx-auto p-4 space-y-8 bg-gradient-to-br from-gray-900 to-purple-900 min-h-screen text-white">
+      <h1 className="text-5xl font-extrabold text-center mb-8 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600">
+        About AI Hacking League
+      </h1>
       
-      <Card>
+      <Card className="border-2 border-purple-500 bg-gray-800 text-white shadow-neon">
         <CardHeader>
-          <CardTitle>Our Mission</CardTitle>
+          <CardTitle className="text-2xl flex items-center">
+            <Cpu className="mr-2 text-purple-400" /> Our Mission
+          </CardTitle>
         </CardHeader>
         <CardContent>
-          <p>The AI Hacking League is a cutting-edge competitive platform where elite developers and AI enthusiasts clash in high-stakes, time-constrained challenges to build innovative AI applications. Our mission is to push the boundaries of AI development at ludicrous speed, fostering innovation and collaboration in the field of artificial intelligence while offering exciting rewards.</p>
+          <p className="text-lg">
+            AI Hacking League is the ultimate battleground for elite developers and AI enthusiasts. 
+            We push the boundaries of AI development at ludicrous speed, fostering innovation and 
+            collaboration while offering epic rewards.
+          </p>
         </CardContent>
       </Card>
 
-      <Card>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Card className="border-2 border-blue-500 bg-gray-800 text-white shadow-neon">
+          <CardHeader>
+            <CardTitle className="text-2xl flex items-center">
+              <Zap className="mr-2 text-yellow-400" /> How It Works
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ul className="list-disc pl-5 space-y-2">
+              <li>Solo or squad battles (up to 3 hackers)</li>
+              <li>Time-warped challenges: 15min Blitz, 30min Rush, 60min Epic</li>
+              <li>High-stakes buy-ins for massive prize pools</li>
+              <li>Leverage cutting-edge AI tools and APIs</li>
+              <li>Create original code during the heat of battle</li>
+              <li>Face the judgment of our AI overlords</li>
+            </ul>
+          </CardContent>
+        </Card>
+
+        <Card className="border-2 border-green-500 bg-gray-800 text-white shadow-neon">
+          <CardHeader>
+            <CardTitle className="text-2xl flex items-center">
+              <Trophy className="mr-2 text-yellow-400" /> Epic Loot
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="mb-4">
+              Conquer challenges to claim your share of the massive prize pools! 
+              Higher buy-ins lead to legendary rewards.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <Badge className="bg-yellow-400 text-black">Cash Prizes</Badge>
+              <Badge className="bg-purple-400 text-black">AI Street Cred</Badge>
+              <Badge className="bg-blue-400 text-black">Career Power-Ups</Badge>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <Card className="border-2 border-red-500 bg-gray-800 text-white shadow-neon">
         <CardHeader>
-          <CardTitle>How It Works</CardTitle>
+          <CardTitle className="text-2xl flex items-center">
+            <Users className="mr-2 text-blue-400" /> Governance &amp; Fair Play
+          </CardTitle>
         </CardHeader>
         <CardContent>
-          <ul className="list-disc pl-5 space-y-2">
-            <li>Participants compete solo or in small teams of up to three members.</li>
-            <li>Challenges are time-constrained: 15-minute Sprints, 30-minute Dashes, or 60-minute Marathons.</li>
-            <li>Each challenge has a buy-in amount, ranging from $25 for smaller rewards to higher amounts for larger prize pools.</li>
-            <li>Competitors use approved AI tools, APIs, and libraries to create functional solutions.</li>
-            <li>All code must be original and created during the challenge timeframe.</li>
-            <li>Submissions are evaluated by an AI-based judging system, considering functionality, innovation, code quality, and user experience.</li>
-          </ul>
+          <p>
+            Our AI overlords maintain order with an iron fist (and sophisticated algorithms). 
+            Human oversight steps in for complex disputes, ensuring a fair and epic battlefield for all challengers.
+          </p>
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="border-2 border-yellow-500 bg-gray-800 text-white shadow-neon">
         <CardHeader>
-          <CardTitle>Rewards and Prize Pools</CardTitle>
+          <CardTitle className="text-2xl flex items-center">
+            <Code className="mr-2 text-green-400" /> Join the Revolution
+          </CardTitle>
         </CardHeader>
         <CardContent>
-          <p>Our challenges offer varying prize pools based on the buy-in amount and number of participants. Higher buy-ins typically result in larger rewards, creating an exciting risk-reward dynamic for competitors. Winners can earn substantial cash prizes, recognition in the AI community, and potential career opportunities.</p>
+          <p className="mb-4">
+            Whether you're a seasoned code warrior or a bright-eyed newbie, the AI Hacking League 
+            is your arena to prove your worth, level up your skills, and shape the future of AI.
+          </p>
+          <p className="text-xl font-bold text-center">
+            Are you ready to hack the planet, one challenge at a time?
+          </p>
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Governance and Fair Play</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p>The league is primarily governed by an AI-based management system, with human oversight for complex disputes. We employ strict anti-cheating measures, including AI-powered plagiarism detection and real-time monitoring of challenges, to ensure a fair and competitive environment for all participants.</p>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Join the Revolution</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p>Whether you're a seasoned AI developer or an enthusiastic beginner, the AI Hacking League offers a unique opportunity to showcase your skills, learn from peers, and contribute to the advancement of AI technology. Join us in coding the future, one challenge at a time, and compete for exciting rewards!</p>
-        </CardContent>
-      </Card>
+      <div className="text-center mt-8">
+        <Badge className="text-2xl px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500">
+          Game On, Hackers!
+        </Badge>
+      </div>
     </div>
   );
 };
