@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
 import { Search } from 'lucide-react';
 
 const TeamWizard = () => {
@@ -60,7 +62,9 @@ const TeamWizard = () => {
                   <h3 className="font-bold">{team.name}</h3>
                   <p className="text-sm text-gray-500">{team.description}</p>
                   <p className="text-sm">Members: {team.members}</p>
-                  <Button className="mt-2" onClick={() => handleJoinTeam(team.id)}>Join Team</Button>
+                  <Button className="mt-2" asChild>
+                    <Link to={`/team-application/${team.id}`}>Apply to Join</Link>
+                  </Button>
                 </Card>
               ))}
             </div>
@@ -78,7 +82,7 @@ const TeamWizard = () => {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="teamDescription">Team Description</Label>
-                <Input
+                <Textarea
                   id="teamDescription"
                   value={teamDescription}
                   onChange={(e) => setTeamDescription(e.target.value)}
@@ -107,6 +111,11 @@ const TeamWizard = () => {
             </div>
           </TabsContent>
         </Tabs>
+        <div className="mt-4">
+          <Link to="/team-applicants" className="text-blue-500 hover:underline">
+            View Team Applicants
+          </Link>
+        </div>
       </CardContent>
     </Card>
   );
