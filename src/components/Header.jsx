@@ -21,7 +21,9 @@ const Header = () => {
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center justify-between">
         <div className="mr-4 flex">
-          <h1 className="text-lg font-bold">AI Hacker League</h1>
+          <Link to="/" className="text-lg font-bold hover:text-primary transition-colors">
+            AI Hacker League
+          </Link>
         </div>
         <div className="flex items-center space-x-2">
           <button
