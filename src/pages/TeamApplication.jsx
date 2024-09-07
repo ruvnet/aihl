@@ -1,18 +1,22 @@
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { CheckCircle2 } from "lucide-react";
 
 const TeamApplication = () => {
   const { teamId } = useParams();
+  const navigate = useNavigate();
   const [application, setApplication] = useState({
     name: '',
     email: '',
     experience: '',
     motivation: '',
   });
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,9 +25,27 @@ const TeamApplication = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // TODO: Implement application submission logic
+    // TODO: Implement actual submission logic here
     console.log('Submitting application:', application);
+    setIsSubmitted(true);
   };
+
+  if (isSubmitted) {
+    return (
+      <div className="container mx-auto p-4">
+        <Alert className="bg-green-100 border-green-500">
+          <CheckCircle2 className="h-4 w-4 text-green-500" />
+          <AlertTitle>Application Submitted</AlertTitle>
+          <AlertDescription>
+            Thank you for applying to join the team. We will review your application and get back to you soon.
+          </AlertDescription>
+        </Alert>
+        <Button className="mt-4" onClick={() => navigate('/challenges')}>
+          Explore Challenges
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto p-4">

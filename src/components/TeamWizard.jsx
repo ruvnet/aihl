@@ -1,9 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
@@ -23,11 +22,6 @@ const TeamWizard = () => {
   const handleCreateTeam = () => {
     // TODO: Implement team creation logic
     console.log('Creating team:', { teamName, teamDescription, lookingForMembers });
-  };
-
-  const handleJoinTeam = (teamId) => {
-    // TODO: Implement team joining logic
-    console.log('Joining team with ID:', teamId);
   };
 
   const filteredTeams = availableTeams.filter(team => 
@@ -72,7 +66,7 @@ const TeamWizard = () => {
           <TabsContent value="create">
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="teamName">Team Name</Label>
+                <label htmlFor="teamName">Team Name</label>
                 <Input
                   id="teamName"
                   value={teamName}
@@ -81,7 +75,7 @@ const TeamWizard = () => {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="teamDescription">Team Description</Label>
+                <label htmlFor="teamDescription">Team Description</label>
                 <Textarea
                   id="teamDescription"
                   value={teamDescription}
@@ -90,7 +84,7 @@ const TeamWizard = () => {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="teamLogo">Team Logo</Label>
+                <label htmlFor="teamLogo">Team Logo</label>
                 <Input
                   id="teamLogo"
                   type="file"
@@ -103,7 +97,7 @@ const TeamWizard = () => {
                   checked={lookingForMembers}
                   onCheckedChange={setLookingForMembers}
                 />
-                <Label htmlFor="lookingForMembers">Looking for members</Label>
+                <label htmlFor="lookingForMembers">Looking for members</label>
               </div>
               <Button onClick={handleCreateTeam} disabled={!teamName || !teamDescription}>
                 Create Team
