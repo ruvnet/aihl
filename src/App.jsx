@@ -23,6 +23,7 @@ import Rules from './pages/Rules';
 import ChallengeHistory from './pages/ChallengeHistory';
 import SoloProfile from './pages/SoloProfile';
 import TeamProfile from './pages/TeamProfile';
+import ChallengeManagement from './pages/ChallengeManagement';
 
 const queryClient = new QueryClient();
 
@@ -64,6 +65,7 @@ const App = () => {
                   <Route path="/challenge-history" element={<ChallengeHistory />} />
                   <Route path="/player/:id" element={<SoloProfile />} />
                   <Route path="/team/:id" element={<TeamProfile />} />
+                  <Route path="/challenge-management/:id" element={<ChallengeManagement />} />
                 </Routes>
               </main>
               <Navigation />
