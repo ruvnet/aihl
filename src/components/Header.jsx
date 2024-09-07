@@ -52,26 +52,46 @@ const Header = () => {
             {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             <span className="sr-only">Toggle theme</span>
           </button>
-          <Menu
-            right
-            isOpen={isMenuOpen}
-            onStateChange={handleStateChange}
-            customBurgerIcon={<span className="text-2xl">☰</span>}
-            customCrossIcon={<X className="h-6 w-6" />}
-            width={'100%'}
-            className="bg-white dark:bg-gray-800"
-          >
-            {menuItems.map((item) => (
-              <Link
-                key={item.to}
-                to={item.to}
-                className="menu-item block py-2 px-4 text-lg hover:bg-accent hover:text-accent-foreground transition-colors"
-                onClick={closeMenu}
-              >
-                {item.label}
-              </Link>
-            ))}
-          </Menu>
+          <div className="relative">
+            <Menu
+              right
+              isOpen={isMenuOpen}
+              onStateChange={handleStateChange}
+              customBurgerIcon={<span className="text-2xl">☰</span>}
+              customCrossIcon={<X className="h-6 w-6" />}
+              width={'100%'}
+              className="bg-white dark:bg-gray-800"
+              burgerButtonClassName="absolute top-0 right-0"
+              styles={{
+                bmMenu: {
+                  background: 'var(--background)',
+                  padding: '2.5em 1.5em 0',
+                  fontSize: '1.15em',
+                },
+                bmItemList: {
+                  padding: '0.8em',
+                },
+                bmItem: {
+                  display: 'block',
+                  padding: '0.8em',
+                },
+                bmOverlay: {
+                  background: 'rgba(0, 0, 0, 0.3)',
+                },
+              }}
+            >
+              {menuItems.map((item) => (
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  className="menu-item block py-2 px-4 text-lg hover:bg-accent hover:text-accent-foreground transition-colors"
+                  onClick={closeMenu}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </Menu>
+          </div>
         </div>
       </div>
     </header>
