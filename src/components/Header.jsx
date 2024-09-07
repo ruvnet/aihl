@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Moon, Sun, Menu as MenuIcon } from 'lucide-react';
+import { Moon, Sun, Menu as MenuIcon, Home, Info, Book, BarChart2, UserPlus, LogIn, HelpCircle, Users, Trophy, Briefcase, User } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { Link } from 'react-router-dom';
 import { slide as Menu } from 'react-burger-menu';
@@ -23,18 +23,18 @@ const Header = () => {
   };
 
   const menuItems = [
-    { to: "/", label: "Home" },
-    { to: "/about", label: "About" },
-    { to: "/rules", label: "Rules" },
-    { to: "/analytics", label: "Analytics" },
-    { to: "/register", label: "Register" },
-    { to: "/login", label: "Login" },
-    { to: "/forgot-password", label: "Forgot Password" },
-    { to: "/team-wizard", label: "Create / Join Team" },
-    { to: "/challenges", label: "Challenges" },
-    { to: "/my-challenges", label: "My Challenges" },
-    { to: "/leaderboard", label: "Leaderboard" },
-    { to: "/profile", label: "Profile" },
+    { to: "/", label: "Home", icon: Home },
+    { to: "/about", label: "About", icon: Info },
+    { to: "/rules", label: "Rules", icon: Book },
+    { to: "/analytics", label: "Analytics", icon: BarChart2 },
+    { to: "/register", label: "Register", icon: UserPlus },
+    { to: "/login", label: "Login", icon: LogIn },
+    { to: "/forgot-password", label: "Forgot Password", icon: HelpCircle },
+    { to: "/team-wizard", label: "Create / Join Team", icon: Users },
+    { to: "/challenges", label: "Challenges", icon: Trophy },
+    { to: "/my-challenges", label: "My Challenges", icon: Briefcase },
+    { to: "/leaderboard", label: "Leaderboard", icon: BarChart2 },
+    { to: "/profile", label: "Profile", icon: User },
   ];
 
   return (
@@ -84,7 +84,9 @@ const Header = () => {
             height: 'auto',
           },
           bmItem: {
-            display: 'block',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
             padding: '0.8em',
             color: 'var(--foreground)',
           },
@@ -97,10 +99,11 @@ const Header = () => {
           <Link
             key={item.to}
             to={item.to}
-            className="block py-2 px-4 text-lg hover:bg-accent hover:text-accent-foreground transition-colors"
+            className="flex justify-between items-center py-2 px-4 text-lg hover:bg-accent hover:text-accent-foreground transition-colors"
             onClick={closeMenu}
           >
-            {item.label}
+            <span>{item.label}</span>
+            <item.icon className="h-5 w-5 ml-2" />
           </Link>
         ))}
       </Menu>
