@@ -40,9 +40,6 @@ const Header = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem>
-                <Link to="/leaderboard">Leaderboard</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
                 <Link to="/analytics">Analytics</Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
