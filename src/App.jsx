@@ -15,6 +15,7 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import ForgotPassword from './pages/ForgotPassword';
 import EnrolledChallenges from './pages/EnrolledChallenges';
+import TeamWizard from './components/TeamWizard';
 
 const queryClient = new QueryClient();
 
@@ -38,6 +39,7 @@ const App = () => {
                   <Route path="/login" element={<Login />} />
                   <Route path="/forgot-password" element={<ForgotPassword />} />
                   <Route path="/my-challenges" element={<EnrolledChallenges />} />
+                  <Route path="/team-wizard" element={<TeamWizard />} />
                 </Routes>
               </main>
               <Navigation />
