@@ -1,24 +1,46 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Github, Linkedin } from 'lucide-react';
+import { useSupabaseAuth } from '@/integrations/supabase/auth';
+import { toast } from 'sonner';
 
 const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
+  const navigate = useNavigate();
+  const { signIn } = useSupabaseAuth();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Implement login logic
-    console.log('Login data:', formData);
+    try {
+      const { error } = await signIn({
+        email: formData.email,
+        password: formData.password,
+      });
+      if (error) throw error;
+      toast.success('Logged in successfully!');
+      navigate('/');
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const handleSocialLogin = async (provider) => {
+    try {
+      const { error } = await signIn({ provider });
+      if (error) throw error;
+    } catch (error) {
+      toast.error(`Error signing in with ${provider}: ${error.message}`);
+    }
   };
 
   return (
@@ -58,10 +80,10 @@ const Login = () => {
           <div className="mt-6">
             <p className="text-center mb-2">Or login with:</p>
             <div className="flex justify-center space-x-4">
-              <Button variant="outline" className="w-full">
+              <Button variant="outline" className="w-full" onClick={() => handleSocialLogin('github')}>
                 <Github className="mr-2 h-4 w-4" /> GitHub
               </Button>
-              <Button variant="outline" className="w-full">
+              <Button variant="outline" className="w-full" onClick={() => handleSocialLogin('linkedin')}>
                 <Linkedin className="mr-2 h-4 w-4" /> LinkedIn
               </Button>
             </div>
