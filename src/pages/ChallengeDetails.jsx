@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Clock, Users, Award, Zap, Target, Brain, Code, GitBranch, Trophy } from 'lucide-react';
+import { ArrowLeft, Clock, Users, Award, Zap, Target, Brain, Code, GitBranch, Trophy, DollarSign } from 'lucide-react';
 import EnrollmentModal from '../components/EnrollmentModal';
 
 const ChallengeDetails = () => {
@@ -21,8 +21,9 @@ const ChallengeDetails = () => {
       difficulty: 'Legendary',
       participants: 150,
       maxParticipants: 200,
+      buyIn: 250,
       prize: {
-        amount: 25000,
+        amount: 50000,
         currency: 'USD',
         sponsor: 'QuantumTech Industries'
       },
@@ -97,6 +98,10 @@ const ChallengeDetails = () => {
             <div className="flex items-center">
               <Award className="mr-2 h-5 w-5 text-yellow-300" />
               <span>{challenge.prize.amount} {challenge.prize.currency}</span>
+            </div>
+            <div className="flex items-center">
+              <DollarSign className="mr-2 h-5 w-5 text-green-300" />
+              <span>${challenge.buyIn} Buy-in</span>
             </div>
             <div className="flex items-center">
               <Target className="mr-2 h-5 w-5 text-red-300" />
@@ -180,7 +185,7 @@ const ChallengeDetails = () => {
         className="w-full text-lg py-6 bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 transition-all duration-300 transform hover:scale-105 shadow-lg" 
         onClick={handleEnroll}
       >
-        Enroll in Challenge
+        Enroll in Challenge (${challenge.buyIn} Buy-in)
       </Button>
 
       <EnrollmentModal

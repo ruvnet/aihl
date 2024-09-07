@@ -7,7 +7,7 @@ const EnrollmentModal = ({ isOpen, onClose, challenge }) => {
 
   const handleEnroll = async () => {
     setIsEnrolling(true);
-    // TODO: Implement actual enrollment logic here
+    // TODO: Implement actual enrollment logic here, including payment processing
     await new Promise(resolve => setTimeout(resolve, 1000)); // Simulating API call
     setIsEnrolling(false);
     onClose();
@@ -28,12 +28,13 @@ const EnrollmentModal = ({ isOpen, onClose, challenge }) => {
         <div className="py-4">
           <p><strong>Difficulty:</strong> {challenge.difficulty}</p>
           <p><strong>Current Participants:</strong> {challenge.participants}</p>
-          {/* Add more challenge details here if needed */}
+          <p><strong>Buy-in Amount:</strong> ${challenge.buyIn}</p>
+          <p><strong>Potential Prize:</strong> {challenge.prize.amount} {challenge.prize.currency}</p>
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>Cancel</Button>
           <Button onClick={handleEnroll} disabled={isEnrolling}>
-            {isEnrolling ? 'Enrolling...' : 'Confirm Enrollment'}
+            {isEnrolling ? 'Processing...' : `Confirm Enrollment ($${challenge.buyIn})`}
           </Button>
         </DialogFooter>
       </DialogContent>

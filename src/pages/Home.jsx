@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Link } from 'react-router-dom';
-import { Trophy, Users, Clock, Brain, Zap, Award, Flame, Target, Star, CalendarDays } from 'lucide-react';
+import { Trophy, Users, Clock, Brain, Zap, Award, Flame, Target, Star, CalendarDays, DollarSign } from 'lucide-react';
 
 const Home = () => {
   const [upcomingChallenges, setUpcomingChallenges] = useState([]);
@@ -19,7 +19,8 @@ const Home = () => {
         timeLimit: '30 min',
         participants: 120,
         maxParticipants: 200,
-        prize: '$5,000',
+        buyIn: 50,
+        prize: '$7,500',
         xp: 1000,
         icon: <Zap className="h-8 w-8 text-yellow-400" />,
       },
@@ -31,7 +32,8 @@ const Home = () => {
         timeLimit: '45 min',
         participants: 80,
         maxParticipants: 150,
-        prize: '$10,000',
+        buyIn: 100,
+        prize: '$15,000',
         xp: 2000,
         icon: <Brain className="h-8 w-8 text-purple-500" />,
       },
@@ -43,7 +45,8 @@ const Home = () => {
         timeLimit: '20 min',
         participants: 250,
         maxParticipants: 500,
-        prize: '$3,000 + $7,000 to charity',
+        buyIn: 25,
+        prize: '$5,000 + $7,000 to charity',
         xp: 800,
         icon: <Flame className="h-8 w-8 text-green-400" />,
       },
@@ -53,8 +56,8 @@ const Home = () => {
   const leagueFeatures = [
     {
       icon: <Trophy className="h-8 w-8 text-yellow-500" />,
-      title: "Speed Challenges",
-      description: "Compete in high-intensity AI development sprints lasting 15, 30, or 60 minutes."
+      title: "High-Stakes Challenges",
+      description: "Compete in AI development sprints with varying buy-ins and exciting prize pools."
     },
     {
       icon: <Users className="h-8 w-8 text-blue-500" />,
@@ -78,8 +81,8 @@ const Home = () => {
     },
     {
       icon: <Award className="h-8 w-8 text-red-500" />,
-      title: "Industry Recognition",
-      description: "Showcase your rapid AI development skills and gain visibility in the tech world."
+      title: "Substantial Rewards",
+      description: "Win cash prizes, gain industry recognition, and advance your AI career."
     }
   ];
 
@@ -98,15 +101,14 @@ const Home = () => {
 
   return (
     <div className="space-y-16">
-      {/* Hero Section */}
       <div className="bg-gradient-to-r from-blue-600 to-purple-700 text-white py-20 px-4 sm:px-6 lg:px-8 rounded-lg shadow-xl">
         <div className="max-w-7xl mx-auto">
           <h1 className="text-5xl font-extrabold tracking-tight sm:text-6xl mb-6">
-            AI Hacker League: Speed Development Challenge
+            AI Hacker League: High-Stakes Speed Development
           </h1>
           <p className="text-xl mb-8 leading-relaxed max-w-3xl">
-            Join the ultimate AI speed coding competition. Build functional AI applications in minutes, 
-            showcase your rapid development skills, and compete with the world's top AI developers.
+            Join the ultimate AI speed coding competition with real rewards. Build functional AI applications in minutes, 
+            showcase your rapid development skills, and compete for substantial cash prizes.
           </p>
           <div className="flex flex-wrap gap-4">
             <Button asChild size="lg" className="bg-white text-blue-600 hover:bg-blue-100 hover:text-blue-700">
@@ -119,10 +121,9 @@ const Home = () => {
         </div>
       </div>
 
-      {/* League Features Section */}
       <section className="py-16 bg-gray-50 dark:bg-gray-800 rounded-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-bold text-center mb-12">Experience Lightning-Fast AI Development</h2>
+          <h2 className="text-4xl font-bold text-center mb-12">Experience High-Stakes AI Development</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {leagueFeatures.map((feature, index) => (
               <Card key={index} className="hover:shadow-lg transition-shadow">
@@ -141,10 +142,9 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Upcoming Challenges Section */}
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-bold text-center mb-12">Upcoming Speed Challenges</h2>
+          <h2 className="text-4xl font-bold text-center mb-12">Upcoming High-Stakes Challenges</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {upcomingChallenges.map((challenge) => (
               <Card key={challenge.id} className="hover:shadow-lg transition-shadow bg-gradient-to-br from-gray-900 to-gray-800 text-white">
@@ -179,9 +179,9 @@ const Home = () => {
                         <Trophy className="w-5 h-5 mr-1" />
                         {challenge.prize}
                       </span>
-                      <span className="flex items-center text-purple-400">
-                        <Star className="w-5 h-5 mr-1" />
-                        {challenge.xp} XP
+                      <span className="flex items-center text-green-400">
+                        <DollarSign className="w-5 h-5 mr-1" />
+                        ${challenge.buyIn} Buy-in
                       </span>
                     </div>
                     <Button asChild className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600">
@@ -197,13 +197,12 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Call to Action Section */}
       <section className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-16 rounded-lg">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-bold mb-6">Ready to Code at Warp Speed?</h2>
+          <h2 className="text-4xl font-bold mb-6">Ready to Code for High Stakes?</h2>
           <p className="text-xl mb-8">
             Join thousands of AI developers in the ultimate speed coding challenge. 
-            Prove your ability to build functional AI applications in record time!
+            Prove your skills and compete for substantial cash prizes!
           </p>
           <Button asChild size="lg" className="bg-white text-purple-600 hover:bg-purple-100 hover:text-purple-700">
             <Link to="/register">Sign Up Now</Link>
@@ -211,7 +210,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Sponsors Section */}
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-4xl font-bold text-center mb-12">Powered by Industry Leaders</h2>
