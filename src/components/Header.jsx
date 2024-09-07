@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Moon, Sun, X } from 'lucide-react';
+import { Moon, Sun, Menu as MenuIcon } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { Link } from 'react-router-dom';
 import { slide as Menu } from 'react-burger-menu';
+import { Button } from "@/components/ui/button";
 
 const Header = () => {
   const [mounted, setMounted] = useState(false);
@@ -38,62 +39,67 @@ const Header = () => {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container h-14 grid grid-cols-3 items-center">
-        <div className="flex items-center">
-          <Link to="/" className="text-lg font-bold hover:text-primary transition-colors">
-            AI Hacker League
-          </Link>
-        </div>
-        <div className="flex justify-center">
-          <button
+      <div className="container mx-auto px-4 h-14 flex items-center justify-between">
+        <Link to="/" className="text-lg font-bold hover:text-primary transition-colors">
+          AI Hacker League
+        </Link>
+        <div className="flex items-center space-x-4">
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-            className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9"
+            className="w-9 h-9 rounded-full"
           >
             {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             <span className="sr-only">Toggle theme</span>
-          </button>
-        </div>
-        <div className="flex justify-end">
-          <Menu
-            right
-            isOpen={isMenuOpen}
-            onStateChange={handleStateChange}
-            customBurgerIcon={<span className="text-2xl">☰</span>}
-            customCrossIcon={<X className="h-6 w-6" />}
-            width={'100%'}
-            className="bg-background"
-            burgerButtonClassName="focus:outline-none"
-            styles={{
-              bmMenu: {
-                background: 'var(--background)',
-                padding: '2.5em 1.5em 0',
-                fontSize: '1.15em',
-              },
-              bmItemList: {
-                padding: '0.8em',
-              },
-              bmItem: {
-                display: 'block',
-                padding: '0.8em',
-              },
-              bmOverlay: {
-                background: 'rgba(0, 0, 0, 0.3)',
-              },
-            }}
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="w-9 h-9 rounded-full"
           >
-            {menuItems.map((item) => (
-              <Link
-                key={item.to}
-                to={item.to}
-                className="menu-item block py-2 px-4 text-lg hover:bg-accent hover:text-accent-foreground transition-colors"
-                onClick={closeMenu}
-              >
-                {item.label}
-              </Link>
-            ))}
-          </Menu>
+            <MenuIcon className="h-4 w-4" />
+            <span className="sr-only">Open menu</span>
+          </Button>
         </div>
       </div>
+      <Menu
+        right
+        isOpen={isMenuOpen}
+        onStateChange={handleStateChange}
+        customBurgerIcon={false}
+        className="bg-background"
+        width={'100%'}
+        styles={{
+          bmMenu: {
+            background: 'var(--background)',
+            padding: '2.5em 1.5em 0',
+            fontSize: '1.15em',
+          },
+          bmItemList: {
+            padding: '0.8em',
+          },
+          bmItem: {
+            display: 'block',
+            padding: '0.8em',
+          },
+          bmOverlay: {
+            background: 'rgba(0, 0, 0, 0.3)',
+          },
+        }}
+      >
+        {menuItems.map((item) => (
+          <Link
+            key={item.to}
+            to={item.to}
+            className="block py-2 px-4 text-lg hover:bg-accent hover:text-accent-foreground transition-colors"
+            onClick={closeMenu}
+          >
+            {item.label}
+          </Link>
+        ))}
+      </Menu>
     </header>
   );
 };
