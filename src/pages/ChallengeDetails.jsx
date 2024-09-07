@@ -13,7 +13,7 @@ const ChallengeDetails = () => {
   const [isEnrollmentModalOpen, setIsEnrollmentModalOpen] = useState(false);
 
   useEffect(() => {
-    // TODO: Fetch challenge details from API
+    // Simulated API call
     setChallenge({
       id,
       title: 'Quantum AI Hackathon',
@@ -67,14 +67,14 @@ const ChallengeDetails = () => {
   const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
 
   return (
-    <div className="space-y-6 p-4 max-w-4xl mx-auto">
+    <div className="space-y-6 p-4 max-w-4xl mx-auto bg-gradient-to-br from-gray-900 to-gray-800 min-h-screen text-white">
       <div className="flex items-center mb-4">
-        <Button asChild variant="ghost" className="mr-2">
+        <Button asChild variant="ghost" className="mr-2 text-white hover:text-gray-300">
           <Link to="/challenges"><ArrowLeft className="mr-2 h-4 w-4" /> Back to Challenges</Link>
         </Button>
       </div>
 
-      <Card className="border-2 border-purple-500 bg-gradient-to-r from-indigo-900 to-purple-900 text-white">
+      <Card className="border-2 border-purple-500 bg-gradient-to-r from-indigo-900 to-purple-900 text-white shadow-lg">
         <CardHeader>
           <div className="flex justify-between items-center">
             <CardTitle className="text-3xl font-extrabold">{challenge.title}</CardTitle>
@@ -113,7 +113,7 @@ const ChallengeDetails = () => {
       </Card>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card>
+        <Card className="bg-gray-800 border-gray-700">
           <CardHeader>
             <CardTitle className="flex items-center">
               <Brain className="mr-2 text-purple-500" /> Required Skills
@@ -122,7 +122,7 @@ const ChallengeDetails = () => {
           <CardContent>
             <div className="flex flex-wrap gap-2">
               {challenge.skills.map((skill, index) => (
-                <Badge key={index} variant="secondary" className="text-sm">
+                <Badge key={index} variant="secondary" className="text-sm bg-purple-700">
                   {skill}
                 </Badge>
               ))}
@@ -130,7 +130,7 @@ const ChallengeDetails = () => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-gray-800 border-gray-700">
           <CardHeader>
             <CardTitle className="flex items-center">
               <Code className="mr-2 text-green-500" /> Challenge Requirements
@@ -146,7 +146,7 @@ const ChallengeDetails = () => {
         </Card>
       </div>
 
-      <Card>
+      <Card className="bg-gray-800 border-gray-700">
         <CardHeader>
           <CardTitle className="flex items-center">
             <GitBranch className="mr-2 text-blue-500" /> Rewards
@@ -176,7 +176,10 @@ const ChallengeDetails = () => {
         </CardContent>
       </Card>
 
-      <Button className="w-full text-lg py-6 bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 transition-all duration-300 transform hover:scale-105" onClick={handleEnroll}>
+      <Button 
+        className="w-full text-lg py-6 bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 transition-all duration-300 transform hover:scale-105 shadow-lg" 
+        onClick={handleEnroll}
+      >
         Enroll in Challenge
       </Button>
 
