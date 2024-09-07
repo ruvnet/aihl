@@ -49,7 +49,7 @@ const TeamWizard = () => {
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="join">Join a Team</TabsTrigger>
             <TabsTrigger value="create">Create a Team</TabsTrigger>
-            <TabsTrigger value="dashboard">Team Dashboard</TabsTrigger>
+            <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
           </TabsList>
           <TabsContent value="join">
             <div className="space-y-4">
