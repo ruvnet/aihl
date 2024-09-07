@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Link } from 'react-router-dom';
 import { Calendar, Clock, Trophy, Users } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const EnrolledChallenges = () => {
   const [enrolledChallenges, setEnrolledChallenges] = useState([]);
@@ -123,27 +124,30 @@ const EnrolledChallenges = () => {
     <div className="space-y-6">
       <h1 className="text-3xl font-bold">My Challenges</h1>
       
-      <div>
-        <h2 className="text-2xl font-semibold mb-4">Enrolled Challenges</h2>
-        {enrolledChallenges.length > 0 ? (
-          enrolledChallenges.map((challenge) => (
-            <ChallengeCard key={challenge.id} challenge={challenge} isCompleted={false} />
-          ))
-        ) : (
-          <p>You are not enrolled in any challenges yet.</p>
-        )}
-      </div>
-
-      <div>
-        <h2 className="text-2xl font-semibold mb-4">Completed Challenges</h2>
-        {completedChallenges.length > 0 ? (
-          completedChallenges.map((challenge) => (
-            <ChallengeCard key={challenge.id} challenge={challenge} isCompleted={true} />
-          ))
-        ) : (
-          <p>You haven't completed any challenges yet.</p>
-        )}
-      </div>
+      <Tabs defaultValue="active" className="w-full">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="active">Active Challenges</TabsTrigger>
+          <TabsTrigger value="completed">Completed Challenges</TabsTrigger>
+        </TabsList>
+        <TabsContent value="active">
+          {enrolledChallenges.length > 0 ? (
+            enrolledChallenges.map((challenge) => (
+              <ChallengeCard key={challenge.id} challenge={challenge} isCompleted={false} />
+            ))
+          ) : (
+            <p>You are not enrolled in any active challenges.</p>
+          )}
+        </TabsContent>
+        <TabsContent value="completed">
+          {completedChallenges.length > 0 ? (
+            completedChallenges.map((challenge) => (
+              <ChallengeCard key={challenge.id} challenge={challenge} isCompleted={true} />
+            ))
+          ) : (
+            <p>You haven't completed any challenges yet.</p>
+          )}
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
