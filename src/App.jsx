@@ -18,6 +18,7 @@ import EnrolledChallenges from './pages/EnrolledChallenges';
 import TeamWizard from './components/TeamWizard';
 import TeamApplication from './pages/TeamApplication';
 import About from './pages/About';
+import Rules from './pages/Rules';
 
 const queryClient = new QueryClient();
 
@@ -44,6 +45,7 @@ const App = () => {
                   <Route path="/team-wizard" element={<TeamWizard />} />
                   <Route path="/team-application/:teamId" element={<TeamApplication />} />
                   <Route path="/about" element={<About />} />
+                  <Route path="/rules" element={<Rules />} />
                 </Routes>
               </main>
               <Navigation />
