@@ -17,7 +17,7 @@ const App = () => {
       <TooltipProvider>
         <Router>
           <div className="flex flex-col min-h-screen bg-gray-100">
-            <main className="flex-grow container mx-auto px-4 py-8">
+            <main className="flex-grow container mx-auto px-4 py-8 pb-24">
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/challenges" element={<Challenges />} />
