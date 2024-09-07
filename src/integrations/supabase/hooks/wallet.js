@@ -19,7 +19,7 @@ const fromSupabase = async (query) => {
 
 export const useWallet = (userId) => useQuery({
   queryKey: ['wallet', userId],
-  queryFn: () => fromSupabase(supabase.from('wallet').select('*').eq('user_id', userId)),
+  queryFn: () => fromSupabase(supabase.from('wallet').select('*').eq('user_id', userId).single()),
 });
 
 export const useUpdateWallet = () => {
