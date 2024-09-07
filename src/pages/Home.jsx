@@ -66,7 +66,7 @@ const Home = () => {
             Solve cutting-edge challenges, win prizes, and push the boundaries of artificial intelligence.
           </p>
           <div className="flex flex-wrap gap-4">
-            <Button asChild size="lg" className="bg-white text-blue-600 hover:bg-blue-100">
+            <Button asChild size="lg" className="bg-white text-blue-600 hover:bg-blue-100 hover:text-blue-700">
               <Link to="/challenges">Explore Challenges</Link>
             </Button>
             <Button asChild size="lg" variant="outline" className="text-white border-white hover:bg-white/10">
@@ -129,7 +129,7 @@ const Home = () => {
             Join thousands of AI enthusiasts and professionals in the ultimate coding battleground. 
             Start your journey to becoming an AI champion today!
           </p>
-          <Button asChild size="lg" className="bg-white text-blue-600 hover:bg-blue-100">
+          <Button asChild size="lg" className="bg-white text-blue-600 hover:bg-blue-100 hover:text-blue-700">
             <Link to="/register">Sign Up Now</Link>
           </Button>
         </div>
