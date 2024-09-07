@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Trophy, BarChart2, User, Briefcase } from 'lucide-react';
+import { Home, Trophy, BarChart2, Briefcase } from 'lucide-react';
 
 const Navigation = () => {
   const location = useLocation();
@@ -7,9 +7,8 @@ const Navigation = () => {
   const navItems = [
     { path: '/', icon: Home, label: 'Home' },
     { path: '/challenges', icon: Trophy, label: 'Challenges' },
-    { path: '/my-challenges', icon: Briefcase, label: 'My Challenges' },
+    { path: '/my-challenges', icon: Briefcase, label: 'Tasks' },
     { path: '/leaderboard', icon: BarChart2, label: 'Leaderboard' },
-    { path: '/profile', icon: User, label: 'Profile' },
   ];
 
   return (
