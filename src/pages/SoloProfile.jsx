@@ -9,7 +9,6 @@ import { Trophy, Star, Zap, Award, Target, Cpu } from 'lucide-react';
 const SoloProfile = () => {
   const { id } = useParams();
 
-  // Mock data for the solo profile
   const profile = {
     id,
     username: 'NeuralNinja42',
@@ -123,7 +122,7 @@ const SoloProfile = () => {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {profile.achievements.map((achievement, index) => (
               <div key={index} className="flex items-center space-x-2 bg-secondary p-3 rounded-lg">
                 {achievement.icon}

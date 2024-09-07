@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 const TeamProfile = () => {
   const { id } = useParams();
 
-  // Mock data for the team profile
   const team = {
     id,
     name: 'Quantum Quorum',
@@ -70,30 +69,24 @@ const TeamProfile = () => {
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center">
-            <Users className="mr-2" /> Team Roster
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {team.members.map((member) => (
-              <Card key={member.id}>
-                <CardContent className="flex items-center space-x-4 py-4">
-                  <span className="text-2xl">{member.avatar}</span>
-                  <div>
-                    <p className="font-semibold">{member.username}</p>
-                    <p className="text-sm text-muted-foreground">{member.role}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center">
+              <Users className="mr-2" /> Team Roster
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {team.members.map((member) => (
+              <div key={member.id} className="flex items-center space-x-2 mb-2">
+                <span className="text-2xl">{member.avatar}</span>
+                <span className="font-semibold">{member.username}</span>
+                <span className="text-sm text-muted-foreground">({member.role})</span>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center">
@@ -102,13 +95,6 @@ const TeamProfile = () => {
           </CardHeader>
           <CardContent>
             <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Challenge</TableHead>
-                  <TableHead>Score</TableHead>
-                  <TableHead>Rank</TableHead>
-                </TableRow>
-              </TableHeader>
               <TableBody>
                 {team.recentChallenges.map((challenge, index) => (
                   <TableRow key={index}>
@@ -121,47 +107,37 @@ const TeamProfile = () => {
             </Table>
           </CardContent>
         </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <Cpu className="mr-2" /> Team Stats
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex justify-between items-center">
-              <span>Total Challenges</span>
-              <Badge variant="secondary">{team.stats.totalChallenges}</Badge>
-            </div>
-            <div className="flex justify-between items-center">
-              <span>Average Score</span>
-              <Badge variant="secondary">{team.stats.averageScore}</Badge>
-            </div>
-            <div className="flex justify-between items-center">
-              <span>Highest Streak</span>
-              <Badge variant="secondary">{team.stats.highestStreak}</Badge>
-            </div>
-          </CardContent>
-        </Card>
       </div>
 
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center">
-            <Award className="mr-2" /> Team Achievements
+            <Cpu className="mr-2" /> Team Stats & Achievements
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {team.achievements.map((achievement, index) => (
-              <div key={index} className="flex items-center space-x-2 bg-secondary p-3 rounded-lg">
-                {achievement.icon}
-                <div>
-                  <p className="font-semibold">{achievement.name}</p>
-                  <p className="text-sm text-muted-foreground">{achievement.description}</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <h3 className="font-semibold mb-2">Stats</h3>
+              {Object.entries(team.stats).map(([key, value]) => (
+                <div key={key} className="flex justify-between items-center mb-1">
+                  <span>{key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}</span>
+                  <Badge variant="secondary">{value}</Badge>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+            <div>
+              <h3 className="font-semibold mb-2">Achievements</h3>
+              {team.achievements.map((achievement, index) => (
+                <div key={index} className="flex items-center space-x-2 mb-2">
+                  {achievement.icon}
+                  <div>
+                    <p className="font-semibold">{achievement.name}</p>
+                    <p className="text-sm text-muted-foreground">{achievement.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -183,21 +159,14 @@ const TeamProfile = () => {
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center">
-            <GitBranch className="mr-2" /> Team Actions
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="flex justify-center space-x-4">
-          <Button asChild>
-            <Link to="/challenges">Join New Challenge</Link>
-          </Button>
-          <Button variant="outline">
-            Manage Team
-          </Button>
-        </CardContent>
-      </Card>
+      <div className="flex justify-center space-x-4">
+        <Button asChild>
+          <Link to="/challenges">Join New Challenge</Link>
+        </Button>
+        <Button variant="outline">
+          Manage Team
+        </Button>
+      </div>
     </div>
   );
 };
