@@ -2,12 +2,14 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Zap, Trophy, Clock, Users } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Search, Zap, Trophy, Clock, Users, Heart, Star, Brain } from 'lucide-react';
 import { Card, CardContent } from "@/components/ui/card";
 
 const Challenges = () => {
   const [challenges, setChallenges] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [activeTab, setActiveTab] = useState('solo');
 
   useEffect(() => {
     setChallenges([
@@ -21,6 +23,7 @@ const Challenges = () => {
         reward: '$7,500',
         sponsor: 'OpenAI',
         duration: '30 minutes',
+        type: 'solo',
       },
       {
         id: 2,
@@ -32,13 +35,62 @@ const Challenges = () => {
         reward: '$10,000',
         sponsor: 'Google Cloud',
         duration: '15 minutes',
+        type: 'solo',
       },
-      // ... (other challenge objects)
+      {
+        id: 3,
+        title: 'AI for Good: Climate Change Prediction',
+        difficulty: 'Medium',
+        participants: 200,
+        description: 'Develop an AI model to predict climate change impacts using provided datasets.',
+        icon: '🌍',
+        reward: '$5,000 + $10,000 to charity',
+        sponsor: 'GreenTech Foundation',
+        duration: '45 minutes',
+        type: 'team',
+      },
+      {
+        id: 4,
+        title: 'Beginner\'s AI Image Classification',
+        difficulty: 'Easy',
+        participants: 300,
+        description: 'Create a simple image classification model using pre-trained networks.',
+        icon: '🖼️',
+        reward: '$1,000',
+        sponsor: 'AI Learning Initiative',
+        duration: '20 minutes',
+        type: 'solo',
+      },
+      {
+        id: 5,
+        title: 'Advanced NLP: Sentiment Analysis at Scale',
+        difficulty: 'Expert',
+        participants: 50,
+        description: 'Build a highly efficient sentiment analysis model capable of processing millions of text inputs.',
+        icon: '📊',
+        reward: '$20,000',
+        sponsor: 'TechGiant Corp',
+        duration: '60 minutes',
+        type: 'team',
+      },
+      {
+        id: 6,
+        title: 'AI Ethics Challenge: Bias Detection',
+        difficulty: 'Hard',
+        participants: 120,
+        description: 'Develop an AI system to detect and mitigate bias in machine learning models.',
+        icon: '⚖️',
+        reward: '$15,000',
+        sponsor: 'EthicalAI Institute',
+        duration: '45 minutes',
+        type: 'solo',
+      },
     ]);
   }, []);
 
   const filteredChallenges = challenges.filter(challenge =>
-    challenge.title.toLowerCase().includes(searchTerm.toLowerCase())
+    challenge.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
+    challenge.type === activeTab
   );
 
   const getDifficultyColor = (difficulty) => {
@@ -49,6 +101,16 @@ const Challenges = () => {
       expert: 'bg-purple-500',
     };
     return colors[difficulty.toLowerCase()] || 'bg-gray-500';
+  };
+
+  const getDifficultyIcon = (difficulty) => {
+    switch (difficulty.toLowerCase()) {
+      case 'easy': return <Star className="w-4 h-4 mr-1" />;
+      case 'medium': return <Zap className="w-4 h-4 mr-1" />;
+      case 'hard': return <Trophy className="w-4 h-4 mr-1" />;
+      case 'expert': return <Brain className="w-4 h-4 mr-1" />;
+      default: return null;
+    }
   };
 
   return (
@@ -62,7 +124,7 @@ const Challenges = () => {
       
       <Card className="bg-gray-800 border-gray-700">
         <CardContent className="p-4">
-          <div className="relative">
+          <div className="relative mb-4">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
             <Input
               type="text"
@@ -72,6 +134,12 @@ const Challenges = () => {
               className="pl-10 bg-gray-700 text-white border-gray-600 focus:border-purple-500 focus:ring-purple-500"
             />
           </div>
+          <Tabs value={activeTab} onValueChange={setActiveTab}>
+            <TabsList className="grid w-full grid-cols-2 bg-gray-700">
+              <TabsTrigger value="solo" className="text-white data-[state=active]:bg-purple-600">Solo Challenges</TabsTrigger>
+              <TabsTrigger value="team" className="text-white data-[state=active]:bg-purple-600">Team Challenges</TabsTrigger>
+            </TabsList>
+          </Tabs>
         </CardContent>
       </Card>
 
@@ -81,9 +149,12 @@ const Challenges = () => {
             <CardContent className="p-6">
               <div className="flex justify-between items-center mb-4">
                 <span className="text-3xl">{challenge.icon}</span>
-                <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getDifficultyColor(challenge.difficulty)} text-white`}>
-                  {challenge.difficulty}
-                </span>
+                <div className="flex items-center">
+                  {getDifficultyIcon(challenge.difficulty)}
+                  <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getDifficultyColor(challenge.difficulty)} text-white`}>
+                    {challenge.difficulty}
+                  </span>
+                </div>
               </div>
               <h3 className="text-xl font-bold text-white mb-2">{challenge.title}</h3>
               <p className="text-gray-400 mb-4">{challenge.description}</p>
@@ -93,7 +164,8 @@ const Challenges = () => {
               </div>
               <div className="flex justify-between items-center mb-4">
                 <span className="text-green-400 font-bold flex items-center">
-                  <Trophy className="w-5 h-5 mr-1" /> {challenge.reward}
+                  {challenge.reward.includes('charity') ? <Heart className="w-5 h-5 mr-1 text-red-500" /> : <Trophy className="w-5 h-5 mr-1" />}
+                  {challenge.reward}
                 </span>
                 <span className="text-purple-400">{challenge.sponsor}</span>
               </div>
@@ -108,7 +180,7 @@ const Challenges = () => {
       </div>
 
       {filteredChallenges.length === 0 && (
-        <p className="text-center text-gray-400">No challenges found. Try a different search term.</p>
+        <p className="text-center text-gray-400">No challenges found. Try a different search term or category.</p>
       )}
     </div>
   );
