@@ -72,23 +72,23 @@ const ChallengeManagement = () => {
   }
 
   return (
-    <div className="space-y-6 p-4 max-w-4xl mx-auto bg-gradient-to-br from-gray-900 to-purple-900 text-white min-h-screen">
-      <h1 className="text-4xl font-bold text-center mb-8 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600">
+    <div className="space-y-6 p-4 max-w-4xl mx-auto min-h-screen">
+      <h1 className="text-4xl font-bold text-center mb-8">
         {challenge.title}
       </h1>
       
-      <Card className="bg-gray-800 border-2 border-purple-500 shadow-neon">
+      <Card>
         <CardHeader>
-          <CardTitle className="text-2xl text-purple-400 flex items-center">
+          <CardTitle className="text-2xl flex items-center">
             <Target className="mr-2" /> Challenge Details
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-gray-300 mb-4">{challenge.description}</p>
+          <p className="text-gray-600 mb-4">{challenge.description}</p>
           <div className="grid grid-cols-2 gap-4">
             <div className="flex items-center">
               <Trophy className="text-yellow-500 mr-2" />
-              <span className="text-yellow-400 font-bold">{challenge.difficulty}</span>
+              <span className="text-yellow-600 font-bold">{challenge.difficulty}</span>
             </div>
             <div className="flex items-center">
               <Users className="text-blue-500 mr-2" />
@@ -98,15 +98,15 @@ const ChallengeManagement = () => {
         </CardContent>
       </Card>
 
-      <Card className="bg-gray-800 border-2 border-blue-500 shadow-neon">
+      <Card>
         <CardHeader>
-          <CardTitle className="text-2xl text-blue-400 flex items-center">
+          <CardTitle className="text-2xl flex items-center">
             <Clock className="mr-2" /> Challenge Timer
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-6xl font-bold text-center mb-4 text-blue-300">{formatTime(timeRemaining)}</div>
-          <Progress value={(timeRemaining / challenge.timeLimit) * 100} className="mb-4 h-3 bg-gray-700" />
+          <div className="text-6xl font-bold text-center mb-4">{formatTime(timeRemaining)}</div>
+          <Progress value={(timeRemaining / challenge.timeLimit) * 100} className="mb-4 h-3" />
           <div className="flex justify-center space-x-4">
             {!isRunning ? (
               <Button onClick={handleStart} disabled={timeRemaining === 0} className="bg-green-500 hover:bg-green-600 text-white">
@@ -124,46 +124,46 @@ const ChallengeManagement = () => {
         </CardContent>
       </Card>
 
-      <Card className="bg-gray-800 border-2 border-green-500 shadow-neon">
+      <Card>
         <CardHeader>
-          <CardTitle className="text-2xl text-green-400 flex items-center">
+          <CardTitle className="text-2xl flex items-center">
             <GitBranch className="mr-2" /> GitHub Integration
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="mb-4">Repository URL: <a href={challenge.repoUrl} className="text-blue-400 hover:underline" target="_blank" rel="noopener noreferrer">{challenge.repoUrl}</a></p>
-          <Button asChild className="w-full bg-purple-600 hover:bg-purple-700">
+          <p className="mb-4">Repository URL: <a href={challenge.repoUrl} className="text-blue-500 hover:underline" target="_blank" rel="noopener noreferrer">{challenge.repoUrl}</a></p>
+          <Button asChild className="w-full bg-purple-600 hover:bg-purple-700 text-white">
             <a href={challenge.repoUrl} target="_blank" rel="noopener noreferrer">Open in GitHub</a>
           </Button>
         </CardContent>
       </Card>
 
-      <Card className="bg-gray-800 border-2 border-yellow-500 shadow-neon">
+      <Card>
         <CardHeader>
-          <CardTitle className="text-2xl text-yellow-400 flex items-center">
+          <CardTitle className="text-2xl flex items-center">
             <Cpu className="mr-2" /> Contributions
           </CardTitle>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
-              <TableRow className="border-b border-gray-700">
-                <TableHead className="text-purple-400">Type</TableHead>
-                <TableHead className="text-purple-400">Details</TableHead>
-                <TableHead className="text-purple-400">Timestamp</TableHead>
+              <TableRow>
+                <TableHead>Type</TableHead>
+                <TableHead>Details</TableHead>
+                <TableHead>Timestamp</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {contributions.map((contribution, index) => (
-                <TableRow key={index} className="border-b border-gray-700">
+                <TableRow key={index}>
                   <TableCell>
                     {contribution.type === 'commit' && <GitCommit className="inline mr-2 text-green-500" />}
                     {contribution.type === 'branch' && <GitBranch className="inline mr-2 text-blue-500" />}
                     {contribution.type === 'pull-request' && <GitPullRequest className="inline mr-2 text-purple-500" />}
-                    <span className="text-gray-300">{contribution.type}</span>
+                    <span>{contribution.type}</span>
                   </TableCell>
-                  <TableCell className="text-gray-300">{contribution.message || contribution.name || contribution.title}</TableCell>
-                  <TableCell className="text-gray-400">{new Date(contribution.timestamp).toLocaleString()}</TableCell>
+                  <TableCell>{contribution.message || contribution.name || contribution.title}</TableCell>
+                  <TableCell>{new Date(contribution.timestamp).toLocaleString()}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
