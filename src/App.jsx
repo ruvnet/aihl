@@ -16,6 +16,7 @@ import Login from './pages/Login';
 import ForgotPassword from './pages/ForgotPassword';
 import EnrolledChallenges from './pages/EnrolledChallenges';
 import TeamWizard from './components/TeamWizard';
+import TeamApplication from './pages/TeamApplication';
 
 const queryClient = new QueryClient();
 
@@ -40,6 +41,7 @@ const App = () => {
                   <Route path="/forgot-password" element={<ForgotPassword />} />
                   <Route path="/my-challenges" element={<EnrolledChallenges />} />
                   <Route path="/team-wizard" element={<TeamWizard />} />
+                  <Route path="/team-application/:teamId" element={<TeamApplication />} />
                 </Routes>
               </main>
               <Navigation />
