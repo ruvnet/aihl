@@ -45,6 +45,9 @@ const Header = () => {
                 <Link to="/about">About</Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
+                <Link to="/rules">Rules</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
                 <Link to="/analytics">Analytics</Link>
               </DropdownMenuItem>
               <DropdownMenuItem>

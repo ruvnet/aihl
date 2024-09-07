@@ -92,6 +92,11 @@ const Home = () => {
             </Card>
           ))}
         </div>
+        <div className="mt-8 text-center">
+          <Button asChild>
+            <Link to="/about">Learn More About Us</Link>
+          </Button>
+        </div>
       </section>
 
       {/* Upcoming Challenges Section */}
