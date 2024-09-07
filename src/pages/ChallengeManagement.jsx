@@ -163,7 +163,7 @@ const ChallengeManagement = () => {
                     <span className="text-gray-300">{contribution.type}</span>
                   </TableCell>
                   <TableCell className="text-gray-300">{contribution.message || contribution.name || contribution.title}</TableCell>
-                  <TableCell className="text-gray-400">{new Date(contribution.timestamp).toLocaleString()}</TableField>
+                  <TableCell className="text-gray-400">{new Date(contribution.timestamp).toLocaleString()}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
