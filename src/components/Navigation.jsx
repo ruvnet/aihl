@@ -22,8 +22,8 @@ const Navigation = () => {
               location.pathname === item.path ? 'text-blue-500' : 'text-gray-500 dark:text-gray-400'
             }`}
           >
-            <item.icon className="w-6 h-6" />
-            <span className="text-xs mt-1">{item.label}</span>
+            <item.icon className="w-6 h-6 mb-1" />
+            <span className="text-xs mt-1 mb-[5px]">{item.label}</span>
           </Link>
         ))}
       </div>
