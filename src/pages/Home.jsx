@@ -59,10 +59,10 @@ const Home = () => {
       <div className="bg-gradient-to-r from-blue-600 to-purple-700 text-white py-20 px-4 sm:px-6 lg:px-8 rounded-lg shadow-xl">
         <div className="max-w-7xl mx-auto">
           <h1 className="text-5xl font-extrabold tracking-tight sm:text-6xl mb-6">
-            Unleash Your AI Potential
+            Welcome to AI Hacker League
           </h1>
           <p className="text-xl mb-8 leading-relaxed max-w-3xl">
-            Join the AI Hacking League and compete with the world's top AI developers. 
+            Join the AI Hacker League and compete with the world's top AI developers. 
             Solve cutting-edge challenges, win prizes, and push the boundaries of artificial intelligence.
           </p>
           <div className="flex flex-wrap gap-4">
