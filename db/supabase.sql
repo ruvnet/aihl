@@ -1,9 +1,20 @@
--- Enable Row Level Security
-ALTER TABLE auth.users ENABLE ROW LEVEL SECURITY;
+-- Enable UUID generation extension (if not already enabled)
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+-- Drop the existing users table if it exists
+DROP TABLE IF EXISTS auth.users CASCADE;
+
+-- Recreate the users table with UUID auto-generation
+CREATE TABLE auth.users (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  email TEXT NOT NULL,
+  encrypted_password TEXT NOT NULL
+);
 
 -- Create profiles table
+DROP TABLE IF EXISTS profiles;
 CREATE TABLE profiles (
-  id UUID REFERENCES auth.users NOT NULL PRIMARY KEY,
+  id UUID REFERENCES auth.users(id) NOT NULL PRIMARY KEY,
   username TEXT UNIQUE,
   full_name TEXT,
   avatar_url TEXT,
@@ -17,6 +28,7 @@ CREATE TABLE profiles (
 ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
 
 -- Create challenges table
+DROP TABLE IF EXISTS challenges;
 CREATE TABLE challenges (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   title TEXT NOT NULL,
@@ -37,11 +49,12 @@ CREATE TABLE challenges (
 ALTER TABLE challenges ENABLE ROW LEVEL SECURITY;
 
 -- Create teams table
+DROP TABLE IF EXISTS teams;
 CREATE TABLE teams (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   name TEXT NOT NULL UNIQUE,
   description TEXT,
-  created_by UUID REFERENCES auth.users,
+  created_by UUID REFERENCES auth.users(id),
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
@@ -50,9 +63,10 @@ CREATE TABLE teams (
 ALTER TABLE teams ENABLE ROW LEVEL SECURITY;
 
 -- Create team_members table
+DROP TABLE IF EXISTS team_members;
 CREATE TABLE team_members (
-  team_id UUID REFERENCES teams,
-  user_id UUID REFERENCES auth.users,
+  team_id UUID REFERENCES teams(id),
+  user_id UUID REFERENCES auth.users(id),
   role TEXT CHECK (role IN ('Leader', 'Member')),
   joined_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (team_id, user_id)
@@ -62,11 +76,12 @@ CREATE TABLE team_members (
 ALTER TABLE team_members ENABLE ROW LEVEL SECURITY;
 
 -- Create enrollments table
+DROP TABLE IF EXISTS enrollments;
 CREATE TABLE enrollments (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-  user_id UUID REFERENCES auth.users,
-  challenge_id UUID REFERENCES challenges,
-  team_id UUID REFERENCES teams,
+  user_id UUID REFERENCES auth.users(id),
+  challenge_id UUID REFERENCES challenges(id),
+  team_id UUID REFERENCES teams(id),
   status TEXT CHECK (status IN ('Enrolled', 'In Progress', 'Completed', 'Disqualified')),
   score DECIMAL(5, 2),
   submitted_at TIMESTAMP WITH TIME ZONE,
@@ -78,11 +93,12 @@ CREATE TABLE enrollments (
 ALTER TABLE enrollments ENABLE ROW LEVEL SECURITY;
 
 -- Create leaderboard table
+DROP TABLE IF EXISTS leaderboard;
 CREATE TABLE leaderboard (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-  user_id UUID REFERENCES auth.users,
-  team_id UUID REFERENCES teams,
-  challenge_id UUID REFERENCES challenges,
+  user_id UUID REFERENCES auth.users(id),
+  team_id UUID REFERENCES teams(id),
+  challenge_id UUID REFERENCES challenges(id),
   score DECIMAL(5, 2),
   rank INTEGER,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
@@ -93,6 +109,7 @@ CREATE TABLE leaderboard (
 ALTER TABLE leaderboard ENABLE ROW LEVEL SECURITY;
 
 -- Create achievements table
+DROP TABLE IF EXISTS achievements;
 CREATE TABLE achievements (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   name TEXT NOT NULL,
@@ -104,9 +121,10 @@ CREATE TABLE achievements (
 ALTER TABLE achievements ENABLE ROW LEVEL SECURITY;
 
 -- Create user_achievements table
+DROP TABLE IF EXISTS user_achievements;
 CREATE TABLE user_achievements (
-  user_id UUID REFERENCES auth.users,
-  achievement_id UUID REFERENCES achievements,
+  user_id UUID REFERENCES auth.users(id),
+  achievement_id UUID REFERENCES achievements(id),
   earned_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (user_id, achievement_id)
 );
@@ -115,8 +133,9 @@ CREATE TABLE user_achievements (
 ALTER TABLE user_achievements ENABLE ROW LEVEL SECURITY;
 
 -- Create wallet table
+DROP TABLE IF EXISTS wallet;
 CREATE TABLE wallet (
-  user_id UUID REFERENCES auth.users PRIMARY KEY,
+  user_id UUID PRIMARY KEY REFERENCES auth.users(id),
   balance DECIMAL(10, 2) DEFAULT 0,
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
@@ -125,9 +144,10 @@ CREATE TABLE wallet (
 ALTER TABLE wallet ENABLE ROW LEVEL SECURITY;
 
 -- Create transactions table
+DROP TABLE IF EXISTS transactions;
 CREATE TABLE transactions (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-  user_id UUID REFERENCES auth.users,
+  user_id UUID REFERENCES auth.users(id),
   amount DECIMAL(10, 2),
   type TEXT CHECK (type IN ('Deposit', 'Withdrawal', 'Prize', 'Buy-in')),
   description TEXT,
@@ -208,15 +228,15 @@ CREATE POLICY "Users can view own transactions" ON transactions
 
 -- Sample Data
 
--- Insert sample users (passwords should be hashed in a real scenario)
-INSERT INTO auth.users (id, email, encrypted_password) VALUES
-  ('d7bed83c-bf83-4ce1-8f5b-46c4c8a36b6c', 'alice@example.com', 'hashed_password'),
-  ('b5f3f6b3-5d6a-4d7e-9a8b-8c9d0e1f2g3h', 'bob@example.com', 'hashed_password');
+-- Insert sample users (UUIDs are automatically generated)
+INSERT INTO auth.users (email, encrypted_password) VALUES
+  ('alice@example.com', 'hashed_password'),
+  ('bob@example.com', 'hashed_password');
 
 -- Insert sample profiles
 INSERT INTO profiles (id, username, full_name, avatar_url) VALUES
-  ('d7bed83c-bf83-4ce1-8f5b-46c4c8a36b6c', 'alice', 'Alice Johnson', 'https://example.com/alice.jpg'),
-  ('b5f3f6b3-5d6a-4d7e-9a8b-8c9d0e1f2g3h', 'bob', 'Bob Smith', 'https://example.com/bob.jpg');
+  ((SELECT id FROM auth.users WHERE email = 'alice@example.com'), 'alice', 'Alice Johnson', 'https://example.com/alice.jpg'),
+  ((SELECT id FROM auth.users WHERE email = 'bob@example.com'), 'bob', 'Bob Smith', 'https://example.com/bob.jpg');
 
 -- Insert sample challenges
 INSERT INTO challenges (title, description, difficulty, start_time, end_time, max_participants, buy_in, prize_pool) VALUES
@@ -224,24 +244,24 @@ INSERT INTO challenges (title, description, difficulty, start_time, end_time, ma
   ('NLP Challenge: Sentiment Analysis', 'Create a sentiment analysis model for social media posts', 'Hard', '2024-04-15 14:00:00+00', '2024-04-15 15:00:00+00', 50, 100.00, 10000.00);
 
 -- Insert sample teams
-INSERT INTO teams (id, name, description, created_by) VALUES
-  ('a1b2c3d4-e5f6-4g7h-8i9j-0k1l2m3n4o5p', 'Neural Ninjas', 'Masters of neural networks', 'd7bed83c-bf83-4ce1-8f5b-46c4c8a36b6c'),
-  ('b2c3d4e5-f6g7-5h8i-9j0k-1l2m3n4o5p6q', 'Data Dragons', 'Breathing fire into data science', 'b5f3f6b3-5d6a-4d7e-9a8b-8c9d0e1f2g3h');
+INSERT INTO teams (name, description, created_by) VALUES
+  ('Neural Ninjas', 'Masters of neural networks', (SELECT id FROM auth.users WHERE email = 'alice@example.com')),
+  ('Data Dragons', 'Breathing fire into data science', (SELECT id FROM auth.users WHERE email = 'bob@example.com'));
 
 -- Insert sample team members
 INSERT INTO team_members (team_id, user_id, role) VALUES
-  ('a1b2c3d4-e5f6-4g7h-8i9j-0k1l2m3n4o5p', 'd7bed83c-bf83-4ce1-8f5b-46c4c8a36b6c', 'Leader'),
-  ('b2c3d4e5-f6g7-5h8i-9j0k-1l2m3n4o5p6q', 'b5f3f6b3-5d6a-4d7e-9a8b-8c9d0e1f2g3h', 'Leader');
+  ((SELECT id FROM teams WHERE name = 'Neural Ninjas'), (SELECT id FROM auth.users WHERE email = 'alice@example.com'), 'Leader'),
+  ((SELECT id FROM teams WHERE name = 'Data Dragons'), (SELECT id FROM auth.users WHERE email = 'bob@example.com'), 'Leader');
 
 -- Insert sample enrollments
 INSERT INTO enrollments (user_id, challenge_id, team_id, status, score) VALUES
-  ('d7bed83c-bf83-4ce1-8f5b-46c4c8a36b6c', (SELECT id FROM challenges LIMIT 1), 'a1b2c3d4-e5f6-4g7h-8i9j-0k1l2m3n4o5p', 'Completed', 95.5),
-  ('b5f3f6b3-5d6a-4d7e-9a8b-8c9d0e1f2g3h', (SELECT id FROM challenges LIMIT 1), 'b2c3d4e5-f6g7-5h8i-9j0k-1l2m3n4o5p6q', 'Completed', 92.0);
+  ((SELECT id FROM auth.users WHERE email = 'alice@example.com'), (SELECT id FROM challenges LIMIT 1), (SELECT id FROM teams WHERE name = 'Neural Ninjas'), 'Completed', 95.5),
+  ((SELECT id FROM auth.users WHERE email = 'bob@example.com'), (SELECT id FROM challenges LIMIT 1), (SELECT id FROM teams WHERE name = 'Data Dragons'), 'Completed', 92.0);
 
 -- Insert sample leaderboard entries
 INSERT INTO leaderboard (user_id, team_id, challenge_id, score, rank) VALUES
-  ('d7bed83c-bf83-4ce1-8f5b-46c4c8a36b6c', 'a1b2c3d4-e5f6-4g7h-8i9j-0k1l2m3n4o5p', (SELECT id FROM challenges LIMIT 1), 95.5, 1),
-  ('b5f3f6b3-5d6a-4d7e-9a8b-8c9d0e1f2g3h', 'b2c3d4e5-f6g7-5h8i-9j0k-1l2m3n4o5p6q', (SELECT id FROM challenges LIMIT 1), 92.0, 2);
+  ((SELECT id FROM auth.users WHERE email = 'alice@example.com'), (SELECT id FROM teams WHERE name = 'Neural Ninjas'), (SELECT id FROM challenges LIMIT 1), 95.5, 1),
+  ((SELECT id FROM auth.users WHERE email = 'bob@example.com'), (SELECT id FROM teams WHERE name = 'Data Dragons'), (SELECT id FROM challenges LIMIT 1), 92.0, 2);
 
 -- Insert sample achievements
 INSERT INTO achievements (name, description, icon_url) VALUES
@@ -250,17 +270,17 @@ INSERT INTO achievements (name, description, icon_url) VALUES
 
 -- Insert sample user achievements
 INSERT INTO user_achievements (user_id, achievement_id) VALUES
-  ('d7bed83c-bf83-4ce1-8f5b-46c4c8a36b6c', (SELECT id FROM achievements WHERE name = 'First Blood')),
-  ('b5f3f6b3-5d6a-4d7e-9a8b-8c9d0e1f2g3h', (SELECT id FROM achievements WHERE name = 'Team Player'));
+  ((SELECT id FROM auth.users WHERE email = 'alice@example.com'), (SELECT id FROM achievements WHERE name = 'First Blood')),
+  ((SELECT id FROM auth.users WHERE email = 'bob@example.com'), (SELECT id FROM achievements WHERE name = 'Team Player'));
 
 -- Insert sample wallet data
 INSERT INTO wallet (user_id, balance) VALUES
-  ('d7bed83c-bf83-4ce1-8f5b-46c4c8a36b6c', 1000.00),
-  ('b5f3f6b3-5d6a-4d7e-9a8b-8c9d0e1f2g3h', 750.00);
+  ((SELECT id FROM auth.users WHERE email = 'alice@example.com'), 1000.00),
+  ((SELECT id FROM auth.users WHERE email = 'bob@example.com'), 750.00);
 
 -- Insert sample transactions
 INSERT INTO transactions (user_id, amount, type, description) VALUES
-  ('d7bed83c-bf83-4ce1-8f5b-46c4c8a36b6c', 1000.00, 'Deposit', 'Initial deposit'),
-  ('d7bed83c-bf83-4ce1-8f5b-46c4c8a36b6c', -50.00, 'Buy-in', 'Challenge entry fee'),
-  ('b5f3f6b3-5d6a-4d7e-9a8b-8c9d0e1f2g3h', 750.00, 'Deposit', 'Initial deposit'),
-  ('b5f3f6b3-5d6a-4d7e-9a8b-8c9d0e1f2g3h', -50.00, 'Buy-in', 'Challenge entry fee');
+  ((SELECT id FROM auth.users WHERE email = 'alice@example.com'), 1000.00, 'Deposit', 'Initial deposit'),
+  ((SELECT id FROM auth.users WHERE email = 'alice@example.com'), -50.00, 'Buy-in', 'Challenge entry fee'),
+  ((SELECT id FROM auth.users WHERE email = 'bob@example.com'), 750.00, 'Deposit', 'Initial deposit'),
+  ((SELECT id FROM auth.users WHERE email = 'bob@example.com'), -50.00, 'Buy-in', 'Challenge entry fee');
