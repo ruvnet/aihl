@@ -54,6 +54,9 @@ const Header = () => {
               <DropdownMenuItem>
                 <Link to="/forgot-password">Forgot Password</Link>
               </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link to="/team-wizard">Create / Join Team</Link>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
