@@ -76,13 +76,17 @@ const Header = () => {
             background: 'var(--background)',
             padding: '2.5em 1.5em 0',
             fontSize: '1.15em',
+            height: '100vh',
+            boxShadow: '-5px 0 10px rgba(0, 0, 0, 0.1)',
           },
           bmItemList: {
             padding: '0.8em',
+            height: 'auto',
           },
           bmItem: {
             display: 'block',
             padding: '0.8em',
+            color: 'var(--foreground)',
           },
           bmOverlay: {
             background: 'rgba(0, 0, 0, 0.3)',
