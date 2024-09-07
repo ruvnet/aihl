@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Link } from 'react-router-dom';
 
 const Challenges = () => {
   const [challenges, setChallenges] = useState([]);
@@ -29,7 +30,9 @@ const Challenges = () => {
                 <p>Difficulty: {challenge.difficulty}</p>
                 <p>Participants: {challenge.participants}</p>
               </div>
-              <Button>Join Challenge</Button>
+              <Button asChild>
+                <Link to={`/challenges/${challenge.id}`}>View Details</Link>
+              </Button>
             </div>
           </CardContent>
         </Card>
