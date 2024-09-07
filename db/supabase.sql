@@ -1,16 +1,6 @@
 -- Enable UUID generation extension (if not already enabled)
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
--- Drop the existing users table if it exists
-DROP TABLE IF EXISTS auth.users CASCADE;
-
--- Recreate the users table with UUID auto-generation
-CREATE TABLE auth.users (
-  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-  email TEXT NOT NULL,
-  encrypted_password TEXT NOT NULL
-);
-
 -- Create profiles table
 DROP TABLE IF EXISTS profiles;
 CREATE TABLE profiles (
@@ -225,62 +215,3 @@ CREATE POLICY "Users can update own wallet" ON wallet
 -- Transactions: Users can view their own transactions
 CREATE POLICY "Users can view own transactions" ON transactions
   FOR SELECT USING (auth.uid() = user_id);
-
--- Sample Data
-
--- Insert sample users (UUIDs are automatically generated)
-INSERT INTO auth.users (email, encrypted_password) VALUES
-  ('alice@example.com', 'hashed_password'),
-  ('bob@example.com', 'hashed_password');
-
--- Insert sample profiles
-INSERT INTO profiles (id, username, full_name, avatar_url) VALUES
-  ((SELECT id FROM auth.users WHERE email = 'alice@example.com'), 'alice', 'Alice Johnson', 'https://example.com/alice.jpg'),
-  ((SELECT id FROM auth.users WHERE email = 'bob@example.com'), 'bob', 'Bob Smith', 'https://example.com/bob.jpg');
-
--- Insert sample challenges
-INSERT INTO challenges (title, description, difficulty, start_time, end_time, max_participants, buy_in, prize_pool) VALUES
-  ('AI Image Recognition Sprint', 'Build an AI model to recognize objects in images', 'Medium', '2024-04-01 10:00:00+00', '2024-04-01 10:30:00+00', 100, 50.00, 5000.00),
-  ('NLP Challenge: Sentiment Analysis', 'Create a sentiment analysis model for social media posts', 'Hard', '2024-04-15 14:00:00+00', '2024-04-15 15:00:00+00', 50, 100.00, 10000.00);
-
--- Insert sample teams
-INSERT INTO teams (name, description, created_by) VALUES
-  ('Neural Ninjas', 'Masters of neural networks', (SELECT id FROM auth.users WHERE email = 'alice@example.com')),
-  ('Data Dragons', 'Breathing fire into data science', (SELECT id FROM auth.users WHERE email = 'bob@example.com'));
-
--- Insert sample team members
-INSERT INTO team_members (team_id, user_id, role) VALUES
-  ((SELECT id FROM teams WHERE name = 'Neural Ninjas'), (SELECT id FROM auth.users WHERE email = 'alice@example.com'), 'Leader'),
-  ((SELECT id FROM teams WHERE name = 'Data Dragons'), (SELECT id FROM auth.users WHERE email = 'bob@example.com'), 'Leader');
-
--- Insert sample enrollments
-INSERT INTO enrollments (user_id, challenge_id, team_id, status, score) VALUES
-  ((SELECT id FROM auth.users WHERE email = 'alice@example.com'), (SELECT id FROM challenges LIMIT 1), (SELECT id FROM teams WHERE name = 'Neural Ninjas'), 'Completed', 95.5),
-  ((SELECT id FROM auth.users WHERE email = 'bob@example.com'), (SELECT id FROM challenges LIMIT 1), (SELECT id FROM teams WHERE name = 'Data Dragons'), 'Completed', 92.0);
-
--- Insert sample leaderboard entries
-INSERT INTO leaderboard (user_id, team_id, challenge_id, score, rank) VALUES
-  ((SELECT id FROM auth.users WHERE email = 'alice@example.com'), (SELECT id FROM teams WHERE name = 'Neural Ninjas'), (SELECT id FROM challenges LIMIT 1), 95.5, 1),
-  ((SELECT id FROM auth.users WHERE email = 'bob@example.com'), (SELECT id FROM teams WHERE name = 'Data Dragons'), (SELECT id FROM challenges LIMIT 1), 92.0, 2);
-
--- Insert sample achievements
-INSERT INTO achievements (name, description, icon_url) VALUES
-  ('First Blood', 'Complete your first challenge', 'https://example.com/icons/first_blood.png'),
-  ('Team Player', 'Join a team', 'https://example.com/icons/team_player.png');
-
--- Insert sample user achievements
-INSERT INTO user_achievements (user_id, achievement_id) VALUES
-  ((SELECT id FROM auth.users WHERE email = 'alice@example.com'), (SELECT id FROM achievements WHERE name = 'First Blood')),
-  ((SELECT id FROM auth.users WHERE email = 'bob@example.com'), (SELECT id FROM achievements WHERE name = 'Team Player'));
-
--- Insert sample wallet data
-INSERT INTO wallet (user_id, balance) VALUES
-  ((SELECT id FROM auth.users WHERE email = 'alice@example.com'), 1000.00),
-  ((SELECT id FROM auth.users WHERE email = 'bob@example.com'), 750.00);
-
--- Insert sample transactions
-INSERT INTO transactions (user_id, amount, type, description) VALUES
-  ((SELECT id FROM auth.users WHERE email = 'alice@example.com'), 1000.00, 'Deposit', 'Initial deposit'),
-  ((SELECT id FROM auth.users WHERE email = 'alice@example.com'), -50.00, 'Buy-in', 'Challenge entry fee'),
-  ((SELECT id FROM auth.users WHERE email = 'bob@example.com'), 750.00, 'Deposit', 'Initial deposit'),
-  ((SELECT id FROM auth.users WHERE email = 'bob@example.com'), -50.00, 'Buy-in', 'Challenge entry fee');
