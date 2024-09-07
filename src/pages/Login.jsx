@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Github, Linkedin } from 'lucide-react';
-import { useSupabaseAuth } from '@/integrations/supabase/auth';
+import { supabase } from '@/integrations/supabase/supabase';
 import { toast } from 'sonner';
 
 const Login = () => {
@@ -13,7 +13,6 @@ const Login = () => {
     password: '',
   });
   const navigate = useNavigate();
-  const { signIn } = useSupabaseAuth();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -22,7 +21,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { error } = await signIn({
+      const { error } = await supabase.auth.signInWithPassword({
         email: formData.email,
         password: formData.password,
       });
@@ -36,7 +35,7 @@ const Login = () => {
 
   const handleSocialLogin = async (provider) => {
     try {
-      const { error } = await signIn({ provider });
+      const { error } = await supabase.auth.signInWithOAuth({ provider });
       if (error) throw error;
     } catch (error) {
       toast.error(`Error signing in with ${provider}: ${error.message}`);
