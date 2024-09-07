@@ -76,51 +76,53 @@ const Leaderboard = () => {
   };
 
   return (
-    <div className="space-y-6 p-4 max-w-6xl mx-auto bg-gradient-to-br from-gray-900 to-purple-900 min-h-screen text-white">
+    <div className="space-y-6 p-4 max-w-6xl mx-auto">
       <div className="text-center">
-        <h1 className="text-5xl font-extrabold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600">Global Leaderboard</h1>
-        <p className="text-xl text-gray-300 mb-6">Compete with the best AI hackers worldwide!</p>
+        <h1 className="text-4xl font-bold mb-2">Global Leaderboard</h1>
+        <p className="text-xl text-gray-600 mb-6">Compete with the best AI hackers worldwide!</p>
       </div>
       
-      <Card className="bg-gray-800 border-purple-500 shadow-neon">
-        <CardContent className="p-4">
-          <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid w-full grid-cols-2 bg-gray-700">
-              <TabsTrigger value="solo" className="text-white data-[state=active]:bg-purple-600">Solo Rankings</TabsTrigger>
-              <TabsTrigger value="team" className="text-white data-[state=active]:bg-purple-600">Team Rankings</TabsTrigger>
-            </TabsList>
-          </Tabs>
-          
-          <div className="relative mt-4">
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="solo">Solo Rankings</TabsTrigger>
+          <TabsTrigger value="team">Team Rankings</TabsTrigger>
+        </TabsList>
+        
+        <div className="mt-4">
+          <div className="relative mb-6">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
             <Input
               type="text"
               placeholder={`Search ${activeTab === 'solo' ? 'players' : 'teams'}`}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 w-full bg-gray-700 text-white border-gray-600 focus:border-purple-500"
+              className="pl-10 w-full"
             />
           </div>
-        </CardContent>
-      </Card>
-      
-      <LeaderboardTable data={currentData} getRankIcon={getRankIcon} getLevelColor={getLevelColor} isSolo={activeTab === 'solo'} />
+          
+          <TabsContent value="solo">
+            <LeaderboardTable data={currentData} getRankIcon={getRankIcon} getLevelColor={getLevelColor} isSolo={true} />
+          </TabsContent>
+          
+          <TabsContent value="team">
+            <LeaderboardTable data={currentData} getRankIcon={getRankIcon} getLevelColor={getLevelColor} isSolo={false} />
+          </TabsContent>
+        </div>
+      </Tabs>
       
       <div className="flex justify-center mt-4 space-x-2">
         <Button
           onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}
-          className="bg-purple-600 hover:bg-purple-700"
         >
           Previous
         </Button>
-        <span className="self-center text-white">
+        <span className="self-center">
           Page {currentPage} of {pageCount}
         </span>
         <Button
           onClick={() => setCurrentPage(prev => Math.min(prev + 1, pageCount))}
           disabled={currentPage === pageCount}
-          className="bg-purple-600 hover:bg-purple-700"
         >
           Next
         </Button>
@@ -130,28 +132,28 @@ const Leaderboard = () => {
 };
 
 const LeaderboardTable = ({ data, getRankIcon, getLevelColor, isSolo }) => (
-  <Card className="bg-gray-800 border-purple-500 shadow-neon">
+  <Card>
     <CardHeader>
-      <CardTitle className="text-2xl text-purple-400">Top Performers</CardTitle>
-      <CardDescription className="text-gray-300">See how you stack up against the competition</CardDescription>
+      <CardTitle className="text-2xl">Top Performers</CardTitle>
+      <CardDescription>See how you stack up against the competition</CardDescription>
     </CardHeader>
     <CardContent>
       <div className="overflow-x-auto">
         <Table>
           <TableHeader>
-            <TableRow className="border-b border-purple-500">
-              <TableHead className="w-[50px] text-purple-300">Rank</TableHead>
-              <TableHead className="text-purple-300">{isSolo ? 'Player' : 'Team'}</TableHead>
-              <TableHead className="text-right text-purple-300">Score</TableHead>
-              <TableHead className="text-center text-purple-300">Level</TableHead>
-              <TableHead className="text-right text-purple-300">{isSolo ? 'Challenges' : 'Members'}</TableHead>
-              <TableHead className="text-right text-purple-300">Win Rate</TableHead>
-              <TableHead className="text-center text-purple-300">Badges</TableHead>
+            <TableRow>
+              <TableHead className="w-[50px]">Rank</TableHead>
+              <TableHead>{isSolo ? 'Player' : 'Team'}</TableHead>
+              <TableHead className="text-right">Score</TableHead>
+              <TableHead className="text-center">Level</TableHead>
+              <TableHead className="text-right">{isSolo ? 'Challenges' : 'Members'}</TableHead>
+              <TableHead className="text-right">Win Rate</TableHead>
+              <TableHead className="text-center">Badges</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {data.map((entry, index) => (
-              <TableRow key={entry.id} className="hover:bg-purple-900/50 transition-colors">
+              <TableRow key={entry.id} className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                 <TableCell className="font-medium">
                   <div className="flex items-center">
                     {getRankIcon(index + 1)}
@@ -159,30 +161,30 @@ const LeaderboardTable = ({ data, getRankIcon, getLevelColor, isSolo }) => (
                   </div>
                 </TableCell>
                 <TableCell className="font-semibold">
-                  <Link to={`/${isSolo ? 'player' : 'team'}/${entry.id}`} className="flex items-center hover:text-blue-400 transition-colors">
+                  <Link to={`/${isSolo ? 'player' : 'team'}/${entry.id}`} className="flex items-center hover:text-blue-500 transition-colors">
                     <span className="mr-2">{entry.avatar}</span>
                     {isSolo ? entry.username : entry.teamName}
                   </Link>
                 </TableCell>
-                <TableCell className="text-right font-bold text-green-400">{entry.score.toLocaleString()}</TableCell>
+                <TableCell className="text-right font-bold">{entry.score.toLocaleString()}</TableCell>
                 <TableCell className={`text-center ${getLevelColor(entry.level)}`}>
                   {entry.level}
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex items-center justify-end">
-                    {isSolo ? <Target className="mr-1 h-4 w-4 text-blue-400" /> : <Users className="mr-1 h-4 w-4 text-blue-400" />}
+                    {isSolo ? <Target className="mr-1 h-4 w-4" /> : <Users className="mr-1 h-4 w-4" />}
                     {isSolo ? entry.challenges : entry.members}
                   </div>
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex items-center justify-end">
-                    <Star className="mr-1 h-4 w-4 text-yellow-400" />
+                    <Star className="mr-1 h-4 w-4 text-yellow-500" />
                     {entry.winRate}
                   </div>
                 </TableCell>
                 <TableCell className="text-center">
                   <div className="flex items-center justify-center">
-                    <Award className="mr-1 h-4 w-4 text-purple-400" />
+                    <Award className="mr-1 h-4 w-4 text-purple-500" />
                     {entry.badges}
                   </div>
                 </TableCell>
