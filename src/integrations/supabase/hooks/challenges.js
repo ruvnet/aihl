@@ -52,8 +52,8 @@ export const useUpdateChallenge = () => {
   return useMutation({
     mutationFn: ({ id, ...updateData }) => fromSupabase(supabase.from('challenges').update(updateData).eq('id', id)),
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries(['challenges']);
       queryClient.invalidateQueries(['challenge', variables.id]);
+      queryClient.invalidateQueries('challenges');
     },
   });
 };

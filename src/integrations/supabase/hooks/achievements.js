@@ -23,6 +23,11 @@ export const useAchievements = () => useQuery({
   queryFn: () => fromSupabase(supabase.from('achievements').select('*')),
 });
 
+export const useAchievement = (id) => useQuery({
+  queryKey: ['achievement', id],
+  queryFn: () => fromSupabase(supabase.from('achievements').select('*').eq('id', id).single()),
+});
+
 export const useAddAchievement = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -37,7 +42,8 @@ export const useUpdateAchievement = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ id, ...updateData }) => fromSupabase(supabase.from('achievements').update(updateData).eq('id', id)),
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries(['achievement', variables.id]);
       queryClient.invalidateQueries('achievements');
     },
   });

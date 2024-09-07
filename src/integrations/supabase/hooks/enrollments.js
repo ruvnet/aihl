@@ -32,6 +32,11 @@ export const useEnrollments = (userId) => useQuery({
   queryFn: () => fromSupabase(supabase.from('enrollments').select('*').eq('user_id', userId)),
 });
 
+export const useEnrollment = (id) => useQuery({
+  queryKey: ['enrollment', id],
+  queryFn: () => fromSupabase(supabase.from('enrollments').select('*').eq('id', id).single()),
+});
+
 export const useAddEnrollment = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -47,6 +52,7 @@ export const useUpdateEnrollment = () => {
   return useMutation({
     mutationFn: ({ id, ...updateData }) => fromSupabase(supabase.from('enrollments').update(updateData).eq('id', id)),
     onSuccess: (_, variables) => {
+      queryClient.invalidateQueries(['enrollment', variables.id]);
       queryClient.invalidateQueries(['enrollments', variables.user_id]);
     },
   });

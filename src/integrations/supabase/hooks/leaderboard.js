@@ -26,37 +26,43 @@ Foreign Key Relationships:
 - challenge_id references challenges.id
 */
 
-export const useLeaderboard = () => useQuery({
-  queryKey: ['leaderboard'],
+export const useLeaderboards = () => useQuery({
+  queryKey: ['leaderboards'],
   queryFn: () => fromSupabase(supabase.from('leaderboard').select('*')),
 });
 
-export const useAddLeaderboardEntry = () => {
+export const useLeaderboard = (id) => useQuery({
+  queryKey: ['leaderboard', id],
+  queryFn: () => fromSupabase(supabase.from('leaderboard').select('*').eq('id', id).single()),
+});
+
+export const useAddLeaderboard = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (newEntry) => fromSupabase(supabase.from('leaderboard').insert([newEntry])),
+    mutationFn: (newLeaderboard) => fromSupabase(supabase.from('leaderboard').insert([newLeaderboard])),
     onSuccess: () => {
-      queryClient.invalidateQueries('leaderboard');
+      queryClient.invalidateQueries('leaderboards');
     },
   });
 };
 
-export const useUpdateLeaderboardEntry = () => {
+export const useUpdateLeaderboard = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ id, ...updateData }) => fromSupabase(supabase.from('leaderboard').update(updateData).eq('id', id)),
-    onSuccess: () => {
-      queryClient.invalidateQueries('leaderboard');
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries(['leaderboard', variables.id]);
+      queryClient.invalidateQueries('leaderboards');
     },
   });
 };
 
-export const useDeleteLeaderboardEntry = () => {
+export const useDeleteLeaderboard = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id) => fromSupabase(supabase.from('leaderboard').delete().eq('id', id)),
     onSuccess: () => {
-      queryClient.invalidateQueries('leaderboard');
+      queryClient.invalidateQueries('leaderboards');
     },
   });
 };

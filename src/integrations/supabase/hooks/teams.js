@@ -45,8 +45,8 @@ export const useUpdateTeam = () => {
   return useMutation({
     mutationFn: ({ id, ...updateData }) => fromSupabase(supabase.from('teams').update(updateData).eq('id', id)),
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries(['teams']);
       queryClient.invalidateQueries(['team', variables.id]);
+      queryClient.invalidateQueries('teams');
     },
   });
 };
