@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import { Search } from 'lucide-react';
+import { Search, Users, BarChart2 } from 'lucide-react';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 const TeamWizard = () => {
   const [teamName, setTeamName] = useState('');
@@ -17,6 +18,16 @@ const TeamWizard = () => {
     { id: 1, name: 'AI Innovators', members: 3, description: 'Pushing the boundaries of AI', lookingForMembers: true },
     { id: 2, name: 'Data Wizards', members: 2, description: 'Mastering the art of data science', lookingForMembers: true },
     { id: 3, name: 'ML Pioneers', members: 4, description: 'Exploring new frontiers in machine learning', lookingForMembers: false },
+  ]);
+  const [teamMembers, setTeamMembers] = useState([
+    { id: 1, name: 'John Doe', role: 'Team Lead' },
+    { id: 2, name: 'Jane Smith', role: 'ML Engineer' },
+    { id: 3, name: 'Bob Johnson', role: 'Data Scientist' },
+  ]);
+  const [teamPerformance, setTeamPerformance] = useState([
+    { challenge: 'AI Image Recognition', score: 95, rank: 3 },
+    { challenge: 'NLP Innovation', score: 88, rank: 7 },
+    { challenge: 'Reinforcement Learning', score: 92, rank: 5 },
   ]);
 
   const handleCreateTeam = () => {
@@ -31,13 +42,14 @@ const TeamWizard = () => {
   return (
     <Card className="w-full max-w-4xl mx-auto">
       <CardHeader>
-        <CardTitle>Create or Join a Team</CardTitle>
+        <CardTitle>Team Management</CardTitle>
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="join">
-          <TabsList className="grid w-full grid-cols-2">
+          <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="join">Join a Team</TabsTrigger>
             <TabsTrigger value="create">Create a Team</TabsTrigger>
+            <TabsTrigger value="dashboard">Team Dashboard</TabsTrigger>
           </TabsList>
           <TabsContent value="join">
             <div className="space-y-4">
@@ -104,12 +116,65 @@ const TeamWizard = () => {
               </Button>
             </div>
           </TabsContent>
+          <TabsContent value="dashboard">
+            <div className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Users className="mr-2" />
+                    Team Members
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Name</TableHead>
+                        <TableHead>Role</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {teamMembers.map((member) => (
+                        <TableRow key={member.id}>
+                          <TableCell>{member.name}</TableCell>
+                          <TableCell>{member.role}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <BarChart2 className="mr-2" />
+                    Team Performance
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Challenge</TableHead>
+                        <TableHead>Score</TableHead>
+                        <TableHead>Rank</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {teamPerformance.map((performance, index) => (
+                        <TableRow key={index}>
+                          <TableCell>{performance.challenge}</TableCell>
+                          <TableCell>{performance.score}</TableCell>
+                          <TableCell>{performance.rank}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
         </Tabs>
-        <div className="mt-4">
-          <Link to="/team-applicants" className="text-blue-500 hover:underline">
-            View Team Applicants
-          </Link>
-        </div>
       </CardContent>
     </Card>
   );
