@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Github, Linkedin } from 'lucide-react';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -48,11 +49,22 @@ const Login = () => {
           </form>
           <div className="mt-4 text-center space-y-2">
             <p>
-              Don't have an account? <Link to="/register" className="text-blue-500">Register</Link>
-            </p>
-            <p>
               <Link to="/forgot-password" className="text-blue-500">Forgot Password?</Link>
             </p>
+            <p>
+              Don't have an account? <Link to="/register" className="text-blue-500">Register</Link>
+            </p>
+          </div>
+          <div className="mt-6">
+            <p className="text-center mb-2">Or login with:</p>
+            <div className="flex justify-center space-x-4">
+              <Button variant="outline" className="w-full">
+                <Github className="mr-2 h-4 w-4" /> GitHub
+              </Button>
+              <Button variant="outline" className="w-full">
+                <Linkedin className="mr-2 h-4 w-4" /> LinkedIn
+              </Button>
+            </div>
           </div>
         </CardContent>
       </Card>

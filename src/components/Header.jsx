@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Moon, Sun, Menu as MenuIcon, Info, Book, BarChart2, UserPlus, LogIn, HelpCircle, Users, User } from 'lucide-react';
+import { Moon, Sun, Menu as MenuIcon, Info, Book, BarChart2, UserPlus, LogIn, Users, User } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { Link } from 'react-router-dom';
 import { slide as Menu } from 'react-burger-menu';
@@ -28,7 +28,6 @@ const Header = () => {
     { to: "/analytics", label: "Analytics", icon: BarChart2 },
     { to: "/register", label: "Register", icon: UserPlus },
     { to: "/login", label: "Login", icon: LogIn },
-    { to: "/forgot-password", label: "Forgot Password", icon: HelpCircle },
     { to: "/team-wizard", label: "Create / Join Team", icon: Users },
     { to: "/profile", label: "Profile", icon: User },
   ];
