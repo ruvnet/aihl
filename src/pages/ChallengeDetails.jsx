@@ -3,10 +3,12 @@ import { useParams, Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from 'lucide-react';
+import EnrollmentModal from '../components/EnrollmentModal';
 
 const ChallengeDetails = () => {
   const { id } = useParams();
   const [challenge, setChallenge] = useState(null);
+  const [isEnrollmentModalOpen, setIsEnrollmentModalOpen] = useState(false);
 
   useEffect(() => {
     // TODO: Fetch challenge details from API
@@ -25,6 +27,14 @@ const ChallengeDetails = () => {
       ],
     });
   }, [id]);
+
+  const handleEnroll = () => {
+    setIsEnrollmentModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsEnrollmentModalOpen(false);
+  };
 
   if (!challenge) {
     return <div>Loading...</div>;
@@ -70,7 +80,13 @@ const ChallengeDetails = () => {
         </CardContent>
       </Card>
 
-      <Button className="w-full">Enroll in Challenge</Button>
+      <Button className="w-full" onClick={handleEnroll}>Enroll in Challenge</Button>
+
+      <EnrollmentModal
+        isOpen={isEnrollmentModalOpen}
+        onClose={handleCloseModal}
+        challenge={challenge}
+      />
     </div>
   );
 };
