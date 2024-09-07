@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Clock, Users, Award } from 'lucide-react';
+import { ArrowLeft, Clock, Users, Award, Zap, Target, Brain, Code, GitBranch } from 'lucide-react';
 import EnrollmentModal from '../components/EnrollmentModal';
 
 const ChallengeDetails = () => {
@@ -14,16 +16,35 @@ const ChallengeDetails = () => {
     // TODO: Fetch challenge details from API
     setChallenge({
       id,
-      title: 'Rapid AI Chatbot Development',
-      description: 'Build a functional AI chatbot in just 30 minutes using cutting-edge NLP models. Showcase your ability to quickly integrate APIs, implement natural language understanding, and create a responsive user interface.',
-      difficulty: 'Medium',
+      title: 'Quantum AI Hackathon',
+      description: 'Harness the power of quantum computing to create a groundbreaking AI model in just 60 minutes. Push the boundaries of what\'s possible in the realm of artificial intelligence!',
+      difficulty: 'Legendary',
       participants: 150,
-      prize: '$7,500',
-      sponsor: 'OpenAI',
-      duration: '30 minutes',
-      skills: ['NLP', 'API Integration', 'UI/UX Design'],
-      enrollmentDeadline: '2024-04-01',
-      teamSize: '1-3 members',
+      maxParticipants: 200,
+      prize: {
+        amount: 25000,
+        currency: 'USD',
+        sponsor: 'QuantumTech Industries'
+      },
+      duration: '60 minutes',
+      startDate: '2024-05-15T18:00:00Z',
+      skills: ['Quantum Computing', 'Machine Learning', 'Algorithm Design'],
+      enrollmentDeadline: '2024-05-14T23:59:59Z',
+      teamSize: '1-3 hackers',
+      previousWinner: {
+        name: 'Quantum Quorum',
+        score: 98
+      },
+      requirements: [
+        'Proficiency in quantum circuit design',
+        'Experience with quantum machine learning libraries',
+        'Strong understanding of AI principles'
+      ],
+      rewards: [
+        '🏆 Quantum Champion title',
+        '💼 Internship opportunity at QuantumTech',
+        '🎟️ VIP pass to Global AI Summit'
+      ]
     });
   }, [id]);
 
@@ -36,55 +57,128 @@ const ChallengeDetails = () => {
   };
 
   if (!challenge) {
-    return <div>Loading...</div>;
+    return <div className="flex justify-center items-center h-screen">
+      <Zap className="animate-spin h-16 w-16 text-blue-500" />
+    </div>;
   }
 
+  const timeRemaining = new Date(challenge.startDate) - new Date();
+  const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-4 max-w-4xl mx-auto">
       <div className="flex items-center mb-4">
         <Button asChild variant="ghost" className="mr-2">
           <Link to="/challenges"><ArrowLeft className="mr-2 h-4 w-4" /> Back to Challenges</Link>
         </Button>
       </div>
 
-      <h1 className="text-3xl font-bold">{challenge.title}</h1>
-
-      <Card>
+      <Card className="border-2 border-purple-500 bg-gradient-to-r from-indigo-900 to-purple-900 text-white">
         <CardHeader>
-          <CardTitle>Challenge Details</CardTitle>
+          <div className="flex justify-between items-center">
+            <CardTitle className="text-3xl font-extrabold">{challenge.title}</CardTitle>
+            <Badge className="text-xl px-3 py-1 bg-yellow-400 text-black font-bold">
+              {challenge.difficulty}
+            </Badge>
+          </div>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <p>{challenge.description}</p>
-          <div className="flex flex-wrap gap-4">
+        <CardContent>
+          <p className="text-lg mb-4">{challenge.description}</p>
+          <div className="grid grid-cols-2 gap-4 mb-4">
             <div className="flex items-center">
-              <Clock className="mr-2 h-4 w-4" />
-              <span>Duration: {challenge.duration}</span>
+              <Clock className="mr-2 h-5 w-5 text-blue-300" />
+              <span>{challenge.duration}</span>
             </div>
             <div className="flex items-center">
-              <Users className="mr-2 h-4 w-4" />
-              <span>Team Size: {challenge.teamSize}</span>
+              <Users className="mr-2 h-5 w-5 text-green-300" />
+              <span>{challenge.teamSize}</span>
             </div>
             <div className="flex items-center">
-              <Award className="mr-2 h-4 w-4" />
-              <span>Prize: {challenge.prize}</span>
+              <Award className="mr-2 h-5 w-5 text-yellow-300" />
+              <span>{challenge.prize.amount} {challenge.prize.currency}</span>
+            </div>
+            <div className="flex items-center">
+              <Target className="mr-2 h-5 w-5 text-red-300" />
+              <span>{challenge.participants}/{challenge.maxParticipants} Enrolled</span>
             </div>
           </div>
-          <p><strong>Difficulty:</strong> {challenge.difficulty}</p>
-          <p><strong>Participants:</strong> {challenge.participants}</p>
-          <p><strong>Sponsor:</strong> {challenge.sponsor}</p>
-          <p><strong>Enrollment Deadline:</strong> {challenge.enrollmentDeadline}</p>
-          <div>
-            <strong>Required Skills:</strong>
-            <ul className="list-disc list-inside">
-              {challenge.skills.map((skill, index) => (
-                <li key={index}>{skill}</li>
-              ))}
-            </ul>
+          <Progress value={(challenge.participants / challenge.maxParticipants) * 100} className="mb-2" />
+          <p className="text-sm text-center mb-4">Enrollment Progress</p>
+          <div className="text-center mb-4">
+            <p className="text-2xl font-bold">{days}d {hours}h</p>
+            <p className="text-sm">Until Challenge Starts</p>
           </div>
         </CardContent>
       </Card>
 
-      <Button className="w-full" onClick={handleEnroll}>Enroll in Challenge</Button>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center">
+              <Brain className="mr-2 text-purple-500" /> Required Skills
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-wrap gap-2">
+              {challenge.skills.map((skill, index) => (
+                <Badge key={index} variant="secondary" className="text-sm">
+                  {skill}
+                </Badge>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center">
+              <Code className="mr-2 text-green-500" /> Challenge Requirements
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ul className="list-disc list-inside">
+              {challenge.requirements.map((req, index) => (
+                <li key={index} className="text-sm mb-1">{req}</li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
+      </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center">
+            <GitBranch className="mr-2 text-blue-500" /> Rewards
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ul className="list-none space-y-2">
+            {challenge.rewards.map((reward, index) => (
+              <li key={index} className="flex items-center">
+                <span className="mr-2 text-xl">{reward.split(' ')[0]}</span>
+                <span>{reward.split(' ').slice(1).join(' ')}</span>
+              </li>
+            ))}
+          </ul>
+        </CardContent>
+      </Card>
+
+      <Card className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black">
+        <CardHeader>
+          <CardTitle className="flex items-center">
+            <Trophy className="mr-2" /> Previous Champion
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="font-bold">{challenge.previousWinner.name}</p>
+          <p>Score: {challenge.previousWinner.score}</p>
+        </CardContent>
+      </Card>
+
+      <Button className="w-full text-lg py-6 bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 transition-all duration-300 transform hover:scale-105" onClick={handleEnroll}>
+        Enroll in Challenge
+      </Button>
 
       <EnrollmentModal
         isOpen={isEnrollmentModalOpen}
