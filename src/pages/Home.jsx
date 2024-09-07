@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 import { Link } from 'react-router-dom';
-import { Trophy, Users, Clock, Brain, Zap, Award } from 'lucide-react';
+import { Trophy, Users, Clock, Brain, Zap, Award, Flame, Target, Star } from 'lucide-react';
 
 const Home = () => {
   const [upcomingChallenges, setUpcomingChallenges] = useState([]);
@@ -10,9 +12,42 @@ const Home = () => {
   useEffect(() => {
     // TODO: Fetch upcoming challenges from API
     setUpcomingChallenges([
-      { id: 1, title: 'Rapid AI Chatbot Development', date: '2024-03-15', difficulty: 'Medium' },
-      { id: 2, title: '15-Minute ML Model Deployment', date: '2024-03-22', difficulty: 'Hard' },
-      { id: 3, title: 'AI-Powered App Prototype', date: '2024-03-29', difficulty: 'Easy' },
+      { 
+        id: 1, 
+        title: 'Rapid AI Chatbot Showdown', 
+        date: '2024-03-15', 
+        difficulty: 'Medium',
+        timeLimit: '30 min',
+        participants: 120,
+        maxParticipants: 200,
+        prize: '$5,000',
+        xp: 1000,
+        icon: <Zap className="h-8 w-8 text-yellow-400" />,
+      },
+      { 
+        id: 2, 
+        title: 'Neural Network Nemesis', 
+        date: '2024-03-22', 
+        difficulty: 'Hard',
+        timeLimit: '45 min',
+        participants: 80,
+        maxParticipants: 150,
+        prize: '$10,000',
+        xp: 2000,
+        icon: <Brain className="h-8 w-8 text-purple-500" />,
+      },
+      { 
+        id: 3, 
+        title: 'AI for Good: Climate Hack', 
+        date: '2024-03-29', 
+        difficulty: 'Easy',
+        timeLimit: '20 min',
+        participants: 250,
+        maxParticipants: 500,
+        prize: '$3,000 + $7,000 to charity',
+        xp: 800,
+        icon: <Flame className="h-8 w-8 text-green-400" />,
+      },
     ]);
   }, []);
 
@@ -52,6 +87,15 @@ const Home = () => {
   const sponsors = [
     "OpenAI", "Google Cloud", "Microsoft Azure", "AWS", "NVIDIA", "IBM Watson"
   ];
+
+  const getDifficultyColor = (difficulty) => {
+    switch (difficulty.toLowerCase()) {
+      case 'easy': return 'bg-green-500';
+      case 'medium': return 'bg-yellow-500';
+      case 'hard': return 'bg-red-500';
+      default: return 'bg-gray-500';
+    }
+  };
 
   return (
     <div className="space-y-16">
@@ -104,16 +148,49 @@ const Home = () => {
           <h2 className="text-4xl font-bold text-center mb-12">Upcoming Speed Challenges</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {upcomingChallenges.map((challenge) => (
-              <Card key={challenge.id} className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <CardTitle>{challenge.title}</CardTitle>
+              <Card key={challenge.id} className="hover:shadow-lg transition-shadow bg-gradient-to-br from-gray-900 to-gray-800 text-white">
+                <CardHeader className="pb-2">
+                  <div className="flex justify-between items-center mb-2">
+                    {challenge.icon}
+                    <Badge className={`${getDifficultyColor(challenge.difficulty)} text-white px-2 py-1`}>
+                      {challenge.difficulty}
+                    </Badge>
+                  </div>
+                  <CardTitle className="text-2xl mb-1">{challenge.title}</CardTitle>
+                  <div className="flex items-center text-sm text-gray-300 mb-2">
+                    <Clock className="w-4 h-4 mr-1" />
+                    <span>{challenge.timeLimit}</span>
+                    <span className="mx-2">|</span>
+                    <Calendar className="w-4 h-4 mr-1" />
+                    <span>{challenge.date}</span>
+                  </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-lg mb-2">Date: {challenge.date}</p>
-                  <p className="text-lg">Difficulty: {challenge.difficulty}</p>
-                  <Button asChild className="mt-4 w-full">
-                    <Link to={`/challenges/${challenge.id}`}>View Details</Link>
-                  </Button>
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="flex items-center">
+                        <Users className="w-4 h-4 mr-1" />
+                        Participants
+                      </span>
+                      <span>{challenge.participants}/{challenge.maxParticipants}</span>
+                    </div>
+                    <Progress value={(challenge.participants / challenge.maxParticipants) * 100} className="h-2" />
+                    <div className="flex justify-between items-center">
+                      <span className="flex items-center text-yellow-400">
+                        <Trophy className="w-5 h-5 mr-1" />
+                        {challenge.prize}
+                      </span>
+                      <span className="flex items-center text-purple-400">
+                        <Star className="w-5 h-5 mr-1" />
+                        {challenge.xp} XP
+                      </span>
+                    </div>
+                    <Button asChild className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600">
+                      <Link to={`/challenges/${challenge.id}`}>
+                        <Target className="w-4 h-4 mr-2" /> Enter Arena
+                      </Link>
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             ))}
@@ -122,14 +199,14 @@ const Home = () => {
       </section>
 
       {/* Call to Action Section */}
-      <section className="bg-blue-600 text-white py-16 rounded-lg">
+      <section className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-16 rounded-lg">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <h2 className="text-4xl font-bold mb-6">Ready to Code at Warp Speed?</h2>
           <p className="text-xl mb-8">
             Join thousands of AI developers in the ultimate speed coding challenge. 
             Prove your ability to build functional AI applications in record time!
           </p>
-          <Button asChild size="lg" className="bg-white text-blue-600 hover:bg-blue-100 hover:text-blue-700">
+          <Button asChild size="lg" className="bg-white text-purple-600 hover:bg-purple-100 hover:text-purple-700">
             <Link to="/register">Sign Up Now</Link>
           </Button>
         </div>
