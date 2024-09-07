@@ -14,6 +14,7 @@ import Profile from './pages/Profile';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import ForgotPassword from './pages/ForgotPassword';
+import EnrolledChallenges from './pages/EnrolledChallenges';
 
 const queryClient = new QueryClient();
 
@@ -36,6 +37,7 @@ const App = () => {
                   <Route path="/register" element={<Register />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/forgot-password" element={<ForgotPassword />} />
+                  <Route path="/my-challenges" element={<EnrolledChallenges />} />
                 </Routes>
               </main>
               <Navigation />
