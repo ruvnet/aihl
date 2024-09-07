@@ -4,13 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Link } from 'react-router-dom';
-import { Trophy, Users, Clock, Brain, Zap, Award, Flame, Target, Star } from 'lucide-react';
+import { Trophy, Users, Clock, Brain, Zap, Award, Flame, Target, Star, CalendarDays } from 'lucide-react';
 
 const Home = () => {
   const [upcomingChallenges, setUpcomingChallenges] = useState([]);
 
   useEffect(() => {
-    // TODO: Fetch upcoming challenges from API
     setUpcomingChallenges([
       { 
         id: 1, 
@@ -161,7 +160,7 @@ const Home = () => {
                     <Clock className="w-4 h-4 mr-1" />
                     <span>{challenge.timeLimit}</span>
                     <span className="mx-2">|</span>
-                    <Calendar className="w-4 h-4 mr-1" />
+                    <CalendarDays className="w-4 h-4 mr-1" />
                     <span>{challenge.date}</span>
                   </div>
                 </CardHeader>
