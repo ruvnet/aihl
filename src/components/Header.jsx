@@ -38,13 +38,13 @@ const Header = () => {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-14 items-center justify-between">
-        <div className="mr-4 flex">
+      <div className="container h-14 grid grid-cols-3 items-center">
+        <div className="flex items-center">
           <Link to="/" className="text-lg font-bold hover:text-primary transition-colors">
             AI Hacker League
           </Link>
         </div>
-        <div className="flex items-center space-x-4">
+        <div className="flex justify-center">
           <button
             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
             className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9"
@@ -52,46 +52,46 @@ const Header = () => {
             {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             <span className="sr-only">Toggle theme</span>
           </button>
-          <div className="relative">
-            <Menu
-              right
-              isOpen={isMenuOpen}
-              onStateChange={handleStateChange}
-              customBurgerIcon={<span className="text-2xl">☰</span>}
-              customCrossIcon={<X className="h-6 w-6" />}
-              width={'100%'}
-              className="bg-white dark:bg-gray-800"
-              burgerButtonClassName="absolute top-0 right-0"
-              styles={{
-                bmMenu: {
-                  background: 'var(--background)',
-                  padding: '2.5em 1.5em 0',
-                  fontSize: '1.15em',
-                },
-                bmItemList: {
-                  padding: '0.8em',
-                },
-                bmItem: {
-                  display: 'block',
-                  padding: '0.8em',
-                },
-                bmOverlay: {
-                  background: 'rgba(0, 0, 0, 0.3)',
-                },
-              }}
-            >
-              {menuItems.map((item) => (
-                <Link
-                  key={item.to}
-                  to={item.to}
-                  className="menu-item block py-2 px-4 text-lg hover:bg-accent hover:text-accent-foreground transition-colors"
-                  onClick={closeMenu}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </Menu>
-          </div>
+        </div>
+        <div className="flex justify-end">
+          <Menu
+            right
+            isOpen={isMenuOpen}
+            onStateChange={handleStateChange}
+            customBurgerIcon={<span className="text-2xl">☰</span>}
+            customCrossIcon={<X className="h-6 w-6" />}
+            width={'100%'}
+            className="bg-background"
+            burgerButtonClassName="focus:outline-none"
+            styles={{
+              bmMenu: {
+                background: 'var(--background)',
+                padding: '2.5em 1.5em 0',
+                fontSize: '1.15em',
+              },
+              bmItemList: {
+                padding: '0.8em',
+              },
+              bmItem: {
+                display: 'block',
+                padding: '0.8em',
+              },
+              bmOverlay: {
+                background: 'rgba(0, 0, 0, 0.3)',
+              },
+            }}
+          >
+            {menuItems.map((item) => (
+              <Link
+                key={item.to}
+                to={item.to}
+                className="menu-item block py-2 px-4 text-lg hover:bg-accent hover:text-accent-foreground transition-colors"
+                onClick={closeMenu}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </Menu>
         </div>
       </div>
     </header>
