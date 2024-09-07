@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Link } from 'react-router-dom';
-import { Calendar, Clock, Trophy, Users } from 'lucide-react';
+import { Clock, Users, Trophy, Zap } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const EnrolledChallenges = () => {
@@ -11,45 +11,46 @@ const EnrolledChallenges = () => {
   const [completedChallenges, setCompletedChallenges] = useState([]);
 
   useEffect(() => {
-    // Simulating API fetch with sample data
     setEnrolledChallenges([
       {
         id: 1,
-        title: 'AI Image Recognition Challenge',
+        title: '15-Minute AI Chatbot Sprint',
         status: 'In Progress',
-        difficulty: 'Medium',
-        dueDate: '2024-04-15',
+        difficulty: 'Hard',
+        timeLimit: '15 minutes',
         participants: 120,
-        description: 'Develop an AI model to accurately recognize and classify images across various categories.',
+        description: 'Build a functional AI chatbot using GPT-3.5 in just 15 minutes.',
       },
       {
         id: 2,
-        title: 'Natural Language Processing Innovation',
+        title: 'Rapid ML Model Deployment',
         status: 'Not Started',
-        difficulty: 'Hard',
-        dueDate: '2024-05-01',
+        difficulty: 'Medium',
+        timeLimit: '30 minutes',
         participants: 85,
-        description: 'Create an advanced NLP system capable of understanding and generating human-like text.',
+        description: 'Train and deploy a machine learning model for real-time predictions in 30 minutes.',
       },
     ]);
     setCompletedChallenges([
       {
         id: 3,
-        title: 'Reinforcement Learning for Game AI',
+        title: 'AI-Powered App Prototype',
         completionDate: '2024-02-15',
-        difficulty: 'Easy',
+        difficulty: 'Medium',
+        timeLimit: '60 minutes',
         score: 95,
         participants: 200,
-        description: 'Implement a reinforcement learning algorithm to train an AI agent to play a simple game.',
+        description: 'Created a working prototype of an AI-powered mobile app in 60 minutes.',
       },
       {
         id: 4,
-        title: 'Computer Vision Object Detection',
+        title: 'Rapid NLP Solution',
         completionDate: '2024-01-20',
-        difficulty: 'Medium',
+        difficulty: 'Hard',
+        timeLimit: '45 minutes',
         score: 88,
         participants: 150,
-        description: 'Develop an object detection system using state-of-the-art computer vision techniques.',
+        description: 'Developed a natural language processing solution in 45 minutes.',
       },
     ]);
   }, []);
@@ -93,27 +94,25 @@ const EnrolledChallenges = () => {
             <Users className="w-4 h-4 mr-2" />
             <span className="text-sm">{challenge.participants} participants</span>
           </div>
+          <div className="flex items-center">
+            <Clock className="w-4 h-4 mr-2" />
+            <span className="text-sm">Time Limit: {challenge.timeLimit}</span>
+          </div>
           {isCompleted ? (
-            <>
-              <div className="flex items-center">
-                <Calendar className="w-4 h-4 mr-2" />
-                <span className="text-sm">Completed: {challenge.completionDate}</span>
-              </div>
-              <div className="flex items-center">
-                <Trophy className="w-4 h-4 mr-2" />
-                <span className="text-sm">Score: {challenge.score}/100</span>
-              </div>
-            </>
+            <div className="flex items-center">
+              <Trophy className="w-4 h-4 mr-2" />
+              <span className="text-sm">Score: {challenge.score}/100</span>
+            </div>
           ) : (
-            <div className="flex items-center col-span-2">
-              <Clock className="w-4 h-4 mr-2" />
-              <span className="text-sm">Due: {challenge.dueDate}</span>
+            <div className="flex items-center">
+              <Zap className="w-4 h-4 mr-2" />
+              <span className="text-sm">Ready to code!</span>
             </div>
           )}
         </div>
         <Button asChild className="w-full">
           <Link to={`/challenges/${challenge.id}`}>
-            {isCompleted ? 'View Results' : 'View Details'}
+            {isCompleted ? 'View Results' : 'Start Challenge'}
           </Link>
         </Button>
       </CardContent>
@@ -122,7 +121,7 @@ const EnrolledChallenges = () => {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold">My Challenges</h1>
+      <h1 className="text-3xl font-bold">My AI Speed Challenges</h1>
       
       <Tabs defaultValue="active" className="w-full">
         <TabsList className="grid w-full grid-cols-2">
@@ -135,7 +134,7 @@ const EnrolledChallenges = () => {
               <ChallengeCard key={challenge.id} challenge={challenge} isCompleted={false} />
             ))
           ) : (
-            <p>You are not enrolled in any active challenges.</p>
+            <p>You are not enrolled in any active AI speed challenges. Join one now!</p>
           )}
         </TabsContent>
         <TabsContent value="completed">
@@ -144,7 +143,7 @@ const EnrolledChallenges = () => {
               <ChallengeCard key={challenge.id} challenge={challenge} isCompleted={true} />
             ))
           ) : (
-            <p>You haven't completed any challenges yet.</p>
+            <p>You haven't completed any AI speed challenges yet. Start one to test your rapid development skills!</p>
           )}
         </TabsContent>
       </Tabs>
