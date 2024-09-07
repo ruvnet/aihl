@@ -76,11 +76,10 @@ const Home = () => {
             </div>
           </div>
           <div className="md:w-1/2 flex justify-center">
-            <img
-              src="/placeholder.svg"
-              alt="AI Hacking League"
-              className="w-full max-w-lg rounded-lg shadow-2xl mx-auto object-cover"
-            />
+            {/* Placeholder for a custom hero image or animation */}
+            <div className="w-full max-w-lg h-64 bg-white/10 rounded-lg flex items-center justify-center text-white text-2xl font-bold">
+              AI Hacking League
+            </div>
           </div>
         </div>
       </div>
