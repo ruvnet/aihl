@@ -44,7 +44,7 @@ const Header = () => {
             AI Hacker League
           </Link>
         </div>
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-4">
           <button
             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
             className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9"
@@ -59,7 +59,7 @@ const Header = () => {
             customBurgerIcon={<span className="text-2xl">☰</span>}
             customCrossIcon={<X className="h-6 w-6" />}
             width={'100%'}
-            className="bg-background text-foreground"
+            className="bg-white dark:bg-gray-800"
           >
             {menuItems.map((item) => (
               <Link
