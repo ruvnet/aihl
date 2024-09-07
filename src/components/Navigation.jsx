@@ -23,7 +23,7 @@ const Navigation = () => {
             }`}
           >
             <item.icon className="w-6 h-6 mb-1" />
-            <span className="text-xs mt-1 mb-[5px]">{item.label}</span>
+            <span className="text-xs mt-1 mb-[10px]">{item.label}</span>
           </Link>
         ))}
       </div>
