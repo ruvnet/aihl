@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Github, Linkedin } from 'lucide-react';
+import { useRegister } from '@/integrations/supabase/hooks/auth';
+import { toast } from 'sonner';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -12,15 +14,30 @@ const Register = () => {
     password: '',
     confirmPassword: '',
   });
+  const navigate = useNavigate();
+  const register = useRegister();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Implement registration logic
-    console.log('Registration data:', formData);
+    if (formData.password !== formData.confirmPassword) {
+      toast.error("Passwords don't match");
+      return;
+    }
+    try {
+      await register.mutateAsync({
+        email: formData.email,
+        password: formData.password,
+        username: formData.username,
+      });
+      toast.success('Registration successful! Please check your email to verify your account.');
+      navigate('/login');
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   return (
@@ -63,7 +80,9 @@ const Register = () => {
               onChange={handleChange}
               required
             />
-            <Button type="submit" className="w-full">Register</Button>
+            <Button type="submit" className="w-full" disabled={register.isLoading}>
+              {register.isLoading ? 'Registering...' : 'Register'}
+            </Button>
           </form>
           <div className="mt-4 text-center">
             <p>
