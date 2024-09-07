@@ -1,64 +1,77 @@
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Link } from 'react-router-dom';
-import EnrollmentModal from '../components/EnrollmentModal';
+import { Input } from "@/components/ui/input";
+import { Search } from 'lucide-react';
+import ChallengeCard from '../components/ChallengeCard';
 
 const Challenges = () => {
   const [challenges, setChallenges] = useState([]);
-  const [isEnrollmentModalOpen, setIsEnrollmentModalOpen] = useState(false);
-  const [selectedChallenge, setSelectedChallenge] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    // TODO: Fetch challenges from API
+    // Simulating API fetch with sample data
     setChallenges([
-      { id: 1, title: 'AI Image Recognition', difficulty: 'Medium', participants: 120 },
-      { id: 2, title: 'Natural Language Processing', difficulty: 'Hard', participants: 85 },
-      { id: 3, title: 'Reinforcement Learning', difficulty: 'Easy', participants: 200 },
+      {
+        id: 1,
+        title: 'AI Image Recognition',
+        difficulty: 'Medium',
+        participants: 120,
+        description: 'Develop an AI model to accurately recognize and classify images across various categories.',
+        icon: '🖼️',
+        reward: '$5,000',
+        sponsor: 'Google',
+      },
+      {
+        id: 2,
+        title: 'Natural Language Processing',
+        difficulty: 'Hard',
+        participants: 85,
+        description: 'Create an advanced NLP system capable of understanding and generating human-like text.',
+        icon: '📝',
+        reward: '$10,000',
+        sponsor: 'Microsoft',
+      },
+      {
+        id: 3,
+        title: 'Reinforcement Learning',
+        difficulty: 'Easy',
+        participants: 200,
+        description: 'Implement a reinforcement learning algorithm to train an AI agent to play a simple game.',
+        icon: '🎮',
+        reward: '$3,000',
+        sponsor: 'OpenAI',
+      },
     ]);
   }, []);
 
-  const handleEnroll = (challenge) => {
-    setSelectedChallenge(challenge);
-    setIsEnrollmentModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsEnrollmentModalOpen(false);
-    setSelectedChallenge(null);
-  };
+  const filteredChallenges = challenges.filter(challenge =>
+    challenge.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold">Challenges</h1>
+      <h1 className="text-3xl font-bold">AI Challenges</h1>
       
-      {challenges.map((challenge) => (
-        <Card key={challenge.id}>
-          <CardHeader>
-            <CardTitle>{challenge.title}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex justify-between items-center">
-              <div>
-                <p>Difficulty: {challenge.difficulty}</p>
-                <p>Participants: {challenge.participants}</p>
-              </div>
-              <div className="space-x-2">
-                <Button asChild>
-                  <Link to={`/challenges/${challenge.id}`}>View Details</Link>
-                </Button>
-                <Button onClick={() => handleEnroll(challenge)}>Enroll</Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      ))}
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+        <Input
+          type="text"
+          placeholder="Search challenges"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="pl-10"
+        />
+      </div>
 
-      <EnrollmentModal
-        isOpen={isEnrollmentModalOpen}
-        onClose={handleCloseModal}
-        challenge={selectedChallenge}
-      />
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {filteredChallenges.map((challenge) => (
+          <ChallengeCard key={challenge.id} challenge={challenge} />
+        ))}
+      </div>
+
+      {filteredChallenges.length === 0 && (
+        <p className="text-center text-gray-500">No challenges found. Try a different search term.</p>
+      )}
     </div>
   );
 };
