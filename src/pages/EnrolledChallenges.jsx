@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Link } from 'react-router-dom';
 import { Clock, Users, Trophy, Zap } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -111,7 +111,7 @@ const EnrolledChallenges = () => {
           )}
         </div>
         <Button asChild className="w-full">
-          <Link to={`/challenges/${challenge.id}`}>
+          <Link to={`/challenge-management/${challenge.id}`}>
             {isCompleted ? 'View Results' : 'Start Challenge'}
           </Link>
         </Button>
