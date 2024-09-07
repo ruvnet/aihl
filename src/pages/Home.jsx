@@ -15,8 +15,39 @@ const Home = () => {
     ]);
   }, []);
 
+  const leagueOverview = [
+    {
+      title: "Join Challenges",
+      description: "Browse and enroll in AI challenges across various domains and difficulty levels."
+    },
+    {
+      title: "Form Teams",
+      description: "Collaborate with other participants or go solo to tackle complex AI problems."
+    },
+    {
+      title: "Develop Solutions",
+      description: "Use cutting-edge AI technologies to create innovative solutions within the challenge timeframe."
+    },
+    {
+      title: "Submit & Evaluate",
+      description: "Submit your solutions and have them evaluated against rigorous criteria and benchmarks."
+    },
+    {
+      title: "Earn Points",
+      description: "Gain points based on your performance and climb the global leaderboard."
+    },
+    {
+      title: "Win Prizes",
+      description: "Top performers in each challenge are eligible for exciting prizes and recognition."
+    }
+  ];
+
+  const sponsors = [
+    "OpenAI", "DeepMind", "Google AI", "Microsoft Research", "IBM Watson", "NVIDIA AI"
+  ];
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-12">
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white py-12 px-4 sm:px-6 lg:px-8 rounded-lg shadow-lg">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between">
@@ -41,8 +72,29 @@ const Home = () => {
         </div>
       </div>
 
-      <h2 className="text-3xl font-bold">Welcome to AI Hacking League</h2>
-      
+      {/* League Overview Section */}
+      <section className="py-12">
+        <h2 className="text-3xl font-bold text-center mb-8">How AI Hacking League Works</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {leagueOverview.map((step, index) => (
+            <Card key={index} className="hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <span className="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center mr-3">
+                    {index + 1}
+                  </span>
+                  {step.title}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p>{step.description}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      {/* Upcoming Challenges Section */}
       <Card>
         <CardHeader>
           <CardTitle>Upcoming Challenges</CardTitle>
@@ -59,32 +111,17 @@ const Home = () => {
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Quick Access</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p>Current/Recent Challenge placeholder</p>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>News Feed</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p>Latest news and updates placeholder</p>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Personalized Recommendations</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p>AI-powered recommendations placeholder</p>
-        </CardContent>
-      </Card>
+      {/* Sponsors Section */}
+      <section className="py-12">
+        <h2 className="text-3xl font-bold text-center mb-8">Sponsored By</h2>
+        <div className="flex flex-wrap justify-center items-center gap-8">
+          {sponsors.map((sponsor, index) => (
+            <div key={index} className="text-xl font-semibold text-gray-700">
+              {sponsor}
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 };
