@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   const [upcomingChallenges, setUpcomingChallenges] = useState([]);
@@ -15,7 +17,31 @@ const Home = () => {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold">Welcome to AI Hacking League</h1>
+      {/* Hero Section */}
+      <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white py-12 px-4 sm:px-6 lg:px-8 rounded-lg shadow-lg">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between">
+          <div className="md:w-1/2 mb-8 md:mb-0">
+            <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl mb-4">
+              Welcome to AI Hacking League
+            </h1>
+            <p className="text-xl mb-6">
+              Join the ultimate AI challenge platform and showcase your skills!
+            </p>
+            <Button asChild className="bg-white text-blue-600 hover:bg-blue-100">
+              <Link to="/challenges">Explore Challenges</Link>
+            </Button>
+          </div>
+          <div className="md:w-1/2 flex justify-center">
+            <img
+              src="/placeholder.svg"
+              alt="AI Hacking League"
+              className="w-full max-w-md rounded-lg shadow-md mx-auto object-cover"
+            />
+          </div>
+        </div>
+      </div>
+
+      <h2 className="text-3xl font-bold">Welcome to AI Hacking League</h2>
       
       <Card>
         <CardHeader>
