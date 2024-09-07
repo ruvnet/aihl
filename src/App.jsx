@@ -10,6 +10,9 @@ import Challenges from './pages/Challenges';
 import Leaderboard from './pages/Leaderboard';
 import Analytics from './pages/Analytics';
 import Profile from './pages/Profile';
+import Register from './pages/Register';
+import Login from './pages/Login';
+import ForgotPassword from './pages/ForgotPassword';
 
 const queryClient = new QueryClient();
 
@@ -28,6 +31,9 @@ const App = () => {
                   <Route path="/leaderboard" element={<Leaderboard />} />
                   <Route path="/analytics" element={<Analytics />} />
                   <Route path="/profile" element={<Profile />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/forgot-password" element={<ForgotPassword />} />
                 </Routes>
               </main>
               <Navigation />

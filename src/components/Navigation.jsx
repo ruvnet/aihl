@@ -8,19 +8,18 @@ const Navigation = () => {
     { path: '/', icon: Home, label: 'Home' },
     { path: '/challenges', icon: Trophy, label: 'Challenges' },
     { path: '/leaderboard', icon: BarChart2, label: 'Leaderboard' },
-    { path: '/analytics', icon: BarChart2, label: 'Analytics' },
     { path: '/profile', icon: User, label: 'Profile' },
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white shadow-lg z-50">
+    <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 shadow-lg z-50">
       <div className="flex justify-around items-center h-16">
         {navItems.map((item) => (
           <Link
             key={item.path}
             to={item.path}
             className={`flex flex-col items-center justify-center w-full h-full ${
-              location.pathname === item.path ? 'text-blue-500' : 'text-gray-500'
+              location.pathname === item.path ? 'text-blue-500' : 'text-gray-500 dark:text-gray-400'
             }`}
           >
             <item.icon className="w-6 h-6" />
