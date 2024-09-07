@@ -32,8 +32,7 @@ const TeamWizard = () => {
   ]);
 
   const handleCreateTeam = () => {
-    // TODO: Implement team creation logic
-    console.log('Creating team:', { teamName, teamDescription, lookingForMembers });
+    console.log('Creating squad:', { teamName, teamDescription, lookingForMembers });
   };
 
   const filteredTeams = availableTeams.filter(team => 
@@ -51,157 +50,164 @@ const TeamWizard = () => {
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="join" className="space-y-4">
-          <TabsList className="grid w-full grid-cols-3 bg-gray-800">
-            <TabsTrigger value="join" className="text-white data-[state=active]:bg-purple-700">Join a Squad</TabsTrigger>
-            <TabsTrigger value="create" className="text-white data-[state=active]:bg-purple-700">Form a Squad</TabsTrigger>
-            <TabsTrigger value="dashboard" className="text-white data-[state=active]:bg-purple-700">Squad Stats</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="join" className="text-white">Join</TabsTrigger>
+            <TabsTrigger value="create" className="text-white">Create</TabsTrigger>
+            <TabsTrigger value="dashboard" className="text-white">Stats</TabsTrigger>
           </TabsList>
           <TabsContent value="join">
-            <div className="space-y-4">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                <Input
-                  type="text"
-                  placeholder="Search squads"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 bg-gray-800 text-white border-gray-700"
-                />
-              </div>
-              {filteredTeams.map((team) => (
-                <Card key={team.id} className="bg-gray-800 border-purple-500 hover:border-pink-500 transition-colors">
-                  <CardContent className="p-4">
-                    <div className="flex justify-between items-center mb-2">
-                      <h3 className="text-xl font-bold text-purple-400">{team.name}</h3>
-                      <Badge className="bg-yellow-500 text-black">Rank #{team.rank}</Badge>
-                    </div>
-                    <p className="text-sm text-gray-300 mb-2">{team.description}</p>
-                    <div className="flex justify-between items-center text-sm text-gray-400 mb-4">
-                      <span className="flex items-center"><Users className="w-4 h-4 mr-1" /> {team.members} members</span>
-                      <span className="flex items-center"><Trophy className="w-4 h-4 mr-1" /> ${team.winnings.toLocaleString()} won</span>
-                    </div>
-                    <Button asChild className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600">
-                      <Link to={`/team-application/${team.id}`}>
-                        <Zap className="w-4 h-4 mr-2" /> Apply to Join
-                      </Link>
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+            <JoinTab searchTerm={searchTerm} setSearchTerm={setSearchTerm} filteredTeams={filteredTeams} />
           </TabsContent>
           <TabsContent value="create">
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <label htmlFor="teamName" className="text-purple-300">Squad Name</label>
-                <Input
-                  id="teamName"
-                  value={teamName}
-                  onChange={(e) => setTeamName(e.target.value)}
-                  placeholder="Enter squad name"
-                  className="bg-gray-800 text-white border-gray-700"
-                />
-              </div>
-              <div className="space-y-2">
-                <label htmlFor="teamDescription" className="text-purple-300">Squad Mission</label>
-                <Textarea
-                  id="teamDescription"
-                  value={teamDescription}
-                  onChange={(e) => setTeamDescription(e.target.value)}
-                  placeholder="Describe your squad's mission"
-                  className="bg-gray-800 text-white border-gray-700"
-                />
-              </div>
-              <div className="space-y-2">
-                <label htmlFor="teamLogo" className="text-purple-300">Squad Emblem</label>
-                <Input
-                  id="teamLogo"
-                  type="file"
-                  accept="image/*"
-                  className="bg-gray-800 text-white border-gray-700"
-                />
-              </div>
-              <div className="flex items-center space-x-2">
-                <Switch
-                  id="lookingForMembers"
-                  checked={lookingForMembers}
-                  onCheckedChange={setLookingForMembers}
-                />
-                <label htmlFor="lookingForMembers" className="text-purple-300">Recruiting new members</label>
-              </div>
-              <Button onClick={handleCreateTeam} disabled={!teamName || !teamDescription} className="w-full bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600">
-                <Sword className="w-4 h-4 mr-2" /> Forge Squad
-              </Button>
-            </div>
+            <CreateTab
+              teamName={teamName}
+              setTeamName={setTeamName}
+              teamDescription={teamDescription}
+              setTeamDescription={setTeamDescription}
+              lookingForMembers={lookingForMembers}
+              setLookingForMembers={setLookingForMembers}
+              handleCreateTeam={handleCreateTeam}
+            />
           </TabsContent>
           <TabsContent value="dashboard">
-            <div className="space-y-6">
-              <Card className="bg-gray-800 border-purple-500">
-                <CardHeader>
-                  <CardTitle className="flex items-center text-purple-400">
-                    <Users className="mr-2" /> Squad Roster
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead className="text-purple-300">Hacker</TableHead>
-                        <TableHead className="text-purple-300">Role</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {teamMembers.map((member) => (
-                        <TableRow key={member.id}>
-                          <TableCell className="font-medium">
-                            <span className="mr-2">{member.avatar}</span>
-                            {member.name}
-                          </TableCell>
-                          <TableCell>{member.role}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </CardContent>
-              </Card>
-              <Card className="bg-gray-800 border-purple-500">
-                <CardHeader>
-                  <CardTitle className="flex items-center text-purple-400">
-                    <BarChart2 className="mr-2" /> Squad Performance
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead className="text-purple-300">Challenge</TableHead>
-                        <TableHead className="text-purple-300">Score</TableHead>
-                        <TableHead className="text-purple-300">Rank</TableHead>
-                        <TableHead className="text-purple-300">Prize</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {teamPerformance.map((performance, index) => (
-                        <TableRow key={index}>
-                          <TableCell>{performance.challenge}</TableCell>
-                          <TableCell>{performance.score}</TableCell>
-                          <TableCell>#{performance.rank}</TableCell>
-                          <TableCell>${performance.prize.toLocaleString()}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                  <div className="mt-4 text-right">
-                    <p className="text-xl font-bold text-green-400">Total Winnings: ${totalWinnings.toLocaleString()}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+            <DashboardTab teamMembers={teamMembers} teamPerformance={teamPerformance} totalWinnings={totalWinnings} />
           </TabsContent>
         </Tabs>
       </CardContent>
     </Card>
   );
 };
+
+const JoinTab = ({ searchTerm, setSearchTerm, filteredTeams }) => (
+  <div className="space-y-4">
+    <div className="relative">
+      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+      <Input
+        type="text"
+        placeholder="Search squads"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="pl-10 bg-gray-800 text-white border-gray-700"
+      />
+    </div>
+    {filteredTeams.map((team) => (
+      <Card key={team.id} className="bg-gray-800 border-purple-500 hover:border-pink-500 transition-colors">
+        <CardContent className="p-4">
+          <div className="flex justify-between items-center mb-2">
+            <h3 className="text-xl font-bold text-purple-400">{team.name}</h3>
+            <Badge className="bg-yellow-500 text-black">Rank #{team.rank}</Badge>
+          </div>
+          <p className="text-sm text-gray-300 mb-2">{team.description}</p>
+          <div className="flex justify-between items-center text-sm text-gray-400 mb-4">
+            <span className="flex items-center"><Users className="w-4 h-4 mr-1" /> {team.members} members</span>
+            <span className="flex items-center"><Trophy className="w-4 h-4 mr-1" /> ${team.winnings.toLocaleString()} won</span>
+          </div>
+          <Button asChild className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600">
+            <Link to={`/team-application/${team.id}`}>
+              <Zap className="w-4 h-4 mr-2" /> Apply to Join
+            </Link>
+          </Button>
+        </CardContent>
+      </Card>
+    ))}
+  </div>
+);
+
+const CreateTab = ({ teamName, setTeamName, teamDescription, setTeamDescription, lookingForMembers, setLookingForMembers, handleCreateTeam }) => (
+  <div className="space-y-4">
+    <Input
+      value={teamName}
+      onChange={(e) => setTeamName(e.target.value)}
+      placeholder="Enter squad name"
+      className="bg-gray-800 text-white border-gray-700"
+    />
+    <Textarea
+      value={teamDescription}
+      onChange={(e) => setTeamDescription(e.target.value)}
+      placeholder="Describe your squad's mission"
+      className="bg-gray-800 text-white border-gray-700"
+    />
+    <Input
+      type="file"
+      accept="image/*"
+      className="bg-gray-800 text-white border-gray-700"
+    />
+    <div className="flex items-center space-x-2">
+      <Switch
+        checked={lookingForMembers}
+        onCheckedChange={setLookingForMembers}
+      />
+      <label className="text-purple-300">Recruiting new members</label>
+    </div>
+    <Button onClick={handleCreateTeam} disabled={!teamName || !teamDescription} className="w-full bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600">
+      <Sword className="w-4 h-4 mr-2" /> Forge Squad
+    </Button>
+  </div>
+);
+
+const DashboardTab = ({ teamMembers, teamPerformance, totalWinnings }) => (
+  <div className="space-y-6">
+    <Card className="bg-gray-800 border-purple-500">
+      <CardHeader>
+        <CardTitle className="flex items-center text-purple-400">
+          <Users className="mr-2" /> Squad Roster
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="text-purple-300">Hacker</TableHead>
+              <TableHead className="text-purple-300">Role</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {teamMembers.map((member) => (
+              <TableRow key={member.id}>
+                <TableCell className="font-medium">
+                  <span className="mr-2">{member.avatar}</span>
+                  {member.name}
+                </TableCell>
+                <TableCell>{member.role}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </CardContent>
+    </Card>
+    <Card className="bg-gray-800 border-purple-500">
+      <CardHeader>
+        <CardTitle className="flex items-center text-purple-400">
+          <BarChart2 className="mr-2" /> Squad Performance
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="text-purple-300">Challenge</TableHead>
+              <TableHead className="text-purple-300">Score</TableHead>
+              <TableHead className="text-purple-300">Rank</TableHead>
+              <TableHead className="text-purple-300">Prize</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {teamPerformance.map((performance, index) => (
+              <TableRow key={index}>
+                <TableCell>{performance.challenge}</TableCell>
+                <TableCell>{performance.score}</TableCell>
+                <TableCell>#{performance.rank}</TableCell>
+                <TableCell>${performance.prize.toLocaleString()}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        <div className="mt-4 text-right">
+          <p className="text-xl font-bold text-green-400">Total Winnings: ${totalWinnings.toLocaleString()}</p>
+        </div>
+      </CardContent>
+    </Card>
+  </div>
+);
 
 export default TeamWizard;
