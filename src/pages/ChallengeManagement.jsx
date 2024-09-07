@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Clock, GitBranch, GitCommit, GitPullRequest, Play, Pause, RotateCcw } from 'lucide-react';
+import { Clock, GitBranch, GitCommit, GitPullRequest, Play, Pause, RotateCcw, Trophy, Target, Zap, Cpu } from 'lucide-react';
 
 const ChallengeManagement = () => {
   const { id } = useParams();
@@ -15,19 +15,16 @@ const ChallengeManagement = () => {
   const [contributions, setContributions] = useState([]);
 
   useEffect(() => {
-    // Fetch challenge details
-    // This is a mock implementation. Replace with actual API call.
     setChallenge({
       id,
       title: 'Rapid AI Chatbot Development',
       description: 'Build a functional AI chatbot using GPT-3.5 in just 30 minutes.',
-      timeLimit: 1800, // 30 minutes in seconds
+      timeLimit: 1800,
       difficulty: 'Hard',
       participants: 120,
       repoUrl: 'https://github.com/user/ai-chatbot-challenge',
     });
 
-    // Fetch mock contributions
     setContributions([
       { type: 'commit', message: 'Initial project setup', timestamp: '2024-03-15T10:05:00Z' },
       { type: 'branch', name: 'feature/chatbot-core', timestamp: '2024-03-15T10:10:00Z' },
@@ -69,86 +66,104 @@ const ChallengeManagement = () => {
   };
 
   if (!challenge) {
-    return <div>Loading...</div>;
+    return <div className="flex justify-center items-center h-screen">
+      <Zap className="animate-spin h-16 w-4 text-purple-500" />
+    </div>;
   }
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-3xl font-bold">{challenge.title}</h1>
+    <div className="space-y-6 p-4 max-w-4xl mx-auto bg-gradient-to-br from-gray-900 to-purple-900 text-white min-h-screen">
+      <h1 className="text-4xl font-bold text-center mb-8 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600">
+        {challenge.title}
+      </h1>
       
-      <Card>
+      <Card className="bg-gray-800 border-2 border-purple-500 shadow-neon">
         <CardHeader>
-          <CardTitle>Challenge Details</CardTitle>
+          <CardTitle className="text-2xl text-purple-400 flex items-center">
+            <Target className="mr-2" /> Challenge Details
+          </CardTitle>
         </CardHeader>
         <CardContent>
-          <p>{challenge.description}</p>
-          <div className="mt-4 flex justify-between items-center">
-            <Badge variant="outline">{challenge.difficulty}</Badge>
-            <span>{challenge.participants} participants</span>
+          <p className="text-gray-300 mb-4">{challenge.description}</p>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex items-center">
+              <Trophy className="text-yellow-500 mr-2" />
+              <span className="text-yellow-400 font-bold">{challenge.difficulty}</span>
+            </div>
+            <div className="flex items-center">
+              <Users className="text-blue-500 mr-2" />
+              <span>{challenge.participants} participants</span>
+            </div>
           </div>
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="bg-gray-800 border-2 border-blue-500 shadow-neon">
         <CardHeader>
-          <CardTitle>Timer</CardTitle>
+          <CardTitle className="text-2xl text-blue-400 flex items-center">
+            <Clock className="mr-2" /> Challenge Timer
+          </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-4xl font-bold text-center mb-4">{formatTime(timeRemaining)}</div>
-          <Progress value={(timeRemaining / challenge.timeLimit) * 100} className="mb-4" />
+          <div className="text-6xl font-bold text-center mb-4 text-blue-300">{formatTime(timeRemaining)}</div>
+          <Progress value={(timeRemaining / challenge.timeLimit) * 100} className="mb-4 h-3 bg-gray-700" />
           <div className="flex justify-center space-x-4">
             {!isRunning ? (
-              <Button onClick={handleStart} disabled={timeRemaining === 0}>
+              <Button onClick={handleStart} disabled={timeRemaining === 0} className="bg-green-500 hover:bg-green-600 text-white">
                 <Play className="mr-2 h-4 w-4" /> Start
               </Button>
             ) : (
-              <Button onClick={handlePause}>
+              <Button onClick={handlePause} className="bg-yellow-500 hover:bg-yellow-600 text-black">
                 <Pause className="mr-2 h-4 w-4" /> Pause
               </Button>
             )}
-            <Button onClick={handleReset} variant="outline">
+            <Button onClick={handleReset} variant="outline" className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white">
               <RotateCcw className="mr-2 h-4 w-4" /> Reset
             </Button>
           </div>
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="bg-gray-800 border-2 border-green-500 shadow-neon">
         <CardHeader>
-          <CardTitle>GitHub Integration</CardTitle>
+          <CardTitle className="text-2xl text-green-400 flex items-center">
+            <GitBranch className="mr-2" /> GitHub Integration
+          </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="mb-4">Repository URL: <a href={challenge.repoUrl} className="text-blue-500 hover:underline" target="_blank" rel="noopener noreferrer">{challenge.repoUrl}</a></p>
-          <Button asChild>
+          <p className="mb-4">Repository URL: <a href={challenge.repoUrl} className="text-blue-400 hover:underline" target="_blank" rel="noopener noreferrer">{challenge.repoUrl}</a></p>
+          <Button asChild className="w-full bg-purple-600 hover:bg-purple-700">
             <a href={challenge.repoUrl} target="_blank" rel="noopener noreferrer">Open in GitHub</a>
           </Button>
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="bg-gray-800 border-2 border-yellow-500 shadow-neon">
         <CardHeader>
-          <CardTitle>Contributions</CardTitle>
+          <CardTitle className="text-2xl text-yellow-400 flex items-center">
+            <Cpu className="mr-2" /> Contributions
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
-              <TableRow>
-                <TableHead>Type</TableHead>
-                <TableHead>Details</TableHead>
-                <TableHead>Timestamp</TableHead>
+              <TableRow className="border-b border-gray-700">
+                <TableHead className="text-purple-400">Type</TableHead>
+                <TableHead className="text-purple-400">Details</TableHead>
+                <TableHead className="text-purple-400">Timestamp</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {contributions.map((contribution, index) => (
-                <TableRow key={index}>
+                <TableRow key={index} className="border-b border-gray-700">
                   <TableCell>
-                    {contribution.type === 'commit' && <GitCommit className="inline mr-2" />}
-                    {contribution.type === 'branch' && <GitBranch className="inline mr-2" />}
-                    {contribution.type === 'pull-request' && <GitPullRequest className="inline mr-2" />}
-                    {contribution.type}
+                    {contribution.type === 'commit' && <GitCommit className="inline mr-2 text-green-500" />}
+                    {contribution.type === 'branch' && <GitBranch className="inline mr-2 text-blue-500" />}
+                    {contribution.type === 'pull-request' && <GitPullRequest className="inline mr-2 text-purple-500" />}
+                    <span className="text-gray-300">{contribution.type}</span>
                   </TableCell>
-                  <TableCell>{contribution.message || contribution.name || contribution.title}</TableCell>
-                  <TableCell>{new Date(contribution.timestamp).toLocaleString()}</TableCell>
+                  <TableCell className="text-gray-300">{contribution.message || contribution.name || contribution.title}</TableCell>
+                  <TableCell className="text-gray-400">{new Date(contribution.timestamp).toLocaleString()}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
