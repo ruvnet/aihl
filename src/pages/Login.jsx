@@ -22,7 +22,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
+    <div className="flex justify-center items-center min-h-[calc(100vh-4rem)]">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>Login</CardTitle>
@@ -47,10 +47,10 @@ const Login = () => {
             />
             <Button type="submit" className="w-full">Login</Button>
           </form>
-          <div className="mt-4 text-center space-y-2">
-            <p>
-              <Link to="/forgot-password" className="text-blue-500">Forgot Password?</Link>
-            </p>
+          <div className="mt-4 text-center">
+            <Link to="/forgot-password" className="text-blue-500">Forgot Password?</Link>
+          </div>
+          <div className="mt-4 text-center">
             <p>
               Don't have an account? <Link to="/register" className="text-blue-500">Register</Link>
             </p>

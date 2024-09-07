@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Github, Linkedin } from 'lucide-react';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -23,7 +24,7 @@ const Register = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
+    <div className="flex justify-center items-center min-h-[calc(100vh-4rem)]">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>Register</CardTitle>
@@ -64,9 +65,22 @@ const Register = () => {
             />
             <Button type="submit" className="w-full">Register</Button>
           </form>
-          <p className="mt-4 text-center">
-            Already have an account? <Link to="/login" className="text-blue-500">Login</Link>
-          </p>
+          <div className="mt-4 text-center">
+            <p>
+              Already have an account? <Link to="/login" className="text-blue-500">Login</Link>
+            </p>
+          </div>
+          <div className="mt-6">
+            <p className="text-center mb-2">Or register with:</p>
+            <div className="flex justify-center space-x-4">
+              <Button variant="outline" className="w-full">
+                <Github className="mr-2 h-4 w-4" /> GitHub
+              </Button>
+              <Button variant="outline" className="w-full">
+                <Linkedin className="mr-2 h-4 w-4" /> LinkedIn
+              </Button>
+            </div>
+          </div>
         </CardContent>
       </Card>
     </div>
