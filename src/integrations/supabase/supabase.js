@@ -1,14 +1,12 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_PROJECT_URL;
-const supabaseKey = import.meta.env.VITE_SUPABASE_API_KEY;
+const supabaseUrl = import.meta.env.VITE_SUPABASE_PROJECT_URL || 'https://example.supabase.co';
+const supabaseKey = import.meta.env.VITE_SUPABASE_API_KEY || 'your-anon-key';
 
-if (!supabaseUrl) {
-  throw new Error('VITE_SUPABASE_PROJECT_URL is not set in the environment variables');
-}
-
-if (!supabaseKey) {
-  throw new Error('VITE_SUPABASE_API_KEY is not set in the environment variables');
-}
+console.warn(
+  'Supabase client created with default or missing credentials. ' +
+  'Please set VITE_SUPABASE_PROJECT_URL and VITE_SUPABASE_API_KEY ' +
+  'environment variables for proper configuration.'
+);
 
 export const supabase = createClient(supabaseUrl, supabaseKey);
