@@ -69,6 +69,79 @@ import {
   useDeleteTeamMember,
 } from './hooks/team_members';
 
+import {
+  useChallengeParticipants,
+  useAddChallengeParticipant,
+  useRemoveChallengeParticipant,
+} from './hooks/challenge_participants';
+
+import {
+  useCodeSnapshots,
+  useAddCodeSnapshot,
+  useLatestCodeSnapshot,
+} from './hooks/code_snapshots';
+
+import {
+  useCollaborationSessions,
+  useAddCollaborationSession,
+  useUpdateCollaborationSession,
+} from './hooks/collaboration_sessions';
+
+import {
+  useSubmissions,
+  useAddSubmission,
+  useLatestSubmission,
+} from './hooks/submissions';
+
+import {
+  useEvaluations,
+  useAddEvaluation,
+  useLatestEvaluation,
+} from './hooks/evaluations';
+
+import {
+  useParticipantScores,
+  useUpdateParticipantScore,
+} from './hooks/participant_scores';
+
+import {
+  useAIGeneratedChallenges,
+  useAddAIGeneratedChallenge,
+} from './hooks/ai_generated_challenges';
+
+import {
+  useChatMessages,
+  useAddChatMessage,
+  useLatestChatMessages,
+} from './hooks/chat_messages';
+
+import {
+  useNotifications,
+  useAddNotification,
+  useLatestNotifications,
+} from './hooks/notifications';
+
+import {
+  useSkillProfiles,
+  useUpdateSkillProfile,
+} from './hooks/skill_profiles';
+
+import {
+  useSkillBadges,
+  useAddSkillBadge,
+} from './hooks/skill_badges';
+
+import {
+  useCodingActions,
+  useAddCodingAction,
+} from './hooks/coding_actions';
+
+import {
+  useReplays,
+  useAddReplay,
+  useLatestReplay,
+} from './hooks/replays';
+
 export {
   supabase,
   SupabaseAuthProvider,
@@ -112,4 +185,38 @@ export {
   useAddTeamMember,
   useUpdateTeamMember,
   useDeleteTeamMember,
+  useChallengeParticipants,
+  useAddChallengeParticipant,
+  useRemoveChallengeParticipant,
+  useCodeSnapshots,
+  useAddCodeSnapshot,
+  useLatestCodeSnapshot,
+  useCollaborationSessions,
+  useAddCollaborationSession,
+  useUpdateCollaborationSession,
+  useSubmissions,
+  useAddSubmission,
+  useLatestSubmission,
+  useEvaluations,
+  useAddEvaluation,
+  useLatestEvaluation,
+  useParticipantScores,
+  useUpdateParticipantScore,
+  useAIGeneratedChallenges,
+  useAddAIGeneratedChallenge,
+  useChatMessages,
+  useAddChatMessage,
+  useLatestChatMessages,
+  useNotifications,
+  useAddNotification,
+  useLatestNotifications,
+  useSkillProfiles,
+  useUpdateSkillProfile,
+  useSkillBadges,
+  useAddSkillBadge,
+  useCodingActions,
+  useAddCodingAction,
+  useReplays,
+  useAddReplay,
+  useLatestReplay,
 };
