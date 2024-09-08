@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -102,6 +103,15 @@ const Profile = () => {
           <WalletSection balance={user.balance} />
         </TabsContent>
       </Tabs>
+
+      {/* Admin Dashboard Link */}
+      <Card className="mt-6">
+        <CardContent>
+          <Button asChild className="w-full">
+            <Link to="/admin">Access Admin Dashboard</Link>
+          </Button>
+        </CardContent>
+      </Card>
     </div>
   );
 };
