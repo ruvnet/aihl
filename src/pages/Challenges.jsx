@@ -114,30 +114,30 @@ const Challenges = () => {
   };
 
   return (
-    <div className="space-y-6 p-6 bg-gradient-to-br from-gray-900 to-gray-800 min-h-screen">
+    <div className="space-y-6 p-6 min-h-screen">
       <div className="text-center mb-8">
-        <h1 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 mb-4">
+        <h1 className="text-5xl font-extrabold mb-4">
           AI Speed Development Arena
         </h1>
-        <p className="text-xl text-gray-300">Prove your skills in high-stakes, time-constrained AI challenges!</p>
+        <p className="text-xl text-muted-foreground">Prove your skills in high-stakes, time-constrained AI challenges!</p>
       </div>
       
-      <Card className="bg-gray-800 border-gray-700">
+      <Card className="bg-card">
         <CardContent className="p-4">
           <div className="relative mb-4">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
             <Input
               type="text"
               placeholder="Search challenges"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 bg-gray-700 text-white border-gray-600 focus:border-purple-500 focus:ring-purple-500"
+              className="pl-10 bg-background text-foreground border-input"
             />
           </div>
           <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid w-full grid-cols-2 bg-gray-700">
-              <TabsTrigger value="solo" className="text-white data-[state=active]:bg-purple-600">Solo Challenges</TabsTrigger>
-              <TabsTrigger value="team" className="text-white data-[state=active]:bg-purple-600">Team Challenges</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 bg-muted">
+              <TabsTrigger value="solo" className="data-[state=active]:bg-background">Solo Challenges</TabsTrigger>
+              <TabsTrigger value="team" className="data-[state=active]:bg-background">Team Challenges</TabsTrigger>
             </TabsList>
           </Tabs>
         </CardContent>
@@ -145,7 +145,7 @@ const Challenges = () => {
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {filteredChallenges.map((challenge) => (
-          <Card key={challenge.id} className="bg-gray-800 border-gray-700 overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-lg">
+          <Card key={challenge.id} className="overflow-hidden">
             <CardContent className="p-6">
               <div className="flex justify-between items-center mb-4">
                 <span className="text-3xl">{challenge.icon}</span>
@@ -156,20 +156,20 @@ const Challenges = () => {
                   </span>
                 </div>
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">{challenge.title}</h3>
-              <p className="text-gray-400 mb-4">{challenge.description}</p>
-              <div className="flex justify-between items-center text-sm text-gray-400 mb-4">
+              <h3 className="text-xl font-bold mb-2">{challenge.title}</h3>
+              <p className="text-muted-foreground mb-4">{challenge.description}</p>
+              <div className="flex justify-between items-center text-sm text-muted-foreground mb-4">
                 <span className="flex items-center"><Clock className="w-4 h-4 mr-1" /> {challenge.duration}</span>
                 <span className="flex items-center"><Users className="w-4 h-4 mr-1" /> {challenge.participants} enrolled</span>
               </div>
               <div className="flex justify-between items-center mb-4">
-                <span className="text-green-400 font-bold flex items-center">
+                <span className="text-green-600 dark:text-green-400 font-bold flex items-center">
                   {challenge.reward.includes('charity') ? <Heart className="w-5 h-5 mr-1 text-red-500" /> : <Trophy className="w-5 h-5 mr-1" />}
                   {challenge.reward}
                 </span>
-                <span className="text-purple-400">{challenge.sponsor}</span>
+                <span className="text-purple-600 dark:text-purple-400">{challenge.sponsor}</span>
               </div>
-              <Button asChild className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white">
+              <Button asChild className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
                 <Link to={`/challenges/${challenge.id}`}>
                   <Zap className="w-4 h-4 mr-2" /> Enter Challenge
                 </Link>
@@ -180,7 +180,7 @@ const Challenges = () => {
       </div>
 
       {filteredChallenges.length === 0 && (
-        <p className="text-center text-gray-400">No challenges found. Try a different search term or category.</p>
+        <p className="text-center text-muted-foreground">No challenges found. Try a different search term or category.</p>
       )}
     </div>
   );
