@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Cpu, Zap, Trophy, Users, Code, Brain } from 'lucide-react';
+import { Cpu, Zap, Trophy, Users, Code, Brain, Clock, Target, Rocket } from 'lucide-react';
 
 const About = () => {
   return (
@@ -90,6 +90,77 @@ const About = () => {
           </p>
           <p className="text-xl font-bold text-center">
             Are you ready to hack the planet, one challenge at a time?
+          </p>
+        </CardContent>
+      </Card>
+
+      <Card className="border-2 border-indigo-500 bg-gray-800 text-white shadow-neon">
+        <CardHeader>
+          <CardTitle className="text-2xl flex items-center">
+            <Clock className="mr-2 text-indigo-400" /> Challenge Types
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ul className="list-disc pl-5 space-y-2">
+            <li><strong>Sprint (15 minutes):</strong> Lightning-fast coding sprints to test your rapid problem-solving skills.</li>
+            <li><strong>Dash (30 minutes):</strong> Balanced challenges that require quick thinking and more complex solutions.</li>
+            <li><strong>Marathon (60 minutes):</strong> Extended sessions for tackling intricate AI problems and developing comprehensive solutions.</li>
+          </ul>
+        </CardContent>
+      </Card>
+
+      <Card className="border-2 border-pink-500 bg-gray-800 text-white shadow-neon">
+        <CardHeader>
+          <CardTitle className="text-2xl flex items-center">
+            <Brain className="mr-2 text-pink-400" /> AI-Powered Features
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ul className="list-disc pl-5 space-y-2">
+            <li><strong>AI Judging System:</strong> Impartial evaluation of your code based on functionality, innovation, and efficiency.</li>
+            <li><strong>Real-time Collaboration:</strong> Work seamlessly with your team using AI-enhanced coding environments.</li>
+            <li><strong>Dynamic Leaderboards:</strong> Watch your rank update in real-time as you conquer challenges.</li>
+            <li><strong>Skill Assessment:</strong> AI-driven analysis of your coding style and strengths to help you improve.</li>
+          </ul>
+        </CardContent>
+      </Card>
+
+      <Card className="border-2 border-orange-500 bg-gray-800 text-white shadow-neon">
+        <CardHeader>
+          <CardTitle className="text-2xl flex items-center">
+            <Target className="mr-2 text-orange-400" /> Why Join AI Hacking League?
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ul className="list-disc pl-5 space-y-2">
+            <li><strong>Accelerate Your AI Skills:</strong> Gain hands-on experience with cutting-edge AI technologies.</li>
+            <li><strong>Network with Elite Developers:</strong> Connect with top AI talent from around the globe.</li>
+            <li><strong>Showcase Your Talents:</strong> Build a portfolio of impressive AI projects and achievements.</li>
+            <li><strong>Win Big:</strong> Compete for substantial cash prizes and recognition in the AI community.</li>
+            <li><strong>Shape the Future:</strong> Contribute to groundbreaking AI innovations through intense, time-constrained challenges.</li>
+          </ul>
+        </CardContent>
+      </Card>
+
+      <Card className="border-2 border-teal-500 bg-gray-800 text-white shadow-neon">
+        <CardHeader>
+          <CardTitle className="text-2xl flex items-center">
+            <Rocket className="mr-2 text-teal-400" /> Get Started Today
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-lg mb-4">
+            Embark on your journey to AI mastery with these simple steps:
+          </p>
+          <ol className="list-decimal pl-5 space-y-2">
+            <li>Create your AI Hacker profile</li>
+            <li>Join a team or form your own elite squad</li>
+            <li>Enroll in your first challenge</li>
+            <li>Code, compete, and conquer</li>
+            <li>Climb the ranks and claim your rewards</li>
+          </ol>
+          <p className="mt-4 text-xl font-bold text-center">
+            The future of AI awaits your expertise. Are you up for the challenge?
           </p>
         </CardContent>
       </Card>
