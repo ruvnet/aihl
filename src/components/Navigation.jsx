@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Trophy, BarChart2, Briefcase } from 'lucide-react';
+import { Home, Trophy, BarChart2, Briefcase, MessageSquare } from 'lucide-react';
 
 const Navigation = () => {
   const location = useLocation();
@@ -9,6 +9,7 @@ const Navigation = () => {
     { path: '/challenges', icon: Trophy, label: 'Challenges' },
     { path: '/my-challenges', icon: Briefcase, label: 'Tasks' },
     { path: '/leaderboard', icon: BarChart2, label: 'Leaderboard' },
+    { path: '/admin-chat', icon: MessageSquare, label: 'Admin Chat' },
   ];
 
   return (

@@ -25,6 +25,7 @@ import SoloProfile from './pages/SoloProfile';
 import TeamProfile from './pages/TeamProfile';
 import ChallengeManagement from './pages/ChallengeManagement';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminChat from './components/admin/AdminChat';
 
 const queryClient = new QueryClient();
 
@@ -68,6 +69,7 @@ const App = () => {
                   <Route path="/team/:id" element={<TeamProfile />} />
                   <Route path="/challenge-management/:id" element={<ChallengeManagement />} />
                   <Route path="/admin" element={<AdminDashboard />} />
+                  <Route path="/admin-chat" element={<AdminChat />} />
                 </Routes>
               </main>
               <Navigation />
