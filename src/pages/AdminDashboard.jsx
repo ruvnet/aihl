@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Slider } from "@/components/ui/slider";
 import { useAIGeneratedChallenges, useAddAIGeneratedChallenge, useLatestAIGeneratedChallenge } from '@/integrations/supabase/hooks/ai_generated_challenges';
 import { useReplays, useAddReplay, useLatestReplay, useGenerateReplayVisualization } from '@/integrations/supabase/hooks/replays';
 import { useStartChallenge, useEndChallenge, useUpdateScore } from '@/integrations/supabase/hooks/challenge_management';
@@ -15,6 +19,7 @@ import { useAddChatMessage, useLatestChatMessages } from '@/integrations/supabas
 import { useUpdateSkillProfile } from '@/integrations/supabase/hooks/skill_profiles';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/supabase';
+import { Clock, GitBranch, GitCommit, GitPullRequest, Play, Pause, RotateCcw, Trophy, Target, Zap, Cpu, Users, MessageSquare, Video, Settings, Gavel } from 'lucide-react';
 
 const AdminDashboard = () => {
   const [challengePrompt, setChallengePrompt] = useState('');
@@ -30,6 +35,15 @@ const AdminDashboard = () => {
     maxParticipants: 100,
     challengeDuration: 30,
     difficultyLevel: 'medium',
+    judgeModel: 'gpt-4',
+    judgingCriteria: {
+      functionality: 0.4,
+      codeQuality: 0.3,
+      efficiency: 0.2,
+      creativity: 0.1,
+    },
+    autoGrading: true,
+    humanReviewThreshold: 0.8,
   });
 
   const { data: aiChallenges } = useAIGeneratedChallenges();
@@ -175,6 +189,17 @@ const AdminDashboard = () => {
     addLog(`Configuration updated: ${key} set to ${value}`);
   };
 
+  const handleJudgingCriteriaChange = (criterion, value) => {
+    setConfigSettings(prev => ({
+      ...prev,
+      judgingCriteria: {
+        ...prev.judgingCriteria,
+        [criterion]: value,
+      },
+    }));
+    addLog(`Judging criteria updated: ${criterion} set to ${value}`);
+  };
+
   const addLog = (message) => {
     setLogs(prev => [...prev, { timestamp: new Date().toISOString(), message }]);
   };
@@ -184,10 +209,11 @@ const AdminDashboard = () => {
       <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
 
       <Tabs defaultValue="challenges">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="challenges">Challenges</TabsTrigger>
           <TabsTrigger value="users">Users</TabsTrigger>
           <TabsTrigger value="config">Configuration</TabsTrigger>
+          <TabsTrigger value="ai-judiciary">AI Judiciary</TabsTrigger>
           <TabsTrigger value="logs">Logs</TabsTrigger>
         </TabsList>
 
@@ -318,6 +344,68 @@ const AdminDashboard = () => {
                       <SelectItem value="hard">Hard</SelectItem>
                     </SelectContent>
                   </Select>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="ai-judiciary">
+          <Card>
+            <CardHeader>
+              <CardTitle>AI Judiciary Settings</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <span>Judge Model</span>
+                  <Select
+                    value={configSettings.judgeModel}
+                    onValueChange={(value) => handleConfigChange('judgeModel', value)}
+                  >
+                    <SelectTrigger className="w-32">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="gpt-3.5-turbo">GPT-3.5 Turbo</SelectItem>
+                      <SelectItem value="gpt-4">GPT-4</SelectItem>
+                      <SelectItem value="custom-judge">Custom Judge</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold mb-2">Judging Criteria Weights</h3>
+                  {Object.entries(configSettings.judgingCriteria).map(([criterion, weight]) => (
+                    <div key={criterion} className="mb-2">
+                      <label className="block text-sm font-medium text-gray-700">{criterion}</label>
+                      <Slider
+                        value={[weight * 100]}
+                        onValueChange={(value) => handleJudgingCriteriaChange(criterion, value[0] / 100)}
+                        max={100}
+                        step={1}
+                      />
+                      <span className="text-sm text-gray-500">{(weight * 100).toFixed(0)}%</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Auto-grading Enabled</span>
+                  <Switch
+                    checked={configSettings.autoGrading}
+                    onCheckedChange={(checked) => handleConfigChange('autoGrading', checked)}
+                  />
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Human Review Threshold</span>
+                  <Input
+                    type="number"
+                    value={configSettings.humanReviewThreshold}
+                    onChange={(e) => handleConfigChange('humanReviewThreshold', parseFloat(e.target.value))}
+                    className="w-24"
+                    min="0"
+                    max="1"
+                    step="0.01"
+                  />
                 </div>
               </div>
             </CardContent>
