@@ -16,36 +16,3 @@ export const useEvaluateSubmission = () => {
     },
   });
 };
-
-export const useGetEvaluation = (challengeId, userId) => {
-  return useQuery({
-    queryKey: ['evaluation', challengeId, userId],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('evaluations')
-        .select('*')
-        .eq('challenge_id', challengeId)
-        .eq('user_id', userId)
-        .single();
-      if (error) throw error;
-      return data;
-    },
-  });
-};
-
-export const useUpdateEvaluation = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: async ({ id, ...updateData }) => {
-      const { data, error } = await supabase
-        .from('evaluations')
-        .update(updateData)
-        .eq('id', id);
-      if (error) throw error;
-      return data;
-    },
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries(['evaluation', variables.challenge_id, variables.user_id]);
-    },
-  });
-};

@@ -1,33 +1,5 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '../supabase';
-
-const fromSupabase = async (query) => {
-  const { data, error } = await query;
-  if (error) throw new Error(error.message);
-  return data;
-};
-
-export const useRealTimeChallenges = () => {
-  const queryClient = useQueryClient();
-
-  useEffect(() => {
-    const channel = supabase
-      .channel('public:challenges')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'challenges' }, (payload) => {
-        queryClient.invalidateQueries('challenges');
-      })
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [queryClient]);
-
-  return useQuery({
-    queryKey: ['challenges'],
-    queryFn: () => fromSupabase(supabase.from('challenges').select('*')),
-  });
-};
 
 export const useStartChallenge = () => {
   const queryClient = useQueryClient();
