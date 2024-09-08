@@ -140,6 +140,7 @@ import {
   useReplays,
   useAddReplay,
   useLatestReplay,
+  useGenerateReplayVisualization,
 } from './hooks/replays';
 
 export {
@@ -219,4 +220,5 @@ export {
   useReplays,
   useAddReplay,
   useLatestReplay,
+  useGenerateReplayVisualization,
 };
