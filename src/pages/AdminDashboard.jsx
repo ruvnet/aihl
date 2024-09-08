@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Users, Settings, BarChart2, Shield, X, BookOpen } from 'lucide-react';
+import { Users, Settings, BarChart2, Shield, X, BookOpen, MessageSquare } from 'lucide-react';
 import CommunityManagement from '../components/admin/CommunityManagement';
 import SystemConfiguration from '../components/admin/SystemConfiguration';
 import AnalyticsReporting from '../components/admin/AnalyticsReporting';
 import SecurityCompliance from '../components/admin/SecurityCompliance';
 import Documentation from '../components/admin/Documentation';
 import HomeTab from '../components/admin/HomeTab';
+import AdminChat from '../components/admin/AdminChat';
 
 const AdminDashboard = () => {
   const [activeSection, setActiveSection] = useState('home');
@@ -41,6 +42,7 @@ const AdminDashboard = () => {
     { id: 'analytics', label: 'Analytics', icon: BarChart2, component: AnalyticsReporting },
     { id: 'security', label: 'Security', icon: Shield, component: SecurityCompliance },
     { id: 'documentation', label: 'Documentation', icon: BookOpen, component: Documentation },
+    { id: 'chat', label: 'Admin Chat', icon: MessageSquare, component: AdminChat },
   ];
 
   const handleSectionChange = (sectionId) => {
