@@ -19,13 +19,27 @@ const AdminDashboard = () => {
         <CardContent className="p-6">
           <Tabs defaultValue="home" className="space-y-4">
             <TabsList className="flex justify-start overflow-x-auto">
-              <TabsTrigger value="home" className="flex items-center"><Home className="h-5 w-5 mr-2" /> Home</TabsTrigger>
-              <TabsTrigger value="challenges" className="flex items-center"><Trophy className="h-5 w-5 mr-2" /> Challenges</TabsTrigger>
-              <TabsTrigger value="users" className="flex items-center"><Users className="h-5 w-5 mr-2" /> Users</TabsTrigger>
-              <TabsTrigger value="config" className="flex items-center"><Settings className="h-5 w-5 mr-2" /> Config</TabsTrigger>
-              <TabsTrigger value="ai-judiciary" className="flex items-center"><Gavel className="h-5 w-5 mr-2" /> AI Judiciary</TabsTrigger>
-              <TabsTrigger value="analytics" className="flex items-center"><BarChart2 className="h-5 w-5 mr-2" /> Analytics</TabsTrigger>
-              <TabsTrigger value="finance" className="flex items-center"><DollarSign className="h-5 w-5 mr-2" /> Finance</TabsTrigger>
+              <TabsTrigger value="home" className="p-2" title="Home">
+                <Home className="h-5 w-5" />
+              </TabsTrigger>
+              <TabsTrigger value="challenges" className="p-2" title="Challenges">
+                <Trophy className="h-5 w-5" />
+              </TabsTrigger>
+              <TabsTrigger value="users" className="p-2" title="Users">
+                <Users className="h-5 w-5" />
+              </TabsTrigger>
+              <TabsTrigger value="config" className="p-2" title="Config">
+                <Settings className="h-5 w-5" />
+              </TabsTrigger>
+              <TabsTrigger value="ai-judiciary" className="p-2" title="AI Judiciary">
+                <Gavel className="h-5 w-5" />
+              </TabsTrigger>
+              <TabsTrigger value="analytics" className="p-2" title="Analytics">
+                <BarChart2 className="h-5 w-5" />
+              </TabsTrigger>
+              <TabsTrigger value="finance" className="p-2" title="Finance">
+                <DollarSign className="h-5 w-5" />
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="home">
