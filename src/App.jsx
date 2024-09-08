@@ -24,6 +24,7 @@ import ChallengeHistory from './pages/ChallengeHistory';
 import SoloProfile from './pages/SoloProfile';
 import TeamProfile from './pages/TeamProfile';
 import ChallengeManagement from './pages/ChallengeManagement';
+import AdminDashboard from './pages/AdminDashboard';
 
 const queryClient = new QueryClient();
 
@@ -66,6 +67,7 @@ const App = () => {
                   <Route path="/player/:id" element={<SoloProfile />} />
                   <Route path="/team/:id" element={<TeamProfile />} />
                   <Route path="/challenge-management/:id" element={<ChallengeManagement />} />
+                  <Route path="/admin" element={<AdminDashboard />} />
                 </Routes>
               </main>
               <Navigation />
