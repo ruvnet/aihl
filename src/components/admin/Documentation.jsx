@@ -36,7 +36,7 @@ const Documentation = ({ activeSubSection, onSubSectionChange }) => {
       <div className="flex items-center space-x-2">
         <form onSubmit={handleSearch} className="flex-grow">
           <div className="relative">
-            <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
             <Input
               type="text"
               placeholder="Search documentation"
