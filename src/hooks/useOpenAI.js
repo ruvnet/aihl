@@ -3,16 +3,30 @@ import OpenAI from 'openai';
 
 export const useOpenAI = () => {
   const [openai, setOpenai] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const storedSettings = JSON.parse(localStorage.getItem('llmSettings') || '{}');
-    setOpenai(new OpenAI({
-      apiKey: storedSettings.apiKey,
-      dangerouslyAllowBrowser: true // Note: This is for demo purposes. In production, use server-side calls.
-    }));
+    const apiKey = storedSettings.apiKey;
+
+    if (!apiKey) {
+      setError('OpenAI API key is missing. Please set it in the LLM settings.');
+      return;
+    }
+
+    try {
+      const openaiInstance = new OpenAI({
+        apiKey: apiKey,
+        dangerouslyAllowBrowser: true // Note: This is for demo purposes. In production, use server-side calls.
+      });
+      setOpenai(openaiInstance);
+    } catch (err) {
+      setError('Failed to initialize OpenAI client: ' + err.message);
+    }
   }, []);
 
   const sendMessage = async (message, context) => {
+    if (error) return error;
     if (!openai) return 'OpenAI is not initialized';
 
     try {
@@ -31,5 +45,5 @@ export const useOpenAI = () => {
     }
   };
 
-  return { sendMessage };
+  return { sendMessage, error };
 };
