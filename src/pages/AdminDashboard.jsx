@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -19,7 +15,7 @@ import { useAddChatMessage, useLatestChatMessages } from '@/integrations/supabas
 import { useUpdateSkillProfile } from '@/integrations/supabase/hooks/skill_profiles';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/supabase';
-import { Clock, GitBranch, GitCommit, GitPullRequest, Play, Pause, RotateCcw, Trophy, Target, Zap, Cpu, Users, MessageSquare, Video, Settings, Gavel } from 'lucide-react';
+import { Trophy, Users, Settings, Gavel, FileText, BarChart2 } from 'lucide-react';
 
 const AdminDashboard = () => {
   const [challengePrompt, setChallengePrompt] = useState('');
@@ -209,12 +205,13 @@ const AdminDashboard = () => {
       <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
 
       <Tabs defaultValue="challenges">
-        <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="challenges">Challenges</TabsTrigger>
-          <TabsTrigger value="users">Users</TabsTrigger>
-          <TabsTrigger value="config">Configuration</TabsTrigger>
-          <TabsTrigger value="ai-judiciary">AI Judiciary</TabsTrigger>
-          <TabsTrigger value="logs">Logs</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-6">
+          <TabsTrigger value="challenges"><Trophy className="h-5 w-5" /></TabsTrigger>
+          <TabsTrigger value="users"><Users className="h-5 w-5" /></TabsTrigger>
+          <TabsTrigger value="config"><Settings className="h-5 w-5" /></TabsTrigger>
+          <TabsTrigger value="ai-judiciary"><Gavel className="h-5 w-5" /></TabsTrigger>
+          <TabsTrigger value="logs"><FileText className="h-5 w-5" /></TabsTrigger>
+          <TabsTrigger value="analytics"><BarChart2 className="h-5 w-5" /></TabsTrigger>
         </TabsList>
 
         <TabsContent value="challenges">
@@ -426,6 +423,17 @@ const AdminDashboard = () => {
                   </div>
                 ))}
               </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="analytics">
+          <Card>
+            <CardHeader>
+              <CardTitle>Analytics Dashboard</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p>Analytics content goes here. Implement charts, graphs, and data visualizations.</p>
             </CardContent>
           </Card>
         </TabsContent>
