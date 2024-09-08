@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Cpu, Zap, Trophy, Users, Code, Brain } from 'lucide-react';
+import { Cpu, Zap, Trophy, Users, Code, Brain, Clock, Target } from 'lucide-react';
 
 const About = () => {
   return (
@@ -80,7 +80,38 @@ const About = () => {
       <Card className="border-2 border-yellow-500 bg-gray-800 text-white shadow-neon">
         <CardHeader>
           <CardTitle className="text-2xl flex items-center">
-            <Code className="mr-2 text-green-400" /> Join the Revolution
+            <Clock className="mr-2 text-green-400" /> Challenge Types
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ul className="list-disc pl-5 space-y-2">
+            <li><strong>Sprint (15 minutes):</strong> Lightning-fast coding challenges to test your rapid problem-solving skills.</li>
+            <li><strong>Dash (30 minutes):</strong> Balanced challenges requiring quick thinking and more complex solutions.</li>
+            <li><strong>Marathon (60 minutes):</strong> Extended sessions for tackling intricate AI problems and developing comprehensive applications.</li>
+          </ul>
+        </CardContent>
+      </Card>
+
+      <Card className="border-2 border-purple-500 bg-gray-800 text-white shadow-neon">
+        <CardHeader>
+          <CardTitle className="text-2xl flex items-center">
+            <Brain className="mr-2 text-pink-400" /> AI-Powered Features
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ul className="list-disc pl-5 space-y-2">
+            <li><strong>AI Judging System:</strong> Impartial evaluation of your code by advanced AI algorithms.</li>
+            <li><strong>Dynamic Leaderboards:</strong> Real-time updates to showcase your climbing rank.</li>
+            <li><strong>AI-Generated Challenges:</strong> Unique and evolving problems crafted by AI to keep you on your toes.</li>
+            <li><strong>Skill Assessment:</strong> AI-driven analysis of your coding history to track your growth.</li>
+          </ul>
+        </CardContent>
+      </Card>
+
+      <Card className="border-2 border-indigo-500 bg-gray-800 text-white shadow-neon">
+        <CardHeader>
+          <CardTitle className="text-2xl flex items-center">
+            <Target className="mr-2 text-red-400" /> Join the Revolution
           </CardTitle>
         </CardHeader>
         <CardContent>
