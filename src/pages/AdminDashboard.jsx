@@ -16,7 +16,7 @@ import { useUpdateSkillProfile } from '@/integrations/supabase/hooks/skill_profi
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/supabase';
 import { Trophy, Users, Settings, Gavel, FileText, BarChart2, Home, DollarSign, Activity, Brain } from 'lucide-react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, BarChart, Bar, PieChart, Pie, Cell } from 'recharts';
+import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, BarChart, Bar, PieChart, Pie, Cell } from 'recharts';
 
 const AdminDashboard = () => {
   const [challengePrompt, setChallengePrompt] = useState('');
@@ -244,12 +244,25 @@ const AdminDashboard = () => {
     setLogs(prev => [...prev, { timestamp: new Date().toISOString(), message }]);
   };
 
+  const renderResponsiveChart = (ChartComponent, data, dataKey, width = '100%', height = 300) => (
+    <ResponsiveContainer width={width} height={height}>
+      <ChartComponent data={data}>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="month" />
+        <YAxis />
+        <Tooltip />
+        <Legend />
+        <Line type="monotone" dataKey={dataKey} stroke="#8884d8" />
+      </ChartComponent>
+    </ResponsiveContainer>
+  );
+
   return (
     <div className="container mx-auto p-4 space-y-6">
       <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
 
-      <Tabs defaultValue="home">
-        <TabsList className="grid w-full grid-cols-7">
+      <Tabs defaultValue="home" className="space-y-4">
+        <TabsList className="grid w-full grid-cols-7 lg:w-auto">
           <TabsTrigger value="home"><Home className="h-5 w-5" /></TabsTrigger>
           <TabsTrigger value="challenges"><Trophy className="h-5 w-5" /></TabsTrigger>
           <TabsTrigger value="users"><Users className="h-5 w-5" /></TabsTrigger>
@@ -265,7 +278,33 @@ const AdminDashboard = () => {
               <CardTitle>Welcome to Admin Dashboard</CardTitle>
             </CardHeader>
             <CardContent>
-              <p>Select a tab to manage different aspects of the AI Hacking League.</p>
+              <p className="mb-4">Use this dashboard to manage the AI Hacking League platform:</p>
+              <ul className="list-disc pl-5 space-y-2 mb-6">
+                <li>Generate and manage AI challenges</li>
+                <li>Monitor user activities and submissions</li>
+                <li>Configure system settings and judging criteria</li>
+                <li>Review logs and analytics</li>
+              </ul>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg">User Statistics</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p>Total Users: 3,000</p>
+                    <p>New Registrations (Last 7 days): 150</p>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg">Financial Overview</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p>Total Revenue: $75,000</p>
+                    <p>Payouts (Last 30 days): $25,000</p>
+                  </CardContent>
+                </Card>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -310,7 +349,7 @@ const AdminDashboard = () => {
             </CardHeader>
             <CardContent>
               {latestChallenge ? (
-                <pre>{JSON.stringify(latestChallenge, null, 2)}</pre>
+                <pre className="whitespace-pre-wrap">{JSON.stringify(latestChallenge, null, 2)}</pre>
               ) : (
                 <p>No challenges generated yet.</p>
               )}
@@ -485,7 +524,7 @@ const AdminDashboard = () => {
 
         <TabsContent value="analytics">
           <Tabs defaultValue="user-growth">
-            <TabsList>
+            <TabsList className="mb-4 flex flex-wrap">
               <TabsTrigger value="user-growth">User Growth</TabsTrigger>
               <TabsTrigger value="challenge-completion">Challenge Completion</TabsTrigger>
               <TabsTrigger value="revenue">Revenue</TabsTrigger>
@@ -498,14 +537,7 @@ const AdminDashboard = () => {
                   <CardTitle>User Growth Over Time</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <LineChart width={600} height={300} data={userGrowthData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="month" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="users" stroke="#8884d8" />
-                  </LineChart>
+                  {renderResponsiveChart(LineChart, userGrowthData, "users")}
                 </CardContent>
               </Card>
             </TabsContent>
@@ -515,14 +547,16 @@ const AdminDashboard = () => {
                   <CardTitle>Challenge Completion by Difficulty</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <BarChart width={600} height={300} data={challengeCompletionData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="difficulty" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Bar dataKey="completed" fill="#82ca9d" />
-                  </BarChart>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <BarChart data={challengeCompletionData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="difficulty" />
+                      <YAxis />
+                      <Tooltip />
+                      <Legend />
+                      <Bar dataKey="completed" fill="#82ca9d" />
+                    </BarChart>
+                  </ResponsiveContainer>
                 </CardContent>
               </Card>
             </TabsContent>
@@ -532,14 +566,7 @@ const AdminDashboard = () => {
                   <CardTitle>Monthly Revenue</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <LineChart width={600} height={300} data={revenueData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="month" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="revenue" stroke="#8884d8" />
-                  </LineChart>
+                  {renderResponsiveChart(LineChart, revenueData, "revenue")}
                 </CardContent>
               </Card>
             </TabsContent>
@@ -549,14 +576,16 @@ const AdminDashboard = () => {
                   <CardTitle>Daily Active Users</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <BarChart width={600} height={300} data={userActivityData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="day" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Bar dataKey="active" fill="#8884d8" />
-                  </BarChart>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <BarChart data={userActivityData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="day" />
+                      <YAxis />
+                      <Tooltip />
+                      <Legend />
+                      <Bar dataKey="active" fill="#8884d8" />
+                    </BarChart>
+                  </ResponsiveContainer>
                 </CardContent>
               </Card>
             </TabsContent>
@@ -566,23 +595,25 @@ const AdminDashboard = () => {
                   <CardTitle>User Skill Distribution</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <PieChart width={400} height={400}>
-                    <Pie
-                      data={skillDistributionData}
-                      cx={200}
-                      cy={200}
-                      labelLine={false}
-                      outerRadius={80}
-                      fill="#8884d8"
-                      dataKey="value"
-                    >
-                      {skillDistributionData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                      ))}
-                    </Pie>
-                    <Tooltip />
-                    <Legend />
-                  </PieChart>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <PieChart>
+                      <Pie
+                        data={skillDistributionData}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={false}
+                        outerRadius={80}
+                        fill="#8884d8"
+                        dataKey="value"
+                      >
+                        {skillDistributionData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                        ))}
+                      </Pie>
+                      <Tooltip />
+                      <Legend />
+                    </PieChart>
+                  </ResponsiveContainer>
                 </CardContent>
               </Card>
             </TabsContent>
