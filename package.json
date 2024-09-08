@@ -60,6 +60,8 @@
     "react-day-picker": "^8.10.1",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.52.0",
+    "react-native-gifted-chat": "^2.6.2",
+    "react-native-web": "^0.19.12",
     "react-resizable-panels": "^2.0.19",
     "react-router-dom": "^6.23.1",
     "realtime-leaderboard": "^1.0.0",

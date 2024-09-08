@@ -1,36 +1,45 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
+import { View } from 'react-native-web';
+import { GiftedChat } from 'react-native-gifted-chat';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { useOpenAI } from '@/hooks/useOpenAI';
 import { useDocumentation } from '@/hooks/useDocumentation';
+import { supabase } from '@/integrations/supabase/supabase';
 
 const AdminChat = () => {
   const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState('');
   const { sendMessage } = useOpenAI();
   const { getRelevantDocs } = useDocumentation();
-  const messagesEndRef = useRef(null);
+  const [user, setUser] = useState(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
+    };
+    fetchUser();
+  }, []);
 
-  useEffect(scrollToBottom, [messages]);
+  const onSend = async (newMessages = []) => {
+    setMessages(previousMessages => GiftedChat.append(previousMessages, newMessages));
 
-  const handleSend = async () => {
-    if (!input.trim()) return;
-
-    const userMessage = { role: 'user', content: input };
-    setMessages(prev => [...prev, userMessage]);
-    setInput('');
-
-    const relevantDocs = await getRelevantDocs(input);
+    const userMessage = newMessages[0];
+    const relevantDocs = await getRelevantDocs(userMessage.text);
     const context = relevantDocs.map(doc => doc.content).join('\n\n');
 
-    const aiResponse = await sendMessage(input, context);
-    setMessages(prev => [...prev, { role: 'assistant', content: aiResponse }]);
+    const aiResponse = await sendMessage(userMessage.text, context);
+    const aiMessage = {
+      _id: Math.round(Math.random() * 1000000),
+      text: aiResponse,
+      createdAt: new Date(),
+      user: {
+        _id: 2,
+        name: 'AI Assistant',
+        avatar: 'https://placeimg.com/140/140/tech',
+      },
+    };
+
+    setMessages(previousMessages => GiftedChat.append(previousMessages, [aiMessage]));
   };
 
   return (
@@ -38,27 +47,18 @@ const AdminChat = () => {
       <CardHeader>
         <CardTitle>Admin Chat</CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col h-full">
-        <ScrollArea className="flex-grow mb-4">
-          {messages.map((message, index) => (
-            <div key={index} className={`mb-4 ${message.role === 'user' ? 'text-right' : 'text-left'}`}>
-              <div className={`inline-block p-2 rounded-lg ${message.role === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'}`}>
-                {message.content}
-              </div>
-            </div>
-          ))}
-          <div ref={messagesEndRef} />
-        </ScrollArea>
-        <div className="flex">
-          <Input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-            placeholder="Type your message..."
-            className="flex-grow mr-2"
+      <CardContent className="h-full">
+        <View style={{ flex: 1 }}>
+          <GiftedChat
+            messages={messages}
+            onSend={messages => onSend(messages)}
+            user={{
+              _id: user?.id || 1,
+            }}
+            renderUsernameOnMessage
+            showAvatarForEveryMessage
           />
-          <Button onClick={handleSend}>Send</Button>
-        </div>
+        </View>
       </CardContent>
     </Card>
   );
