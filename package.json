@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.6.0",
+    "@octokit/rest": "^19.0.13",
     "@radix-ui/react-accordion": "^1.2.0",
     "@radix-ui/react-alert-dialog": "^1.1.0",
     "@radix-ui/react-aspect-ratio": "^1.1.0",
@@ -53,6 +54,7 @@
     "input-otp": "^1.2.4",
     "lucide-react": "^0.417.0",
     "next-themes": "^0.3.0",
+    "openai": "^4.58.1",
     "react": "^18.2.0",
     "react-burger-menu": "^3.0.9",
     "react-day-picker": "^8.10.1",
