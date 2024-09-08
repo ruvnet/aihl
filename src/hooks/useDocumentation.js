@@ -13,11 +13,11 @@ export const useDocumentation = () => {
       const codeLibraries = await import('../documentation/CodeLibrariesOverview.jsx');
 
       setDocs([
-        { content: JSON.stringify(adminPanel.default().props.children) },
-        { content: JSON.stringify(technicalDocs.default().props.children) },
-        { content: JSON.stringify(deployment.default().props.children) },
-        { content: JSON.stringify(customization.default().props.children) },
-        { content: JSON.stringify(codeLibraries.default().props.children) },
+        { content: adminPanel.default().props.children },
+        { content: technicalDocs.default().props.children },
+        { content: deployment.default().props.children },
+        { content: customization.default().props.children },
+        { content: codeLibraries.default().props.children },
       ]);
     };
 
@@ -26,10 +26,9 @@ export const useDocumentation = () => {
 
   const getRelevantDocs = async (query) => {
     // In a real application, this would use a more sophisticated search algorithm
-    return docs.filter(doc => {
-      const content = typeof doc.content === 'string' ? doc.content : JSON.stringify(doc.content);
-      return content.toLowerCase().includes(query.toLowerCase());
-    });
+    return docs.filter(doc => 
+      doc.content.toLowerCase().includes(query.toLowerCase())
+    );
   };
 
   return { getRelevantDocs };
