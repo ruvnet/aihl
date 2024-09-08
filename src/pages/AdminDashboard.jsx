@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Users, Settings, BarChart2, Shield, X } from 'lucide-react';
+import { Users, Settings, BarChart2, Shield, X, BookOpen } from 'lucide-react';
 import CommunityManagement from '../components/admin/CommunityManagement';
 import SystemConfiguration from '../components/admin/SystemConfiguration';
 import AnalyticsReporting from '../components/admin/AnalyticsReporting';
 import SecurityCompliance from '../components/admin/SecurityCompliance';
+import Documentation from '../components/admin/Documentation';
 import HomeTab from '../components/admin/HomeTab';
 
 const AdminDashboard = () => {
@@ -15,6 +16,7 @@ const AdminDashboard = () => {
     system: '',
     analytics: '',
     security: '',
+    documentation: '',
   });
 
   useEffect(() => {
@@ -38,11 +40,11 @@ const AdminDashboard = () => {
     { id: 'system', label: 'System', icon: Settings, component: SystemConfiguration },
     { id: 'analytics', label: 'Analytics', icon: BarChart2, component: AnalyticsReporting },
     { id: 'security', label: 'Security', icon: Shield, component: SecurityCompliance },
+    { id: 'documentation', label: 'Documentation', icon: BookOpen, component: Documentation },
   ];
 
   const handleSectionChange = (sectionId) => {
     setActiveSection(sectionId);
-    // If there's no active subsection for this section, it will default to the first tab
     if (!activeSubSection[sectionId]) {
       const newSubSection = { ...activeSubSection };
       newSubSection[sectionId] = '';
