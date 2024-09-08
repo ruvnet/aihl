@@ -1,12 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Trophy, Award, Star, Wallet, ShieldAlert } from 'lucide-react';
+import { Trophy, Award, Star, Wallet } from 'lucide-react';
 import WalletSection from '../components/WalletSection';
-import { Link } from 'react-router-dom';
-import { useSupabaseAuth } from '@/integrations/supabase/auth';
 
 const Profile = () => {
   const [user, setUser] = useState({
@@ -15,7 +13,6 @@ const Profile = () => {
     email: 'john@example.com',
     githubConnected: true,
     balance: 1500,
-    isAdmin: false,
   });
 
   const [achievements, setAchievements] = useState([
@@ -29,20 +26,6 @@ const Profile = () => {
     { id: 2, name: 'Data Wizard', color: 'bg-blue-500' },
     { id: 3, name: 'ML Pioneer', color: 'bg-green-500' },
   ]);
-
-  const { session } = useSupabaseAuth();
-
-  useEffect(() => {
-    if (session) {
-      // In a real app, you would fetch the user's profile data here
-      // For now, we'll just update the email and set isAdmin based on a condition
-      setUser(prevUser => ({
-        ...prevUser,
-        email: session.user.email,
-        isAdmin: session.user.email === 'admin@example.com' // This is a placeholder condition
-      }));
-    }
-  }, [session]);
 
   return (
     <div className="space-y-6">
@@ -78,17 +61,7 @@ const Profile = () => {
             </CardContent>
           </Card>
 
-          <div className="mt-6 space-y-4">
-            <Button className="w-full">Edit Profile</Button>
-            {user.isAdmin && (
-              <Button asChild className="w-full bg-red-600 hover:bg-red-700">
-                <Link to="/admin">
-                  <ShieldAlert className="mr-2 h-4 w-4" />
-                  Access Admin Dashboard
-                </Link>
-              </Button>
-            )}
-          </div>
+          <Button className="w-full mt-6">Edit Profile</Button>
         </TabsContent>
         <TabsContent value="achievements">
           <Card>
