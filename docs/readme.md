@@ -13,6 +13,11 @@ Welcome to the comprehensive documentation for the AI Hacking League platform. T
 7. [Security](#security)
 8. [Database](#database)
 9. [AI-Powered Features](#ai-powered-features)
+10. [API Integration](#api-integration)
+11. [Environment Setup](#environment-setup)
+12. [Testing](#testing)
+13. [Performance Optimization](#performance-optimization)
+14. [Changelog](#changelog)
 
 ## Overview
 
@@ -20,20 +25,15 @@ The AI Hacking League is a cutting-edge competitive platform where developers an
 
 ## Getting Started
 
-For quick setup and initial configuration, refer to the [Getting Started Guide](getting-started.md).
+For quick setup and initial configuration, refer to the [Environment Setup Documentation](environment.md).
 
 ## Architecture
 
-Detailed information about the system's architecture, including frontend, backend, and AI components, can be found in the [Architecture Documentation](architecture.md).
+Detailed information about the system's architecture, including frontend, backend, and AI components, can be found in the [Technical Documentation](TechnicalDocumentation.jsx).
 
 ## Features
 
-Explore the platform's key features:
-
-- [Challenge Management](features/challenge-management.md)
-- [User and Team Management](features/user-team-management.md)
-- [Leaderboards and Scoring](features/leaderboards-scoring.md)
-- [Real-time Collaboration](features/real-time-collaboration.md)
+Explore the platform's key features in the [AI-Powered Features Documentation](ai-powered-features.md).
 
 ## Development Guidelines
 
@@ -54,5 +54,25 @@ Understand the database schema, migrations, and querying best practices in the [
 ## AI-Powered Features
 
 Discover the innovative AI-driven features of our platform in the [AI-Powered Features Documentation](ai-powered-features.md).
+
+## API Integration
+
+Learn how to integrate with OpenAI and Supabase APIs in the [API Integration Documentation](api.md).
+
+## Environment Setup
+
+Set up your development environment using the [Environment Setup Documentation](environment.md).
+
+## Testing
+
+Implement robust testing practices using our [Testing Guide](testing.md).
+
+## Performance Optimization
+
+Optimize your application's performance with the [Performance Optimization Guide](performance.md).
+
+## Changelog
+
+Track version history and updates in the [Changelog](changelog.md).
 
 For any additional questions or support, please contact our development team or refer to the project's issue tracker on GitHub.
