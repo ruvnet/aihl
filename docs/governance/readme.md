@@ -25,6 +25,7 @@ The AI Hacker League operates under the following key principles:
 - [Conflict Resolution](conflict_resolution.md): Procedures for addressing disputes and maintaining harmony.
 - [Financial Management](financial_management.md): Policies for budget allocation, fundraising, and financial reporting.
 - [Decision Making Process](decision_making.md): Framework for collaborative and transparent decision-making.
+- [Meritocracy Policy](meritocracy.md): Our approach to recognizing and rewarding contributions based on merit.
 
 ## Get Involved
 
