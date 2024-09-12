@@ -29,3 +29,10 @@ For detailed information about our governance structure, please refer to the [go
 ### Commitment to Ethical AI Practices
 
 The AI Hacker League is committed to promoting ethical AI practices and community building. We believe that AI should be developed and used responsibly, with consideration for its impact on society. Our ethics committee works to ensure that all activities align with these principles and that participants are encouraged to adopt ethical practices in their AI development.
+
+### Additional Resources
+
+For more detailed information about the AI Hacker League, please refer to the following documents:
+
+- [AI Hacker League Documentation Overview](docs/readme.md)
+- [Governance Documents](docs/governance/readme.md)
