@@ -21,6 +21,10 @@ The AI Hacker League operates under the following key principles:
 - [Social Media Strategy](04_social_media.md): Guidelines for maintaining an effective online presence.
 - [Team Structure](team.md): Overview of our leadership and key roles.
 - [Founding Charter](charter.md): Our guiding principles and organizational commitments.
+- [Code of Conduct](code_of_conduct.md): Guidelines for behavior and interaction within the league.
+- [Conflict Resolution](conflict_resolution.md): Procedures for addressing disputes and maintaining harmony.
+- [Financial Management](financial_management.md): Policies for budget allocation, fundraising, and financial reporting.
+- [Decision Making Process](decision_making.md): Framework for collaborative and transparent decision-making.
 
 ## Get Involved
 
