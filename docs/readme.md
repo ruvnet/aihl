@@ -1,6 +1,6 @@
-# AI Hacking League Documentation
+# AI Hacker League Documentation
 
-Welcome to the comprehensive documentation for the AI Hacking League platform. This guide provides detailed information about the system architecture, features, and development guidelines.
+Welcome to the comprehensive documentation for the AI Hacker League platform. This guide provides detailed information about the system architecture, features, development guidelines, and governance structure.
 
 ## Table of Contents
 
@@ -18,10 +18,11 @@ Welcome to the comprehensive documentation for the AI Hacking League platform. T
 12. [Testing](#testing)
 13. [Performance Optimization](#performance-optimization)
 14. [Changelog](#changelog)
+15. [Governance](#governance)
 
 ## Overview
 
-The AI Hacking League is a cutting-edge competitive platform where developers and AI enthusiasts participate in time-constrained challenges to build innovative AI applications. This documentation serves as a comprehensive guide for developers, administrators, and contributors to understand and work with the platform effectively.
+The AI Hacker League is a cutting-edge competitive platform where developers and AI enthusiasts participate in time-constrained challenges to build innovative AI applications. This documentation serves as a comprehensive guide for developers, administrators, and contributors to understand and work with the platform effectively.
 
 ## Getting Started
 
@@ -41,7 +42,7 @@ Follow our development best practices and coding standards outlined in the [Deve
 
 ## Deployment
 
-For information on deploying the AI Hacking League platform, consult the [Deployment Guide](deployment.md).
+For information on deploying the AI Hacker League platform, consult the [Deployment Guide](deployment.md).
 
 ## Security
 
@@ -74,5 +75,14 @@ Optimize your application's performance with the [Performance Optimization Guide
 ## Changelog
 
 Track version history and updates in the [Changelog](changelog.md).
+
+## Governance
+
+Understand the formation, management, and recruitment processes for the AI Hacker League:
+
+- [Formation To-Do List](governance/01_formation.md)
+- [Management To-Do List](governance/02_management.md)
+- [Recruitment To-Do List](governance/03_recruitment.md)
+- [Social Media Strategy](governance/04_social_media.md)
 
 For any additional questions or support, please contact our development team or refer to the project's issue tracker on GitHub.
