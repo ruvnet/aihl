@@ -20,6 +20,12 @@
 - LinkedIn: [LinkedIn Profile URL]
 - Twitter: [@twitter_handle]
 
+### Chief Financial Officer
+- Name: [Full Name]
+- GitHub: [@github_username]
+- LinkedIn: [LinkedIn Profile URL]
+- Twitter: [@twitter_handle]
+
 ## Technical Division
 
 ### Head of AI Innovation
@@ -35,6 +41,18 @@
 - Twitter: [@twitter_handle]
 
 ### User Experience Director
+- Name: [Full Name]
+- GitHub: [@github_username]
+- LinkedIn: [LinkedIn Profile URL]
+- Twitter: [@twitter_handle]
+
+### Challenge Design Director
+- Name: [Full Name]
+- GitHub: [@github_username]
+- LinkedIn: [LinkedIn Profile URL]
+- Twitter: [@twitter_handle]
+
+### Technical Rules Officer
 - Name: [Full Name]
 - GitHub: [@github_username]
 - LinkedIn: [LinkedIn Profile URL]
@@ -60,6 +78,24 @@
 - LinkedIn: [LinkedIn Profile URL]
 - Twitter: [@twitter_handle]
 
+### Educational Programs Coordinator
+- Name: [Full Name]
+- GitHub: [@github_username]
+- LinkedIn: [LinkedIn Profile URL]
+- Twitter: [@twitter_handle]
+
+### Diversity and Inclusion Officer
+- Name: [Full Name]
+- GitHub: [@github_username]
+- LinkedIn: [LinkedIn Profile URL]
+- Twitter: [@twitter_handle]
+
+### Sponsorship Manager
+- Name: [Full Name]
+- GitHub: [@github_username]
+- LinkedIn: [LinkedIn Profile URL]
+- Twitter: [@twitter_handle]
+
 ## Advisory Council
 
 ### AI Ethics Advisor
@@ -75,6 +111,32 @@
 - Twitter: [@twitter_handle]
 
 ### Legal Counsel
+- Name: [Full Name]
+- GitHub: [@github_username]
+- LinkedIn: [LinkedIn Profile URL]
+- Twitter: [@twitter_handle]
+
+### Data Protection Officer
+- Name: [Full Name]
+- GitHub: [@github_username]
+- LinkedIn: [LinkedIn Profile URL]
+- Twitter: [@twitter_handle]
+
+## Competition and Development
+
+### Talent Scout
+- Name: [Full Name]
+- GitHub: [@github_username]
+- LinkedIn: [LinkedIn Profile URL]
+- Twitter: [@twitter_handle]
+
+### Esports Coordinator
+- Name: [Full Name]
+- GitHub: [@github_username]
+- LinkedIn: [LinkedIn Profile URL]
+- Twitter: [@twitter_handle]
+
+### Research Director
 - Name: [Full Name]
 - GitHub: [@github_username]
 - LinkedIn: [LinkedIn Profile URL]

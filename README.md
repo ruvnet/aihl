@@ -26,6 +26,10 @@ The AI Hacker League is governed by a board of directors and several key committ
 
 For detailed information about our governance structure, please refer to the [governance documents](docs/governance/readme.md) located in the `docs/governance/` directory.
 
+### Team
+
+To learn more about the dedicated individuals leading the AI Hacker League, please visit our [Team Page](docs/governance/team.md).
+
 ### Commitment to Ethical AI Practices
 
 The AI Hacker League is committed to promoting ethical AI practices and community building. We believe that AI should be developed and used responsibly, with consideration for its impact on society. Our ethics committee works to ensure that all activities align with these principles and that participants are encouraged to adopt ethical practices in their AI development.
