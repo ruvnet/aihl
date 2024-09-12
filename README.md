@@ -1,72 +1,31 @@
-# Welcome to your GPT Engineer project
+# AI Hacker League
 
-## Project info
+## Purpose, Governance, and Structure
 
-**Project**: challenge-hub-ai
+The AI Hacker League is a non-profit organization dedicated to fostering innovation, collaboration, and ethical practices in the field of artificial intelligence. Our mission is to create a platform where AI enthusiasts and developers can come together to solve challenging problems, share knowledge, and build a supportive community.
 
-**URL**: https://run.gptengineer.app/projects/ece9f8a3-3fe3-4c1f-aa65-014525e8502f/improve
+### Mission, Vision, and Core Values
 
-## How can I edit this code?
+**Mission**: To advance the field of AI through competitive challenges, community engagement, and ethical practices.
 
-There are several ways of editing your application.
+**Vision**: To be the leading platform for AI innovation, where developers and enthusiasts can collaborate, learn, and grow together.
 
-**Use GPT Engineer**
+**Core Values**:
+- **Innovation**: Encouraging creative solutions and cutting-edge AI development.
+- **Collaboration**: Fostering a supportive and inclusive community.
+- **Ethics**: Promoting responsible AI practices and ensuring fairness in all activities.
+- **Excellence**: Striving for the highest standards in all our endeavors.
 
-Simply visit the GPT Engineer project at [GPT Engineer](https://gptengineer.app/projects/ece9f8a3-3fe3-4c1f-aa65-014525e8502f/improve) and start prompting.
+### Governance Structure
 
-Changes made via gptengineer.app will be committed automatically to this repo.
+The AI Hacker League is governed by a board of directors and several key committees. The board of directors is responsible for overseeing the organization's strategic direction, financial management, and overall governance. Key committees include:
 
-**Use your preferred IDE**
+- **Technical Advisory Committee**: Provides guidance on AI technologies and challenge design.
+- **Ethics Committee**: Ensures that all activities adhere to ethical standards and promotes responsible AI practices.
+- **Outreach Committee**: Focuses on community engagement, partnerships, and marketing efforts.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in the GPT Engineer UI.
+For detailed information about our governance structure, please refer to the [governance documents](docs/governance/readme.md) located in the `docs/governance/` directory.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Commitment to Ethical AI Practices
 
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with .
-
-- Vite
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-All GPT Engineer projects can be deployed directly via the GPT Engineer app.
-
-Simply visit your project at [GPT Engineer](https://gptengineer.app/projects/ece9f8a3-3fe3-4c1f-aa65-014525e8502f/improve) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.gptengineer.app/tips-tricks/custom-domain/)
+The AI Hacker League is committed to promoting ethical AI practices and community building. We believe that AI should be developed and used responsibly, with consideration for its impact on society. Our ethics committee works to ensure that all activities align with these principles and that participants are encouraged to adopt ethical practices in their AI development.
