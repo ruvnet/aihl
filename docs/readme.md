@@ -24,6 +24,17 @@ Welcome to the comprehensive documentation for the AI Hacker League platform. Th
 
 The AI Hacker League is a cutting-edge competitive platform where developers and AI enthusiasts participate in time-constrained challenges to build innovative AI applications. This documentation serves as a comprehensive guide for developers, administrators, and contributors to understand and work with the platform effectively.
 
+### Charter
+
+The AI Hacker League operates under the following key principles:
+
+1. **Meritocracy**: Advancement and recognition based solely on skill and contribution.
+2. **Openness**: Transparent operations and decision-making processes.
+3. **Non-profit**: All proceeds reinvested into the league's growth and participant benefits.
+4. **Innovation**: Fostering cutting-edge AI development and application.
+5. **Ethics**: Promoting responsible and ethical AI practices.
+6. **Community**: Building a supportive, diverse, and inclusive AI developer community.
+
 ## Getting Started
 
 For quick setup and initial configuration, refer to the [Environment Setup Documentation](environment.md).
