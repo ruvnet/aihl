@@ -32,7 +32,7 @@ To learn more about the dedicated individuals leading the AI Hacker League, plea
 
 ### Founding Charter
 
-Our organization is guided by the principles and commitments outlined in our [Founding League Charter](docs/governance/founding_league_charter.md).
+Our organization is guided by the principles and commitments outlined in our [Founding League Charter](docs/governance/charter.md).
 
 ### Commitment to Ethical AI Practices
 
