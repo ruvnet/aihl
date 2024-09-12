@@ -30,6 +30,10 @@ For detailed information about our governance structure, please refer to the [go
 
 To learn more about the dedicated individuals leading the AI Hacker League, please visit our [Team Page](docs/governance/team.md).
 
+### Founding Charter
+
+Our organization is guided by the principles and commitments outlined in our [Founding League Charter](docs/governance/founding_league_charter.md).
+
 ### Commitment to Ethical AI Practices
 
 The AI Hacker League is committed to promoting ethical AI practices and community building. We believe that AI should be developed and used responsibly, with consideration for its impact on society. Our ethics committee works to ensure that all activities align with these principles and that participants are encouraged to adopt ethical practices in their AI development.
