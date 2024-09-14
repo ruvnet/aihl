@@ -67,3 +67,4 @@ uvloop==0.20.0 ; (sys_platform != "win32" and sys_platform != "cygwin") and plat
 watchfiles==0.24.0 ; python_version >= "3.9" and python_version < "4.0"
 websockets==12.0 ; python_version >= "3.9" and python_version < "4.0"
 yarl==1.11.1 ; python_version >= "3.9" and python_version < "4.0"
+lionagi==0.2.7
