@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "ai-hacking-league-backend"
+version = "0.1.0"
+description = "Backend for the AI Hacking League application"
+authors = ["Your Name <youremail@example.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+fastapi = {extras = ["all"], version = "^0.114.2"}
+pydantic = ">=2.0,<3.0"
+supabase = "^2.7.4"
+pyjwt = "^2.9.0"
+requests = "^2.32.3"
+python-dotenv = "^1.0.1"
+sqlalchemy = "^2.0.34"
+openai = "^1.45.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.3"
+pytest-asyncio = "^0.24.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

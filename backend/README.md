@@ -1,232 +1,196 @@
-# AI Hacking League Backend
+# AI Hacking League Backend README
 
-This document outlines the backend architecture and API specification for the AI Hacking League application.
+## Overview
 
-## Technology Stack
+The AI Hacking League Backend is a FastAPI-based backend system designed to manage various aspects of the AI Hacking League, such as user authentication, challenges, leaderboard tracking, team management, and an AI-powered judicial system. This backend is modular, scalable, and integrated with Supabase for database handling and GitHub for repository management.
 
-- FastAPI: For building the API
-- Pydantic: For data validation and settings management
-- Supabase: For database and authentication
-- GitHub API: For challenge repository management
-- Docker: For containerization and deployment
+## Features
 
-## Project Structure
+- **User Authentication and Authorization**: Implements registration, login, and user management.
+- **Challenge Management**: Allows the creation, listing, and management of coding challenges with varying difficulty levels.
+- **Leaderboard**: Tracks participants' progress and displays a global or challenge-specific leaderboard.
+- **Team Management**: Supports team creation, listing, and management.
+- **Supabase Integration**: Uses Supabase as the database backend for storing user, challenge, and team information.
+- **GitHub Integration**: Creates GitHub repositories for coding challenges and maintains challenge repositories.
+- **Secure Token Management**: JWT-based token creation for secure API access.
+- **AI Judicial System**: Uses OpenAI GPT-4 to evaluate code submissions based on a weighted scoring system.
+- **Docker Support**: The backend is containerized using Docker for easy deployment and scalability.
+- **Environment Configurations**: Sensitive credentials and configurations are stored securely using environment variables.
 
+## AI Judicial System
+
+### Overview
+
+The AI Judicial System leverages the power of OpenAI's GPT-4 model to automatically evaluate code submissions for challenges. The system provides objective scoring and feedback based on predefined evaluation criteria.
+
+### Evaluation Criteria
+
+1. **Functionality (40%)**: How well does the solution solve the given problem?
+2. **Innovation (30%)**: Does the solution present novel approaches or creative use of AI technologies?
+3. **Efficiency (20%)**: How optimized and performant is the code?
+4. **Code Quality (10%)**: Is the code well-structured, readable, and following best practices?
+
+### Configuration
+
+To enable the AI Judicial System, ensure the following environment variable is set in your `.env` file:
+
+```bash
+OPENAI_API_KEY=your_openai_api_key
 ```
+
+Additional configuration can be managed through the `app/core/config.py` file:
+
+- **AI Model**: Default is `gpt-4`, but you can modify it by setting the `AI_MODEL` variable in the `.env` file if needed.
+
+```bash
+AI_MODEL=gpt-4
+```
+
+### Using the AI Judicial System
+
+The `/judge/submit` endpoint allows users to submit their code for evaluation. The response will include a score out of 100 and detailed feedback for each of the evaluation criteria.
+
+### Example
+
+To submit a code file for evaluation, make a POST request to `/judge/submit` with the file as a form-data field. Optionally, you can include a `language` parameter to specify the programming language (default is Python).
+
+```bash
+curl -X POST "http://localhost:8000/judge/submit" \
+  -F "file=@your_code.py" \
+  -F "language=Python"
+```
+
+The response will include a detailed evaluation of the submission.
+
+## Directory Structure
+
+```bash
 backend/
 ├── app/
-│   ├── api/
-│   │   ├── endpoints/
-│   │   │   ├── auth.py
-│   │   │   ├── challenges.py
-│   │   │   ├── leaderboard.py
-│   │   │   ├── teams.py
-│   │   │   └── users.py
-│   │   └── api.py
-│   ├── core/
-│   │   ├── config.py
-│   │   └── security.py
-│   ├── db/
-│   │   ├── base.py
-│   │   └── session.py
-│   ├── models/
-│   │   ├── challenge.py
-│   │   ├── team.py
-│   │   └── user.py
-│   ├── schemas/
-│   │   ├── challenge.py
-│   │   ├── team.py
-│   │   └── user.py
-│   ├── services/
-│   │   ├── github_service.py
-│   │   └── supabase_service.py
-│   └── main.py
-├── tests/
-│   ├── api/
-│   ├── services/
-│   └── conftest.py
-├── Dockerfile
-├── requirements.txt
-└── .env.example
+│   ├── api/                # API routers for various features
+│   │   ├── endpoints/      # Individual API endpoint modules
+│   └── core/               # Core configurations and security modules
+│   └── db/                 # Database models and session management
+│   └── models/             # SQLAlchemy models for the database
+│   └── schemas/            # Pydantic schemas for request validation
+│   └── services/           # Services handling external integrations (Supabase, GitHub, AI Judge)
+├── tests/                  # Unit and integration tests
+├── .env.example            # Example environment configuration
+├── Dockerfile              # Dockerfile for containerizing the application
+├── requirements.txt        # Python dependencies
+└── poetry.lock             # Poetry lock file for dependency management
 ```
 
-## API Endpoints
+## Setup
 
-### Authentication
+### 1. Prerequisites
 
-- POST /api/auth/register: Register a new user
-- POST /api/auth/login: User login
-- POST /api/auth/logout: User logout
-- GET /api/auth/me: Get current user info
+- **Python 3.9+** is required to run the backend.
+- **Docker** is recommended for containerized deployment.
+- **Supabase** project and API credentials.
+- **GitHub** personal access token.
+- **OpenAI API Key** to enable the AI Judicial System.
 
-### Challenges
+### 2. Environment Setup
 
-- GET /api/challenges: List all challenges
-- GET /api/challenges/{challenge_id}: Get challenge details
-- POST /api/challenges: Create a new challenge (admin only)
-- PUT /api/challenges/{challenge_id}: Update challenge details (admin only)
-- DELETE /api/challenges/{challenge_id}: Delete a challenge (admin only)
-- POST /api/challenges/{challenge_id}/enroll: Enroll in a challenge
-- POST /api/challenges/{challenge_id}/submit: Submit a challenge solution
-
-### Leaderboard
-
-- GET /api/leaderboard: Get global leaderboard
-- GET /api/leaderboard/challenge/{challenge_id}: Get leaderboard for a specific challenge
-
-### Teams
-
-- GET /api/teams: List all teams
-- GET /api/teams/{team_id}: Get team details
-- POST /api/teams: Create a new team
-- PUT /api/teams/{team_id}: Update team details
-- DELETE /api/teams/{team_id}: Delete a team
-- POST /api/teams/{team_id}/join: Join a team
-- POST /api/teams/{team_id}/leave: Leave a team
-
-### Users
-
-- GET /api/users/{user_id}: Get user profile
-- PUT /api/users/{user_id}: Update user profile
-- GET /api/users/{user_id}/challenges: Get user's enrolled challenges
-- GET /api/users/{user_id}/teams: Get user's teams
-
-## Data Models
-
-### User
-
-- id: UUID
-- username: str
-- email: str
-- hashed_password: str
-- is_active: bool
-- is_superuser: bool
-- created_at: datetime
-- updated_at: datetime
-
-### Challenge
-
-- id: UUID
-- title: str
-- description: str
-- difficulty: Enum('Easy', 'Medium', 'Hard', 'Expert')
-- start_time: datetime
-- end_time: datetime
-- max_participants: int
-- current_participants: int
-- github_repo_url: str
-- created_at: datetime
-- updated_at: datetime
-
-### Team
-
-- id: UUID
-- name: str
-- description: str
-- created_by: UUID (User ID)
-- created_at: datetime
-- updated_at: datetime
-
-### Enrollment
-
-- id: UUID
-- user_id: UUID
-- challenge_id: UUID
-- team_id: UUID (optional)
-- status: Enum('Enrolled', 'In Progress', 'Completed', 'Disqualified')
-- score: float
-- submitted_at: datetime
-- created_at: datetime
-- updated_at: datetime
-
-## Services
-
-### GitHub Service
-
-- create_challenge_repo(challenge_id: UUID, title: str) -> str
-- get_repo_contents(repo_url: str) -> List[Dict]
-- create_commit(repo_url: str, file_path: str, content: str, message: str)
-- create_pull_request(repo_url: str, title: str, body: str, head: str, base: str)
-
-### Supabase Service
-
-- initialize_supabase()
-- create_user(username: str, email: str, password: str) -> User
-- get_user_by_email(email: str) -> User
-- update_user(user_id: UUID, data: Dict) -> User
-- create_challenge(data: Dict) -> Challenge
-- get_challenge(challenge_id: UUID) -> Challenge
-- update_challenge(challenge_id: UUID, data: Dict) -> Challenge
-- delete_challenge(challenge_id: UUID)
-- create_team(data: Dict) -> Team
-- get_team(team_id: UUID) -> Team
-- update_team(team_id: UUID, data: Dict) -> Team
-- delete_team(team_id: UUID)
-
-## Authentication and Security
-
-- JWT-based authentication
-- Role-based access control (RBAC) for admin functions
-- Rate limiting on API endpoints
-- CORS configuration
-
-## Environment Variables
-
-- SUPABASE_URL: Supabase project URL
-- SUPABASE_KEY: Supabase API key
-- GITHUB_TOKEN: GitHub personal access token
-- SECRET_KEY: Secret key for JWT encoding
-- ALGORITHM: JWT algorithm (e.g., HS256)
-- ACCESS_TOKEN_EXPIRE_MINUTES: JWT token expiration time
-
-## Dockerfile
-
-```dockerfile
-# Use an official Python runtime as a parent image
-FROM python:3.9-slim
-
-# Set the working directory in the container
-WORKDIR /app
-
-# Copy the current directory contents into the container at /app
-COPY . /app
-
-# Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Make port 8000 available to the world outside this container
-EXPOSE 8000
-
-# Define environment variable
-ENV NAME World
-
-# Run app.py when the container launches
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
-```
-
-## Deployment
-
-1. Build the Docker image:
+1. Install Python dependencies using [Poetry](https://python-poetry.org/):
+   ```bash
+   poetry install
    ```
+
+2. Set up the environment variables by creating a `.env` file:
+   ```bash
+   cp .env.example .env
+   ```
+
+3. Fill in the environment variables in the `.env` file:
+   ```bash
+   SUPABASE_URL=your_supabase_project_url
+   SUPABASE_KEY=your_supabase_api_key
+   GITHUB_TOKEN=your_github_token
+   SECRET_KEY=your_secret_key
+   OPENAI_API_KEY=your_openai_api_key
+   ```
+
+### 3. Docker Setup
+
+To run the backend in a Docker container:
+1. Build the Docker image:
+   ```bash
    docker build -t ai-hacking-league-backend .
    ```
 
 2. Run the container:
+   ```bash
+   docker run -p 8000:8000 ai-hacking-league-backend
    ```
-   docker run -d -p 8000:8000 ai-hacking-league-backend
+
+The backend will be accessible at `http://localhost:8000`.
+
+### 4. Running the Application
+
+To run the FastAPI application locally:
+1. Start the backend:
+   ```bash
+   poetry run uvicorn app.main:app --reload
    ```
 
-3. Access the API at `http://localhost:8000`
+The backend will be accessible at `http://localhost:8000`.
 
-## Testing
+### 5. Testing
 
-- Use pytest for unit and integration tests
-- Implement test fixtures for database and API clients
-- Mock external services (GitHub, Supabase) for isolated testing
+Unit tests are written using `pytest`. To run the tests:
+```bash
+poetry run pytest
+```
 
-## Future Considerations
+## API Documentation
 
-- Implement WebSocket for real-time updates during challenges
-- Add caching layer (e.g., Redis) for frequently accessed data
-- Set up CI/CD pipeline for automated testing and deployment
-- Implement logging and monitoring solutions
+FastAPI provides interactive API documentation available once the server is running. You can access it at:
+
+- Swagger UI: `http://localhost:8000/docs`
+- Redoc: `http://localhost:8000/redoc`
+
+### Endpoints Overview
+
+- **User Endpoints**:
+  - `POST /auth/register`: Register a new user.
+  - `POST /auth/login`: Login with user credentials.
+  - `POST /auth/logout`: Logout the current user.
+  - `GET /auth/me`: Retrieve the current user's profile.
+
+- **Challenge Endpoints**:
+  - `GET /challenges`: List all available challenges.
+  
+- **Leaderboard Endpoints**:
+  - `GET /leaderboard`: View the global leaderboard.
+  - `GET /leaderboard/challenge/{challenge_id}`: View leaderboard for a specific challenge.
+
+- **Team Endpoints**:
+  - `GET /teams`: List all available teams.
+
+- **AI Judicial Endpoints**:
+  - `POST /judge/submit`: Submit a code file for AI-based evaluation.
+
+## Configuration
+
+Configuration settings are managed via environment variables defined in the `.env` file. Key configuration variables include:
+
+- `SUPABASE_URL`: The Supabase project URL.
+- `SUPABASE_KEY`: The Supabase API key.
+- `GITHUB_TOKEN`: Personal access token for GitHub API interactions.
+- `SECRET_KEY`: Secret key used for JWT token encryption.
+- `ACCESS_TOKEN_EXPIRE_MINUTES`: Token expiration time in minutes.
+- `OPENAI_API_KEY`: API key used for interacting with OpenAI for code evaluation.
+- `AI_MODEL`: The OpenAI model used for code evaluation (default: `gpt-4`).
+
+## External Services
+
+- **Supabase**: Used for data storage. Ensure you have a valid Supabase project set up and configure it in the `.env` file.
+- **GitHub**: Handles repository creation for challenges.
+- **OpenAI**: Provides AI-based code evaluation for the judicial system.
+
+## Conclusion
+
+The AI Hacking League Backend provides a robust API for managing users, challenges, teams, leaderboards, and AI-based code evaluations. It integrates seamlessly with Supabase for data storage, GitHub for repository management, and OpenAI for AI-powered judicial evaluations. The Docker setup ensures easy deployment and scalability, while comprehensive environment configurations ensure secure management of sensitive credentials.
+```
