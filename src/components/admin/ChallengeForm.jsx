@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const ChallengeForm = ({ challenge, onSubmit, onCancel }) => {
-  const [formData, setFormData] = useState(challenge || {
+  const [formData, setFormData] = useState({
     title: '',
     description: '',
     difficulty: 'Medium',
@@ -17,6 +17,12 @@ const ChallengeForm = ({ challenge, onSubmit, onCancel }) => {
     githubRepoUrl: '',
   });
 
+  useEffect(() => {
+    if (challenge) {
+      setFormData(challenge);
+    }
+  }, [challenge]);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -25,6 +31,17 @@ const ChallengeForm = ({ challenge, onSubmit, onCancel }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit(formData);
+    setFormData({
+      title: '',
+      description: '',
+      difficulty: 'Medium',
+      startTime: '',
+      endTime: '',
+      maxParticipants: 0,
+      buyIn: 0,
+      prizePool: 0,
+      githubRepoUrl: '',
+    });
   };
 
   return (
@@ -104,7 +121,7 @@ const ChallengeForm = ({ challenge, onSubmit, onCancel }) => {
       />
       <div className="flex justify-end space-x-2">
         <Button type="button" variant="outline" onClick={onCancel}>Cancel</Button>
-        <Button type="submit">Save Challenge</Button>
+        <Button type="submit">{challenge ? 'Update' : 'Create'} Challenge</Button>
       </div>
     </form>
   );
