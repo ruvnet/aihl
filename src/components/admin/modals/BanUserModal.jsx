@@ -1,25 +1,20 @@
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 
-const BanUserModal = ({ user, onClose, isBanning = true }) => {
-  const [banReason, setBanReason] = useState('');
-  const [banDuration, setBanDuration] = useState('');
+const BanUserModal = ({ user, isOpen, onClose, onConfirm, isBanning = true }) => {
+  const [reason, setReason] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // TODO: Implement ban/unban logic here
-    console.log(isBanning ? 'Banning user:' : 'Unbanning user:', user);
-    console.log('Reason:', banReason);
-    console.log('Duration:', banDuration);
-    onClose();
+    onConfirm(reason);
+    setReason('');
   };
 
   return (
-    <Dialog open={true} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{isBanning ? 'Ban User' : 'Unban User'}</DialogTitle>
@@ -30,24 +25,12 @@ const BanUserModal = ({ user, onClose, isBanning = true }) => {
               <Label>User</Label>
               <p className="mt-1 text-sm text-gray-600">{user.username}</p>
             </div>
-            {isBanning && (
-              <div>
-                <Label htmlFor="duration">Ban Duration (in days)</Label>
-                <Input
-                  id="duration"
-                  type="number"
-                  value={banDuration}
-                  onChange={(e) => setBanDuration(e.target.value)}
-                  placeholder="Enter number of days"
-                />
-              </div>
-            )}
             <div>
               <Label htmlFor="reason">{isBanning ? 'Ban' : 'Unban'} Reason</Label>
               <Textarea
                 id="reason"
-                value={banReason}
-                onChange={(e) => setBanReason(e.target.value)}
+                value={reason}
+                onChange={(e) => setReason(e.target.value)}
                 placeholder={`Reason for ${isBanning ? 'banning' : 'unbanning'} the user...`}
               />
             </div>

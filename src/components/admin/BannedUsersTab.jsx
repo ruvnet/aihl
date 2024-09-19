@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import BanUserModal from './modals/BanUserModal';
 
 const BannedUsersTab = () => {
   const [bannedUsers, setBannedUsers] = useState([
@@ -22,6 +23,9 @@ const BannedUsersTab = () => {
     ruling: '',
   });
 
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [isUnbanModalOpen, setIsUnbanModalOpen] = useState(false);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewBan(prev => ({ ...prev, [name]: value }));
@@ -30,6 +34,19 @@ const BannedUsersTab = () => {
   const handleBanUser = () => {
     setBannedUsers(prev => [...prev, { id: prev.length + 1, ...newBan }]);
     setNewBan({ username: '', reason: '', banStart: '', banEnd: '', proof: '', ruling: '' });
+  };
+
+  const handleUnban = (user) => {
+    setSelectedUser(user);
+    setIsUnbanModalOpen(true);
+  };
+
+  const confirmUnban = (reason) => {
+    setBannedUsers(prev => prev.filter(user => user.id !== selectedUser.id));
+    setIsUnbanModalOpen(false);
+    setSelectedUser(null);
+    // Here you would typically call an API to update the user's ban status
+    console.log(`Unbanned user ${selectedUser.username} for reason: ${reason}`);
   };
 
   return (
@@ -76,6 +93,9 @@ const BannedUsersTab = () => {
                       </div>
                     </DialogContent>
                   </Dialog>
+                  <Button variant="destructive" className="ml-2" onClick={() => handleUnban(user)}>
+                    Unban
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}
@@ -129,6 +149,15 @@ const BannedUsersTab = () => {
           </div>
         </div>
       </CardContent>
+      {selectedUser && (
+        <BanUserModal
+          user={selectedUser}
+          isOpen={isUnbanModalOpen}
+          onClose={() => setIsUnbanModalOpen(false)}
+          onConfirm={confirmUnban}
+          isBanning={false}
+        />
+      )}
     </Card>
   );
 };
