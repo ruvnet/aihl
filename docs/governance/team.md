@@ -79,7 +79,7 @@
 - Twitter: [@twitter_handle]
 
 ### Educational Programs Coordinator
-- Name: [Full Name]
+- Name: Anil (+36 30 117 0511)
 - GitHub: [@github_username]
 - LinkedIn: [LinkedIn Profile URL]
 - Twitter: [@twitter_handle]
@@ -90,12 +90,12 @@
 - LinkedIn: [LinkedIn Profile URL]
 - Twitter: [@twitter_handle]
 
-### Sponsorship Manager
-- Name: [Full Name]
+### Partner- & Sponsorship Manager
+- Name: Shep (WhatsApp +1-336-327-1198)
 - GitHub: [@github_username]
 - LinkedIn: [LinkedIn Profile URL]
 - Twitter: [@twitter_handle]
-
+  
 ## Advisory Council
 
 ### AI Ethics Advisor
@@ -105,10 +105,10 @@
 - Twitter: [@twitter_handle]
 
 ### Strategic Partnerships Advisor
-- Name: [Full Name]
-- GitHub: [@github_username]
-- LinkedIn: [LinkedIn Profile URL]
-- Twitter: [@twitter_handle]
+- Name: JG Staal (WhatsApp +1-804-763-9834)
+- GitHub: [@github_username](@jgstaal)
+- LinkedIn: [LinkedIn Profile URL](https://www.linkedin.com/in/jgstaal/)
+- Twitter: [@twitter_handle](@jgstaal)
 
 ### Legal Counsel
 - Name: [Full Name]
@@ -125,7 +125,7 @@
 ## Competition and Development
 
 ### Talent Scout
-- Name: [Full Name]
+- Name: Robert Ranson (WhatsApp  +1-647-781-1559)
 - GitHub: [@github_username]
 - LinkedIn: [LinkedIn Profile URL]
 - Twitter: [@twitter_handle]
