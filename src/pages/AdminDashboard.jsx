@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Users, Settings, BarChart2, BookOpen, MessageSquare, Gavel } from 'lucide-react';
+import { Users, Settings, BarChart2, BookOpen, MessageSquare, Gavel, Github } from 'lucide-react';
 import CommunityManagement from '../components/admin/CommunityManagement';
 import SystemConfiguration from '../components/admin/SystemConfiguration';
 import AnalyticsReporting from '../components/admin/AnalyticsReporting';
@@ -10,6 +10,7 @@ import HomeTab from '../components/admin/HomeTab';
 import AdminChat from '../components/admin/AdminChat';
 import JudiciaryTab from '../components/admin/JudiciaryTab';
 import SupportTicketsTab from '../components/admin/SupportTicketsTab';
+import GitHubIntegrationTab from '../components/admin/GitHubIntegrationTab';
 
 const AdminDashboard = () => {
   const [activeSection, setActiveSection] = useState('home');
@@ -19,6 +20,7 @@ const AdminDashboard = () => {
     analytics: '',
     documentation: '',
     judicial: '',
+    github: '',
   });
 
   useEffect(() => {
@@ -45,6 +47,7 @@ const AdminDashboard = () => {
     { id: 'chat', label: 'Admin Chat', icon: MessageSquare, component: AdminChat },
     { id: 'judicial', label: 'Judiciary', icon: Gavel, component: JudiciaryTab },
     { id: 'support', label: 'Support Tickets', icon: MessageSquare, component: SupportTicketsTab },
+    { id: 'github', label: 'GitHub Integration', icon: Github, component: GitHubIntegrationTab },
   ];
 
   const handleSectionChange = (sectionId) => {
