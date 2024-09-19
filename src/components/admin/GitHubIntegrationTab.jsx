@@ -1,21 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from 'sonner';
 
 const GitHubIntegrationTab = () => {
   const [accessToken, setAccessToken] = useState('');
-  const [repositories, setRepositories] = useState([
-    { id: 1, name: 'repo1', description: 'Description 1', lastCommit: '2024-03-15' },
-    { id: 2, name: 'repo2', description: 'Description 2', lastCommit: '2024-03-14' },
-  ]);
+  const [repositories, setRepositories] = useState([]);
   const [selectedRepo, setSelectedRepo] = useState(null);
   const [commits, setCommits] = useState([]);
   const [branches, setBranches] = useState([]);
   const [pullRequests, setPullRequests] = useState([]);
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    // Fetch repositories, commits, branches, pull requests, and users
+    // This is a placeholder for actual API calls
+    setRepositories([
+      { id: 1, name: 'repo1', description: 'Description 1', lastCommit: '2024-03-15' },
+      { id: 2, name: 'repo2', description: 'Description 2', lastCommit: '2024-03-14' },
+    ]);
+    setCommits([
+      { id: 1, message: 'Initial commit', author: 'user1', date: '2024-03-15' },
+      { id: 2, message: 'Update README', author: 'user2', date: '2024-03-14' },
+    ]);
+    setBranches([
+      { id: 1, name: 'main' },
+      { id: 2, name: 'develop' },
+    ]);
+    setPullRequests([
+      { id: 1, title: 'Feature: Add new component', author: 'user1', status: 'Open' },
+      { id: 2, title: 'Fix: Resolve bug in API', author: 'user2', status: 'Merged' },
+    ]);
+    setUsers([
+      { id: 1, username: 'user1', role: 'Admin' },
+      { id: 2, username: 'user2', role: 'Contributor' },
+    ]);
+  }, []);
 
   const handleSaveToken = () => {
     // TODO: Implement saving GitHub access token
@@ -33,23 +57,6 @@ const GitHubIntegrationTab = () => {
     toast.success(`Repository ${repoId} deleted successfully`);
   };
 
-  const handleSelectRepo = (repo) => {
-    setSelectedRepo(repo);
-    // TODO: Fetch commits, branches, and pull requests for the selected repository
-    setCommits([
-      { id: 1, message: 'Initial commit', author: 'user1', date: '2024-03-15' },
-      { id: 2, message: 'Update README', author: 'user2', date: '2024-03-14' },
-    ]);
-    setBranches([
-      { id: 1, name: 'main' },
-      { id: 2, name: 'develop' },
-    ]);
-    setPullRequests([
-      { id: 1, title: 'Feature: Add new component', author: 'user1', status: 'Open' },
-      { id: 2, title: 'Fix: Resolve bug in API', author: 'user2', status: 'Merged' },
-    ]);
-  };
-
   const handleCreateBranch = () => {
     // TODO: Implement creating a new branch
     toast.success('New branch created successfully');
@@ -58,6 +65,11 @@ const GitHubIntegrationTab = () => {
   const handleCreatePullRequest = () => {
     // TODO: Implement creating a new pull request
     toast.success('New pull request created successfully');
+  };
+
+  const handleUpdateUserPermissions = () => {
+    // TODO: Implement updating user permissions
+    toast.success('User permissions updated successfully');
   };
 
   return (
@@ -101,7 +113,7 @@ const GitHubIntegrationTab = () => {
                   <TableCell>{repo.description}</TableCell>
                   <TableCell>{repo.lastCommit}</TableCell>
                   <TableCell>
-                    <Button onClick={() => handleSelectRepo(repo)} className="mr-2">View</Button>
+                    <Button onClick={() => setSelectedRepo(repo)} className="mr-2">View</Button>
                     <Button onClick={() => handleDeleteRepo(repo.id)} variant="destructive">Delete</Button>
                   </TableCell>
                 </TableRow>
@@ -122,6 +134,7 @@ const GitHubIntegrationTab = () => {
                 <TabsTrigger value="commits">Commits</TabsTrigger>
                 <TabsTrigger value="branches">Branches</TabsTrigger>
                 <TabsTrigger value="pullRequests">Pull Requests</TabsTrigger>
+                <TabsTrigger value="users">User Permissions</TabsTrigger>
               </TabsList>
               <TabsContent value="commits">
                 <Table>
@@ -181,10 +194,53 @@ const GitHubIntegrationTab = () => {
                   </TableBody>
                 </Table>
               </TabsContent>
+              <TabsContent value="users">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Username</TableHead>
+                      <TableHead>Role</TableHead>
+                      <TableHead>Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {users.map((user) => (
+                      <TableRow key={user.id}>
+                        <TableCell>{user.username}</TableCell>
+                        <TableCell>
+                          <Select defaultValue={user.role}>
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="Admin">Admin</SelectItem>
+                              <SelectItem value="Contributor">Contributor</SelectItem>
+                              <SelectItem value="Viewer">Viewer</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </TableCell>
+                        <TableCell>
+                          <Button onClick={handleUpdateUserPermissions}>Update</Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TabsContent>
             </Tabs>
           </CardContent>
         </Card>
       )}
+
+      <Card>
+        <CardHeader>
+          <CardTitle>GitHub Documentation</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p>Access GitHub integration documentation and usage guidelines here.</p>
+          <Button className="mt-2">View Documentation</Button>
+        </CardContent>
+      </Card>
     </div>
   );
 };
