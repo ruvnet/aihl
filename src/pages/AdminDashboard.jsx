@@ -9,6 +9,7 @@ import Documentation from '../components/admin/Documentation';
 import HomeTab from '../components/admin/HomeTab';
 import AdminChat from '../components/admin/AdminChat';
 import JudiciaryTab from '../components/admin/JudiciaryTab';
+import SupportTicketsTab from '../components/admin/SupportTicketsTab';
 
 const AdminDashboard = () => {
   const [activeSection, setActiveSection] = useState('home');
@@ -43,6 +44,7 @@ const AdminDashboard = () => {
     { id: 'documentation', label: 'Documentation', icon: BookOpen, component: Documentation },
     { id: 'chat', label: 'Admin Chat', icon: MessageSquare, component: AdminChat },
     { id: 'judicial', label: 'Judiciary', icon: Gavel, component: JudiciaryTab },
+    { id: 'support', label: 'Support Tickets', icon: MessageSquare, component: SupportTicketsTab },
   ];
 
   const handleSectionChange = (sectionId) => {
