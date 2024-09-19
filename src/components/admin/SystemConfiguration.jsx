@@ -5,8 +5,8 @@ import ConfigTab from './ConfigTab';
 import NotificationsTab from './NotificationsTab';
 import LocalizationTab from './LocalizationTab';
 import LLMSettingsTab from './LLMSettingsTab';
-import GitHubIntegrationTab from './GitHubIntegrationTab';
 import SecurityTab from './SecurityTab';
+import GitHubConfigTab from './GitHubConfigTab';
 
 const SystemConfiguration = () => {
   return (
@@ -20,15 +20,26 @@ const SystemConfiguration = () => {
           <TabsTrigger value="notifications"><Bell className="h-5 w-5" /></TabsTrigger>
           <TabsTrigger value="localization"><Globe className="h-5 w-5" /></TabsTrigger>
           <TabsTrigger value="llm-settings"><Bot className="h-5 w-5" /></TabsTrigger>
-          <TabsTrigger value="github-integration"><Github className="h-5 w-5" /></TabsTrigger>
           <TabsTrigger value="security"><Shield className="h-5 w-5" /></TabsTrigger>
         </TabsList>
 
-        <TabsContent value="config"><ConfigTab /></TabsContent>
+        <TabsContent value="config">
+          <Tabs defaultValue="general">
+            <TabsList>
+              <TabsTrigger value="general">General</TabsTrigger>
+              <TabsTrigger value="github">GitHub</TabsTrigger>
+            </TabsList>
+            <TabsContent value="general">
+              <ConfigTab />
+            </TabsContent>
+            <TabsContent value="github">
+              <GitHubConfigTab />
+            </TabsContent>
+          </Tabs>
+        </TabsContent>
         <TabsContent value="notifications"><NotificationsTab /></TabsContent>
         <TabsContent value="localization"><LocalizationTab /></TabsContent>
         <TabsContent value="llm-settings"><LLMSettingsTab /></TabsContent>
-        <TabsContent value="github-integration"><GitHubIntegrationTab /></TabsContent>
         <TabsContent value="security"><SecurityTab /></TabsContent>
       </Tabs>
     </div>
