@@ -6,7 +6,7 @@ import NotificationsTab from './NotificationsTab';
 import LocalizationTab from './LocalizationTab';
 import LLMSettingsTab from './LLMSettingsTab';
 import SecurityTab from './SecurityTab';
-import GitHubConfigTab from './GitHubConfigTab';
+import GitHubIntegrationTab from './GitHubIntegrationTab';
 
 const SystemConfiguration = () => {
   return (
@@ -31,7 +31,7 @@ const SystemConfiguration = () => {
         <TabsContent value="localization"><LocalizationTab /></TabsContent>
         <TabsContent value="llm-settings"><LLMSettingsTab /></TabsContent>
         <TabsContent value="security"><SecurityTab /></TabsContent>
-        <TabsContent value="github"><GitHubConfigTab /></TabsContent>
+        <TabsContent value="github"><GitHubIntegrationTab /></TabsContent>
       </Tabs>
     </div>
   );
