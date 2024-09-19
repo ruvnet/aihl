@@ -30,9 +30,9 @@ async def register(user_in: UserCreate) -> Any:
     return UserOut(**result.data[0])
 
 @router.post("/login")
-async def login(form_data: OAuth2PasswordRequestForm = Depends()):
-    user = await supabase_client.from_("users").select("*").eq("email", form_data.username).single().execute()
-    if not user.data or not verify_password(form_data.password, user.data["hashed_password"]):
+async def login(user_credentials: UserLogin):
+    user = await supabase_client.from_("users").select("*").eq("email", user_credentials.email).single().execute()
+    if not user.data or not verify_password(user_credentials.password, user.data["hashed_password"]):
         raise HTTPException(status_code=400, detail="Incorrect email or password")
     
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)

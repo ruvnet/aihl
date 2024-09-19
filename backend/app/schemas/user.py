@@ -29,5 +29,9 @@ class UserOut(UserBase):
 class UserInDB(UserOut):
     hashed_password: str
 
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str
+
 class ForgotPassword(BaseModel):
     email: EmailStr
