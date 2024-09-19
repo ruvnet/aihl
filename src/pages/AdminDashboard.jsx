@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Users, Settings, BarChart2, Shield, X, BookOpen, MessageSquare } from 'lucide-react';
+import { Users, Settings, BarChart2, Shield, X, BookOpen, MessageSquare, Gavel } from 'lucide-react';
 import CommunityManagement from '../components/admin/CommunityManagement';
 import SystemConfiguration from '../components/admin/SystemConfiguration';
 import AnalyticsReporting from '../components/admin/AnalyticsReporting';
@@ -9,6 +9,7 @@ import SecurityCompliance from '../components/admin/SecurityCompliance';
 import Documentation from '../components/admin/Documentation';
 import HomeTab from '../components/admin/HomeTab';
 import AdminChat from '../components/admin/AdminChat';
+import JudicialSystem from '../components/admin/JudicialSystem';
 
 const AdminDashboard = () => {
   const [activeSection, setActiveSection] = useState('home');
@@ -18,6 +19,7 @@ const AdminDashboard = () => {
     analytics: '',
     security: '',
     documentation: '',
+    judicial: '',
   });
 
   useEffect(() => {
@@ -43,6 +45,7 @@ const AdminDashboard = () => {
     { id: 'security', label: 'Security', icon: Shield, component: SecurityCompliance },
     { id: 'documentation', label: 'Documentation', icon: BookOpen, component: Documentation },
     { id: 'chat', label: 'Admin Chat', icon: MessageSquare, component: AdminChat },
+    { id: 'judicial', label: 'Judicial System', icon: Gavel, component: JudicialSystem },
   ];
 
   const handleSectionChange = (sectionId) => {
