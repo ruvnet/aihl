@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Users, Settings, BarChart2, Shield, X, BookOpen, MessageSquare, Gavel } from 'lucide-react';
+import { Users, Settings, BarChart2, Shield, X, BookOpen, MessageSquare, Gavel, Trophy } from 'lucide-react';
 import CommunityManagement from '../components/admin/CommunityManagement';
 import SystemConfiguration from '../components/admin/SystemConfiguration';
 import AnalyticsReporting from '../components/admin/AnalyticsReporting';
@@ -10,6 +10,7 @@ import Documentation from '../components/admin/Documentation';
 import HomeTab from '../components/admin/HomeTab';
 import AdminChat from '../components/admin/AdminChat';
 import JudiciaryTab from '../components/admin/JudiciaryTab';
+import ChallengesTab from '../components/admin/ChallengesTab';
 
 const AdminDashboard = () => {
   const [activeSection, setActiveSection] = useState('home');
@@ -20,6 +21,7 @@ const AdminDashboard = () => {
     security: '',
     documentation: '',
     judicial: '',
+    challenges: '',
   });
 
   useEffect(() => {
@@ -46,6 +48,7 @@ const AdminDashboard = () => {
     { id: 'documentation', label: 'Documentation', icon: BookOpen, component: Documentation },
     { id: 'chat', label: 'Admin Chat', icon: MessageSquare, component: AdminChat },
     { id: 'judicial', label: 'Judiciary', icon: Gavel, component: JudiciaryTab },
+    { id: 'challenges', label: 'Challenges', icon: Trophy, component: ChallengesTab },
   ];
 
   const handleSectionChange = (sectionId) => {
