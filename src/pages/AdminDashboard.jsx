@@ -94,9 +94,6 @@ const AdminDashboard = () => {
             <HomeTab onSectionChange={handleSectionChange} />
           ) : (
             <div className="space-y-4">
-              <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-semibold">{sections.find(s => s.id === activeSection).label}</h2>
-              </div>
               {React.createElement(sections.find(s => s.id === activeSection).component, {
                 activeSubSection: activeSubSection[activeSection],
                 onSubSectionChange: (subSectionId) => handleSubSectionChange(activeSection, subSectionId),
