@@ -54,7 +54,7 @@ async def update_user(
 ):
     if not current_user.is_superuser:
         raise HTTPException(status_code=403, detail="Not authorized")
-    updated_user = await supabase_client.from_("users").update(user_update.dict()).eq("id", user_id).execute()
+    updated_user = await supabase_client.from_("users").update(user_update.dict(exclude_unset=True)).eq("id", user_id).execute()
     if updated_user.data:
         return UserOut(**updated_user.data[0])
     raise HTTPException(status_code=404, detail="User not found")
@@ -111,7 +111,7 @@ async def update_challenge(
 ):
     if not current_user.is_superuser:
         raise HTTPException(status_code=403, detail="Not authorized")
-    updated_challenge = await supabase_client.from_("challenges").update(challenge_update.dict()).eq("id", challenge_id).execute()
+    updated_challenge = await supabase_client.from_("challenges").update(challenge_update.dict(exclude_unset=True)).eq("id", challenge_id).execute()
     if updated_challenge.data:
         return ChallengeOut(**updated_challenge.data[0])
     raise HTTPException(status_code=404, detail="Challenge not found")
@@ -168,7 +168,7 @@ async def update_team(
 ):
     if not current_user.is_superuser:
         raise HTTPException(status_code=403, detail="Not authorized")
-    updated_team = await supabase_client.from_("teams").update(team_update.dict()).eq("id", team_id).execute()
+    updated_team = await supabase_client.from_("teams").update(team_update.dict(exclude_unset=True)).eq("id", team_id).execute()
     if updated_team.data:
         return TeamOut(**updated_team.data[0])
     raise HTTPException(status_code=404, detail="Team not found")
@@ -225,7 +225,7 @@ async def update_achievement(
 ):
     if not current_user.is_superuser:
         raise HTTPException(status_code=403, detail="Not authorized")
-    updated_achievement = await supabase_client.from_("achievements").update(achievement_update.dict()).eq("id", achievement_id).execute()
+    updated_achievement = await supabase_client.from_("achievements").update(achievement_update.dict(exclude_unset=True)).eq("id", achievement_id).execute()
     if updated_achievement.data:
         return AchievementOut(**updated_achievement.data[0])
     raise HTTPException(status_code=404, detail="Achievement not found")
@@ -284,5 +284,3 @@ async def generate_challenge(
         return {"generated_challenge": generated_challenge}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error generating challenge: {str(e)}")
-
-# Add more admin endpoints as needed
