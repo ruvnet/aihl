@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Users, Settings, BarChart2, Shield, X, BookOpen, MessageSquare, Gavel, Trophy } from 'lucide-react';
+import { Users, Settings, BarChart2, BookOpen, MessageSquare, Gavel } from 'lucide-react';
 import CommunityManagement from '../components/admin/CommunityManagement';
 import SystemConfiguration from '../components/admin/SystemConfiguration';
 import AnalyticsReporting from '../components/admin/AnalyticsReporting';
-import SecurityCompliance from '../components/admin/SecurityCompliance';
 import Documentation from '../components/admin/Documentation';
 import HomeTab from '../components/admin/HomeTab';
 import AdminChat from '../components/admin/AdminChat';
 import JudiciaryTab from '../components/admin/JudiciaryTab';
-import ChallengesTab from '../components/admin/ChallengesTab';
 
 const AdminDashboard = () => {
   const [activeSection, setActiveSection] = useState('home');
@@ -18,10 +16,8 @@ const AdminDashboard = () => {
     community: '',
     system: '',
     analytics: '',
-    security: '',
     documentation: '',
     judicial: '',
-    challenges: '',
   });
 
   useEffect(() => {
@@ -44,11 +40,9 @@ const AdminDashboard = () => {
     { id: 'community', label: 'Community', icon: Users, component: CommunityManagement },
     { id: 'system', label: 'System', icon: Settings, component: SystemConfiguration },
     { id: 'analytics', label: 'Analytics', icon: BarChart2, component: AnalyticsReporting },
-    { id: 'security', label: 'Security', icon: Shield, component: SecurityCompliance },
     { id: 'documentation', label: 'Documentation', icon: BookOpen, component: Documentation },
     { id: 'chat', label: 'Admin Chat', icon: MessageSquare, component: AdminChat },
     { id: 'judicial', label: 'Judiciary', icon: Gavel, component: JudiciaryTab },
-    { id: 'challenges', label: 'Challenges', icon: Trophy, component: ChallengesTab },
   ];
 
   const handleSectionChange = (sectionId) => {
@@ -97,9 +91,6 @@ const AdminDashboard = () => {
             <div className="space-y-4">
               <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-semibold">{sections.find(s => s.id === activeSection).label}</h2>
-                <Button variant="ghost" onClick={() => handleSectionChange('home')}>
-                  <X className="h-5 w-5" />
-                </Button>
               </div>
               {React.createElement(sections.find(s => s.id === activeSection).component, {
                 activeSubSection: activeSubSection[activeSection],
