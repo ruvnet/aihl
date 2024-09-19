@@ -48,7 +48,7 @@ const App = () => {
             <ScrollToTop />
             <div className="flex flex-col min-h-screen bg-background text-foreground overflow-x-hidden">
               <Header />
-              <main className="flex-grow container mx-auto px-4 py-8 pb-24 max-w-full">
+              <main className="flex-grow container mx-auto px-4 py-8 pb-24 max-w-[1200px]">
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/challenges" element={<Challenges />} />
@@ -68,7 +68,7 @@ const App = () => {
                   <Route path="/player/:id" element={<SoloProfile />} />
                   <Route path="/team/:id" element={<TeamProfile />} />
                   <Route path="/challenge-management/:id" element={<ChallengeManagement />} />
-                  <Route path="/admin" element={<AdminDashboard />} />
+                  <Route path="/admin/*" element={<AdminDashboard />} />
                   <Route path="/admin-chat" element={<AdminChat />} />
                 </Routes>
               </main>
