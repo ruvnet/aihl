@@ -94,16 +94,24 @@ backend/
 ### 2. Environment Setup
 
 1. Install Python dependencies using [Poetry](https://python-poetry.org/):
+ 
+### install poetry 
+```
+curl -sSL https://install.python-poetry.org | python3 -
+
+```
+
+
    ```bash
    poetry install
    ```
 
-2. Set up the environment variables by creating a `.env` file:
+3. Set up the environment variables by creating a `.env` file:
    ```bash
    cp .env.example .env
    ```
 
-3. Fill in the environment variables in the `.env` file:
+4. Fill in the environment variables in the `.env` file:
    ```bash
    SUPABASE_URL=your_supabase_project_url
    SUPABASE_KEY=your_supabase_api_key
