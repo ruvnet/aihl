@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from uuid import UUID
 from datetime import datetime
+from typing import Optional
 
 class TeamBase(BaseModel):
     name: str
@@ -16,3 +17,7 @@ class TeamOut(TeamBase):
 
     class Config:
         from_attributes = True
+
+class TeamUpdate(TeamBase):
+    name: Optional[str] = None
+    description: Optional[str] = None

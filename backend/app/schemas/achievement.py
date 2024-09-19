@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from uuid import UUID
 from datetime import datetime
+from typing import Optional
 
 class AchievementBase(BaseModel):
     name: str
@@ -15,3 +16,7 @@ class AchievementOut(AchievementBase):
 
     class Config:
         from_attributes = True
+
+class AchievementUpdate(AchievementBase):
+    name: Optional[str] = None
+    description: Optional[str] = None

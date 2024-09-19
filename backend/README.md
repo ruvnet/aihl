@@ -169,16 +169,57 @@ FastAPI provides interactive API documentation available once the server is runn
 
 - **Challenge Endpoints**:
   - `GET /challenges`: List all available challenges.
-  
+  - `POST /challenges`: Create a new challenge.
+  - `GET /challenges/{challenge_id}`: Retrieve a specific challenge.
+  - `PUT /challenges/{challenge_id}`: Update a specific challenge.
+  - `DELETE /challenges/{challenge_id}`: Delete a specific challenge.
+
 - **Leaderboard Endpoints**:
   - `GET /leaderboard`: View the global leaderboard.
   - `GET /leaderboard/challenge/{challenge_id}`: View leaderboard for a specific challenge.
 
 - **Team Endpoints**:
   - `GET /teams`: List all available teams.
+  - `POST /teams`: Create a new team.
+  - `GET /teams/{team_id}`: Retrieve a specific team.
+  - `PUT /teams/{team_id}`: Update a specific team.
+  - `DELETE /teams/{team_id}`: Delete a specific team.
 
 - **AI Judicial Endpoints**:
   - `POST /judge/submit`: Submit a code file for AI-based evaluation.
+
+- **Achievement Endpoints**:
+  - `GET /achievements`: List all available achievements.
+  - `POST /achievements`: Create a new achievement.
+  - `GET /achievements/{achievement_id}`: Retrieve a specific achievement.
+  - `PUT /achievements/{achievement_id}`: Update a specific achievement.
+  - `DELETE /achievements/{achievement_id}`: Delete a specific achievement.
+
+- **Admin Endpoints**:
+  - `GET /admin/users`: Retrieve all users (admin only).
+  - `POST /admin/users`: Create a new user (admin only).
+  - `GET /admin/users/{user_id}`: Retrieve a specific user (admin only).
+  - `PUT /admin/users/{user_id}`: Update a specific user (admin only).
+  - `DELETE /admin/users/{user_id}`: Delete a specific user (admin only).
+  - `GET /admin/challenges`: Retrieve all challenges (admin only).
+  - `POST /admin/challenges`: Create a new challenge (admin only).
+  - `GET /admin/challenges/{challenge_id}`: Retrieve a specific challenge (admin only).
+  - `PUT /admin/challenges/{challenge_id}`: Update a specific challenge (admin only).
+  - `DELETE /admin/challenges/{challenge_id}`: Delete a specific challenge (admin only).
+  - `GET /admin/teams`: Retrieve all teams (admin only).
+  - `POST /admin/teams`: Create a new team (admin only).
+  - `GET /admin/teams/{team_id}`: Retrieve a specific team (admin only).
+  - `PUT /admin/teams/{team_id}`: Update a specific team (admin only).
+  - `DELETE /admin/teams/{team_id}`: Delete a specific team (admin only).
+  - `GET /admin/achievements`: Retrieve all achievements (admin only).
+  - `POST /admin/achievements`: Create a new achievement (admin only).
+  - `GET /admin/achievements/{achievement_id}`: Retrieve a specific achievement (admin only).
+  - `PUT /admin/achievements/{achievement_id}`: Update a specific achievement (admin only).
+  - `DELETE /admin/achievements/{achievement_id}`: Delete a specific achievement (admin only).
+  - `GET /admin/analytics`: Retrieve analytics data (admin only).
+  - `GET /admin/leaderboard`: Retrieve leaderboard data (admin only).
+  - `GET /admin/system-health`: Retrieve system health status (admin only).
+  - `POST /admin/generate-challenge`: Generate an AI challenge (admin only).
 
 ## Configuration
 
@@ -201,4 +242,3 @@ Configuration settings are managed via environment variables defined in the `.en
 ## Conclusion
 
 The AI Hacking League Backend provides a robust API for managing users, challenges, teams, leaderboards, and AI-based code evaluations. It integrates seamlessly with Supabase for data storage, GitHub for repository management, and OpenAI for AI-powered judicial evaluations. The Docker setup ensures easy deployment and scalability, while comprehensive environment configurations ensure secure management of sensitive credentials.
-```

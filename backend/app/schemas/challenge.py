@@ -29,3 +29,13 @@ class ChallengeOut(ChallengeBase):
 
     class Config:
         from_attributes = True
+
+class ChallengeUpdate(ChallengeBase):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    difficulty: Optional[DifficultyEnum] = None
+    start_time: Optional[datetime] = None
+    end_time: Optional[datetime] = None
+    max_participants: Optional[int] = None
+    current_participants: Optional[int] = None
+    github_repo_url: Optional[str] = None
