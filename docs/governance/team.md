@@ -95,6 +95,12 @@
 - GitHub: [@github_username]
 - LinkedIn: [LinkedIn Profile URL]
 - Twitter: [@twitter_handle]
+
+### Chief Entertainment Officer
+- Name: [Full Name]
+- GitHub: [@github_username]
+- LinkedIn: [LinkedIn Profile URL]
+- Twitter: [@twitter_handle]
   
 ## Advisory Council
 
