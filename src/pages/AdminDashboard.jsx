@@ -9,7 +9,7 @@ import SecurityCompliance from '../components/admin/SecurityCompliance';
 import Documentation from '../components/admin/Documentation';
 import HomeTab from '../components/admin/HomeTab';
 import AdminChat from '../components/admin/AdminChat';
-import JudicialSystem from '../components/admin/JudicialSystem';
+import JudiciaryTab from '../components/admin/JudiciaryTab';
 
 const AdminDashboard = () => {
   const [activeSection, setActiveSection] = useState('home');
@@ -45,7 +45,7 @@ const AdminDashboard = () => {
     { id: 'security', label: 'Security', icon: Shield, component: SecurityCompliance },
     { id: 'documentation', label: 'Documentation', icon: BookOpen, component: Documentation },
     { id: 'chat', label: 'Admin Chat', icon: MessageSquare, component: AdminChat },
-    { id: 'judicial', label: 'Judicial System', icon: Gavel, component: JudicialSystem },
+    { id: 'judicial', label: 'Judiciary', icon: Gavel, component: JudiciaryTab },
   ];
 
   const handleSectionChange = (sectionId) => {
