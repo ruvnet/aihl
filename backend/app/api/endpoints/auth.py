@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Body
-from app.schemas.user import UserCreate, UserOut, UserLogin
+from app.schemas.user import UserCreate, UserOut, UserLogin, ForgotPassword
 from app.core.security import create_access_token, get_password_hash, verify_password
 from app.services.supabase_service import supabase_client
 from app.models.user import User
@@ -49,9 +49,9 @@ async def get_current_user(current_user: User = Depends(get_current_user)):
     return current_user
 
 @router.post("/forgot-password")
-async def forgot_password(email: str = Body(..., embed=True)):
+async def forgot_password(forgot_password: ForgotPassword):
     # Check if user exists
-    user = await supabase_client.from_("users").select("*").eq("email", email).single().execute()
+    user = await supabase_client.from_("users").select("*").eq("email", forgot_password.email).single().execute()
     if not user.data:
         raise HTTPException(status_code=404, detail="User not found")
     
