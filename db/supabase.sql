@@ -1,7 +1,7 @@
 -- Enable UUID generation extension (if not already enabled)
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
--- Create users table
+-- Create users table if it doesn't exist
 CREATE TABLE IF NOT EXISTS users (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   email TEXT UNIQUE NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS users (
 -- Enable RLS on users
 ALTER TABLE users ENABLE ROW LEVEL SECURITY;
 
--- Create profiles table
+-- Create profiles table if it doesn't exist
 CREATE TABLE IF NOT EXISTS profiles (
   id UUID REFERENCES users(id) ON DELETE CASCADE PRIMARY KEY,
   username TEXT UNIQUE,
@@ -31,7 +31,12 @@ CREATE TABLE IF NOT EXISTS profiles (
 -- Enable RLS on profiles
 ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
 
--- Allow users to insert and update their own profiles
+-- Drop existing policies if they exist
+DROP POLICY IF EXISTS "Public profiles are viewable by everyone" ON profiles;
+DROP POLICY IF EXISTS "Users can insert own profile" ON profiles;
+DROP POLICY IF EXISTS "Users can update own profile" ON profiles;
+
+-- Create policies
 CREATE POLICY "Public profiles are viewable by everyone" ON profiles
   FOR SELECT USING (true);
 
