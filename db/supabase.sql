@@ -66,6 +66,11 @@ CREATE TABLE IF NOT EXISTS challenges (
 -- Enable RLS on challenges
 ALTER TABLE challenges ENABLE ROW LEVEL SECURITY;
 
+-- Drop existing policies if they exist
+DROP POLICY IF EXISTS "Challenges are viewable by everyone" ON challenges;
+DROP POLICY IF EXISTS "Only admins can create challenges" ON challenges;
+DROP POLICY IF EXISTS "Only admins can update challenges" ON challenges;
+
 -- Allow everyone to view challenges, but only admins can create and update
 CREATE POLICY "Challenges are viewable by everyone" ON challenges
   FOR SELECT USING (true);
@@ -88,6 +93,10 @@ CREATE TABLE IF NOT EXISTS teams (
 
 -- Enable RLS on teams
 ALTER TABLE teams ENABLE ROW LEVEL SECURITY;
+
+-- Drop existing policies if they exist
+DROP POLICY IF EXISTS "Teams are viewable by everyone" ON teams;
+DROP POLICY IF EXISTS "Team members can update team info" ON teams;
 
 -- Allow everyone to view teams, but only team members can update
 CREATE POLICY "Teams are viewable by everyone" ON teams
@@ -114,6 +123,10 @@ CREATE TABLE IF NOT EXISTS team_members (
 -- Enable RLS on team_members
 ALTER TABLE team_members ENABLE ROW LEVEL SECURITY;
 
+-- Drop existing policies if they exist
+DROP POLICY IF EXISTS "Team members can view their team" ON team_members;
+DROP POLICY IF EXISTS "Users can join teams" ON team_members;
+
 -- Allow team members to view their team and users to join teams
 CREATE POLICY "Team members can view their team" ON team_members
   FOR SELECT USING (auth.uid() = user_id);
@@ -137,6 +150,10 @@ CREATE TABLE IF NOT EXISTS enrollments (
 -- Enable RLS on enrollments
 ALTER TABLE enrollments ENABLE ROW LEVEL SECURITY;
 
+-- Drop existing policies if they exist
+DROP POLICY IF EXISTS "Users can view own enrollments" ON enrollments;
+DROP POLICY IF EXISTS "Users can create own enrollments" ON enrollments;
+
 -- Allow users to view and create their own enrollments
 CREATE POLICY "Users can view own enrollments" ON enrollments
   FOR SELECT USING (auth.uid() = user_id);
@@ -159,6 +176,9 @@ CREATE TABLE IF NOT EXISTS leaderboard (
 -- Enable RLS on leaderboard
 ALTER TABLE leaderboard ENABLE ROW LEVEL SECURITY;
 
+-- Drop existing policy if it exists
+DROP POLICY IF EXISTS "Leaderboard is viewable by everyone" ON leaderboard;
+
 -- Allow everyone to view the leaderboard
 CREATE POLICY "Leaderboard is viewable by everyone" ON leaderboard
   FOR SELECT USING (true);
@@ -173,6 +193,9 @@ CREATE TABLE IF NOT EXISTS achievements (
 
 -- Enable RLS on achievements
 ALTER TABLE achievements ENABLE ROW LEVEL SECURITY;
+
+-- Drop existing policy if it exists
+DROP POLICY IF EXISTS "Achievements are viewable by everyone" ON achievements;
 
 -- Allow everyone to view achievements
 CREATE POLICY "Achievements are viewable by everyone" ON achievements
@@ -189,6 +212,9 @@ CREATE TABLE IF NOT EXISTS user_achievements (
 -- Enable RLS on user_achievements
 ALTER TABLE user_achievements ENABLE ROW LEVEL SECURITY;
 
+-- Drop existing policy if it exists
+DROP POLICY IF EXISTS "Users can view own achievements" ON user_achievements;
+
 -- Allow users to view their own achievements
 CREATE POLICY "Users can view own achievements" ON user_achievements
   FOR SELECT USING (auth.uid() = user_id);
@@ -202,6 +228,10 @@ CREATE TABLE IF NOT EXISTS wallet (
 
 -- Enable RLS on wallet
 ALTER TABLE wallet ENABLE ROW LEVEL SECURITY;
+
+-- Drop existing policies if they exist
+DROP POLICY IF EXISTS "Users can view own wallet" ON wallet;
+DROP POLICY IF EXISTS "Users can update own wallet" ON wallet;
 
 -- Allow users to view and update their own wallet
 CREATE POLICY "Users can view own wallet" ON wallet
@@ -222,6 +252,9 @@ CREATE TABLE IF NOT EXISTS transactions (
 
 -- Enable RLS on transactions
 ALTER TABLE transactions ENABLE ROW LEVEL SECURITY;
+
+-- Drop existing policy if it exists
+DROP POLICY IF EXISTS "Users can view own transactions" ON transactions;
 
 -- Allow users to view their own transactions
 CREATE POLICY "Users can view own transactions" ON transactions
