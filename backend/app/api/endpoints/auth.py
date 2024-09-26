@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Body
+from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from app.schemas.user import UserCreate, UserOut, UserLogin
 from app.core.security import create_access_token, get_password_hash, verify_password, get_current_user
@@ -12,7 +12,7 @@ router = APIRouter()
 
 @router.post("/register", response_model=UserOut)
 async def register(user_in: UserCreate) -> Any:
-    existing_user = await supabase_client.from_("users").select("*").eq("email", user_in.email).execute()
+    existing_user = supabase_client.from_("users").select("*").eq("email", user_in.email).execute()
     if existing_user.data:
         raise HTTPException(status_code=400, detail="Email already registered")
     
@@ -22,7 +22,7 @@ async def register(user_in: UserCreate) -> Any:
         "username": user_in.username,
         "hashed_password": hashed_password
     }
-    result = await supabase_client.from_("users").insert(new_user).execute()
+    result = supabase_client.from_("users").insert(new_user).execute()
     
     if result.error:
         raise HTTPException(status_code=400, detail=str(result.error))
@@ -31,7 +31,7 @@ async def register(user_in: UserCreate) -> Any:
 
 @router.post("/login")
 async def login(user_credentials: UserLogin):
-    user = await supabase_client.from_("users").select("*").eq("email", user_credentials.email).single().execute()
+    user = supabase_client.from_("users").select("*").eq("email", user_credentials.email).single().execute()
     if not user.data or not verify_password(user_credentials.password, user.data["hashed_password"]):
         raise HTTPException(status_code=400, detail="Incorrect email or password")
     
