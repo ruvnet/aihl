@@ -1,10 +1,9 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Query
-from typing import List, Optional
+from fastapi import APIRouter, Depends, HTTPException, status
+from typing import List
 from app.core.security import get_current_admin_user
 from app.models.user import User
 from app.schemas.user import UserOut, UserCreate, UserUpdate
 from app.services.supabase_service import supabase_client
-from app.core.config import settings
 import logging
 
 router = APIRouter()
