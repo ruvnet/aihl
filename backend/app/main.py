@@ -1,9 +1,8 @@
-# app/main.py
-
 from fastapi import FastAPI
 from app.api.api import api_router
 from app.db.session import engine
 from app.db.base import Base  # This import registers all models
+from app.core.config import settings
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
