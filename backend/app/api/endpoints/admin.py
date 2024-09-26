@@ -34,8 +34,7 @@ def get_all_users(
     return []
 
 @router.post("/users", response_model=UserOut)
-@handle_supabase_error
-def create_user(user: UserCreate):
+async def create_user(user: UserCreate):
     try:
         new_user = supabase_client.auth.admin.create_user({
             "email": user.email,
@@ -43,7 +42,14 @@ def create_user(user: UserCreate):
             "user_metadata": {"username": user.username}
         })
         if new_user.user:
-            return UserOut(**new_user.user.model_dump())
+            return UserOut(
+                id=new_user.user.id,
+                email=new_user.user.email,
+                username=new_user.user.user_metadata.get('username'),
+                created_at=new_user.user.created_at,
+                is_active=True,
+                is_superuser=False
+            )
         raise HTTPException(status_code=400, detail="Failed to create user")
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
