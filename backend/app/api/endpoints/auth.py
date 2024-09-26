@@ -38,11 +38,11 @@ async def register(user_in: UserCreate) -> Any:
         raise HTTPException(status_code=400, detail=str(e))
 
 @router.post("/login")
-async def login(form_data: OAuth2PasswordRequestForm = Depends()):
+async def login(user_credentials: UserLogin):
     try:
         result = supabase_client.auth.sign_in_with_password({
-            "email": form_data.username,
-            "password": form_data.password
+            "email": user_credentials.email,
+            "password": user_credentials.password
         })
         
         if result.user is None:
