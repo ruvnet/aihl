@@ -6,7 +6,7 @@ from app.core.config import settings
 from app.services.supabase_service import supabase_client
 from app.models.user import User
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/token")
 
 def create_access_token(data: dict, expires_delta: timedelta = None):
     to_encode = data.copy()
@@ -30,9 +30,9 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
         raise credentials_exception
     
     try:
-        user = supabase_client.auth.get_user(token)
+        user = await supabase_client.auth.get_user(token)
         if user.user is None:
             raise credentials_exception
-        return User(**user.user.dict())
+        return User(**user.user.model_dump())
     except Exception:
         raise credentials_exception
