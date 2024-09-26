@@ -3,16 +3,21 @@
 ## Executive Board
 
 ### Commissioner
-- Name: [Full Name]
-- GitHub: [@github_username]
-- LinkedIn: [LinkedIn Profile URL]
-- Twitter: [@twitter_handle]
+- Name: Reuven Cohen (RuV)
+- GitHub: [RuV](https://github.com/ruvnet)
+- LinkedIn: [LinkedIn Profile URL](https://www.linkedin.com/in/reuvencohen/?originalSubdomain=ca)
+- Twitter: [@twitter_handle]()
 
 ### Chief Technology Strategist
 - Name: [Full Name]
 - GitHub: [@github_username]
 - LinkedIn: [LinkedIn Profile URL]
 - Twitter: [@twitter_handle]
+
+### Vice Commissioner
+- Name: Rishub C R
+- GitHub: [Rishub C R](https://github.com/CraftsMan-Labs)
+- LinkedIn: [LinkedIn Profile URL](https://www.linkedin.com/in/rishub-c-r/)
 
 ### Director of League Operations
 - Name: [Full Name]
