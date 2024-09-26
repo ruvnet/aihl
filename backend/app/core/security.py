@@ -10,7 +10,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
 
 def create_access_token(data: dict, expires_delta: timedelta = None):
     to_encode = data.copy()
-    expire = datetime.utcnow() + expires_delta if expires_delta else datetime.utcnow() + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+    expire = datetime.utcnow() + (expires_delta or timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES))
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
     return encoded_jwt
@@ -28,11 +28,12 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
             raise credentials_exception
     except JWTError:
         raise credentials_exception
-    
-    user = await supabase_client.from_("users").select("*").eq("id", user_id).single().execute()
-    if user.data is None:
+
+    # Use 'await' with the asynchronous client
+    response = await supabase_client.table("users").select("*").eq("id", user_id).maybe_single().execute()
+    if response.data is None:
         raise credentials_exception
-    return User(**user.data)
+    return User(**response.data)
 
 async def get_current_admin_user(current_user: User = Depends(get_current_user)):
     if not current_user.is_superuser:
