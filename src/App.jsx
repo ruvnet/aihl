@@ -42,14 +42,6 @@ const ScrollToTop = () => {
 const App = () => {
   const [isNavOpen, setIsNavOpen] = useState(false);
 
-  const handleOpenNav = () => {
-    setIsNavOpen(true);
-  };
-
-  const handleCloseNav = () => {
-    setIsNavOpen(false);
-  };
-
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
@@ -57,7 +49,7 @@ const App = () => {
           <Router>
             <ScrollToTop />
             <div className="flex flex-col min-h-screen bg-background text-foreground overflow-x-hidden">
-              <Header onOpenNav={handleOpenNav} />
+              <Header onOpenNav={() => setIsNavOpen(true)} />
               <main className="flex-grow container mx-auto px-4 py-8 pb-24 max-w-[1200px]">
                 <Routes>
                   <Route path="/" element={<Home />} />
@@ -82,7 +74,7 @@ const App = () => {
                   <Route path="/admin-chat" element={<AdminChat />} />
                 </Routes>
               </main>
-              <Navigation isOpen={isNavOpen} onClose={handleCloseNav} />
+              <Navigation isOpen={isNavOpen} onClose={() => setIsNavOpen(false)} />
             </div>
           </Router>
           <Toaster />
