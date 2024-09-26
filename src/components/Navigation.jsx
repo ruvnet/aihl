@@ -1,9 +1,9 @@
-import { Link, useLocation } from 'react-router-dom';
-import { Home, Trophy, BarChart2, Briefcase } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Home, Trophy, BarChart2, Briefcase, X } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Button } from "@/components/ui/button";
 
-const Navigation = () => {
-  const location = useLocation();
-
+const Navigation = ({ isOpen, onClose }) => {
   const navItems = [
     { path: '/', icon: Home, label: 'Home' },
     { path: '/challenges', icon: Trophy, label: 'Challenges' },
@@ -12,22 +12,31 @@ const Navigation = () => {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 shadow-lg z-50">
-      <div className="flex justify-around items-center h-16">
+    <motion.nav
+      className="fixed top-0 right-0 bottom-0 w-[300px] bg-background shadow-lg z-50"
+      initial={{ x: '100%' }}
+      animate={{ x: isOpen ? 0 : '100%' }}
+      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+    >
+      <div className="flex justify-end p-4">
+        <Button variant="ghost" size="icon" onClick={onClose}>
+          <X className="h-6 w-6" />
+        </Button>
+      </div>
+      <div className="flex flex-col space-y-4 p-4">
         {navItems.map((item) => (
           <Link
             key={item.path}
             to={item.path}
-            className={`flex flex-col items-center justify-center w-full h-full ${
-              location.pathname === item.path ? 'text-blue-500' : 'text-gray-500 dark:text-gray-400'
-            }`}
+            className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors"
+            onClick={onClose}
           >
-            <item.icon className="w-6 h-6" />
-            <span className="text-xs mt-1">{item.label}</span>
+            <item.icon className="w-5 h-5" />
+            <span>{item.label}</span>
           </Link>
         ))}
       </div>
-    </nav>
+    </motion.nav>
   );
 };
 
