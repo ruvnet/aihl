@@ -19,10 +19,14 @@ async def get_all_users(
     current_user: User = Depends(get_current_admin_user)
 ):
     try:
-        users = await supabase_client.from_("users").select("*").range(skip, skip + limit - 1).execute()
-        return [UserOut(**user) for user in users.data]
+        response = await supabase_client.from_("users").select("*").range(skip, skip + limit - 1).execute()
+        if response.data is None:
+            return []  # Return an empty list if no data is found
+        return [UserOut(**user) for user in response.data]
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error fetching users: {str(e)}")
+        # Log the error for debugging purposes
+        print(f"Error fetching users: {str(e)}")
+        return []  # Return an empty list in case of any error
 
 @router.post("/users", response_model=UserOut)
 async def create_user(
