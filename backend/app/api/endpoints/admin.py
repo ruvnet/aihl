@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Depends
 from typing import List, Optional
 from app.schemas.user import UserOut, UserCreate, UserUpdate
 from app.schemas.challenge import ChallengeCreate, ChallengeOut, ChallengeUpdate
@@ -35,13 +35,18 @@ def get_all_users(
 
 @router.post("/users", response_model=UserOut)
 @handle_supabase_error
-def create_user(
-    user: UserCreate,
-):
-    new_user = supabase_client.auth.admin.create_user(user.dict())
-    if new_user.user:
-        return UserOut(**new_user.user.dict())
-    raise HTTPException(status_code=400, detail="Failed to create user")
+def create_user(user: UserCreate):
+    try:
+        new_user = supabase_client.auth.admin.create_user({
+            "email": user.email,
+            "password": user.password,
+            "user_metadata": {"username": user.username}
+        })
+        if new_user.user:
+            return UserOut(**new_user.user.model_dump())
+        raise HTTPException(status_code=400, detail="Failed to create user")
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 @router.get("/users/{user_id}", response_model=UserOut)
 @handle_supabase_error
