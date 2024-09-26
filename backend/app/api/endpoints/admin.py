@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from typing import List, Optional
-from app.core.security import get_current_admin_user
+from app.core.security import get_current_user
 from app.models.user import User
 from app.schemas.user import UserOut, UserCreate, UserUpdate
 from app.schemas.challenge import ChallengeCreate, ChallengeOut, ChallengeUpdate
@@ -17,24 +17,30 @@ router = APIRouter()
 async def get_all_users(
     skip: int = 0,
     limit: int = 100,
-    current_user: User = Depends(get_current_admin_user)
+    current_user: User = Depends(get_current_user)
 ):
+    if not current_user.is_superuser:
+        raise HTTPException(status_code=403, detail="Not authorized")
     users = await supabase_client.from_("users").select("*").range(skip, skip + limit - 1).execute()
     return [UserOut(**user) for user in users.data]
 
 @router.post("/users", response_model=UserOut)
 async def create_user(
     user: UserCreate,
-    current_user: User = Depends(get_current_admin_user)
+    current_user: User = Depends(get_current_user)
 ):
+    if not current_user.is_superuser:
+        raise HTTPException(status_code=403, detail="Not authorized")
     new_user = await supabase_client.auth.admin.create_user(user.dict())
     return UserOut(**new_user.user.dict())
 
 @router.get("/users/{user_id}", response_model=UserOut)
 async def get_user(
     user_id: str,
-    current_user: User = Depends(get_current_admin_user)
+    current_user: User = Depends(get_current_user)
 ):
+    if not current_user.is_superuser:
+        raise HTTPException(status_code=403, detail="Not authorized")
     user = await supabase_client.from_("users").select("*").eq("id", user_id).single().execute()
     if user.data:
         return UserOut(**user.data)
@@ -44,8 +50,10 @@ async def get_user(
 async def update_user(
     user_id: str,
     user_update: UserUpdate,
-    current_user: User = Depends(get_current_admin_user)
+    current_user: User = Depends(get_current_user)
 ):
+    if not current_user.is_superuser:
+        raise HTTPException(status_code=403, detail="Not authorized")
     updated_user = await supabase_client.from_("users").update(user_update.dict(exclude_unset=True)).eq("id", user_id).execute()
     if updated_user.data:
         return UserOut(**updated_user.data[0])
@@ -54,8 +62,10 @@ async def update_user(
 @router.delete("/users/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_user(
     user_id: str,
-    current_user: User = Depends(get_current_admin_user)
+    current_user: User = Depends(get_current_user)
 ):
+    if not current_user.is_superuser:
+        raise HTTPException(status_code=403, detail="Not authorized")
     await supabase_client.auth.admin.delete_user(user_id)
     return {"detail": "User deleted successfully"}
 
@@ -64,24 +74,30 @@ async def delete_user(
 async def get_all_challenges(
     skip: int = 0,
     limit: int = 100,
-    current_user: User = Depends(get_current_admin_user)
+    current_user: User = Depends(get_current_user)
 ):
+    if not current_user.is_superuser:
+        raise HTTPException(status_code=403, detail="Not authorized")
     challenges = await supabase_client.from_("challenges").select("*").range(skip, skip + limit - 1).execute()
     return [ChallengeOut(**challenge) for challenge in challenges.data]
 
 @router.post("/challenges", response_model=ChallengeOut)
 async def create_challenge(
     challenge: ChallengeCreate,
-    current_user: User = Depends(get_current_admin_user)
+    current_user: User = Depends(get_current_user)
 ):
+    if not current_user.is_superuser:
+        raise HTTPException(status_code=403, detail="Not authorized")
     new_challenge = await supabase_client.from_("challenges").insert(challenge.dict()).execute()
     return ChallengeOut(**new_challenge.data[0])
 
 @router.get("/challenges/{challenge_id}", response_model=ChallengeOut)
 async def get_challenge(
     challenge_id: str,
-    current_user: User = Depends(get_current_admin_user)
+    current_user: User = Depends(get_current_user)
 ):
+    if not current_user.is_superuser:
+        raise HTTPException(status_code=403, detail="Not authorized")
     challenge = await supabase_client.from_("challenges").select("*").eq("id", challenge_id).single().execute()
     if challenge.data:
         return ChallengeOut(**challenge.data)
@@ -91,8 +107,10 @@ async def get_challenge(
 async def update_challenge(
     challenge_id: str,
     challenge_update: ChallengeUpdate,
-    current_user: User = Depends(get_current_admin_user)
+    current_user: User = Depends(get_current_user)
 ):
+    if not current_user.is_superuser:
+        raise HTTPException(status_code=403, detail="Not authorized")
     updated_challenge = await supabase_client.from_("challenges").update(challenge_update.dict(exclude_unset=True)).eq("id", challenge_id).execute()
     if updated_challenge.data:
         return ChallengeOut(**updated_challenge.data[0])
@@ -101,8 +119,10 @@ async def update_challenge(
 @router.delete("/challenges/{challenge_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_challenge(
     challenge_id: str,
-    current_user: User = Depends(get_current_admin_user)
+    current_user: User = Depends(get_current_user)
 ):
+    if not current_user.is_superuser:
+        raise HTTPException(status_code=403, detail="Not authorized")
     await supabase_client.from_("challenges").delete().eq("id", challenge_id).execute()
     return {"detail": "Challenge deleted successfully"}
 
@@ -111,24 +131,30 @@ async def delete_challenge(
 async def get_all_teams(
     skip: int = 0,
     limit: int = 100,
-    current_user: User = Depends(get_current_admin_user)
+    current_user: User = Depends(get_current_user)
 ):
+    if not current_user.is_superuser:
+        raise HTTPException(status_code=403, detail="Not authorized")
     teams = await supabase_client.from_("teams").select("*").range(skip, skip + limit - 1).execute()
     return [TeamOut(**team) for team in teams.data]
 
 @router.post("/teams", response_model=TeamOut)
 async def create_team(
     team: TeamCreate,
-    current_user: User = Depends(get_current_admin_user)
+    current_user: User = Depends(get_current_user)
 ):
+    if not current_user.is_superuser:
+        raise HTTPException(status_code=403, detail="Not authorized")
     new_team = await supabase_client.from_("teams").insert(team.dict()).execute()
     return TeamOut(**new_team.data[0])
 
 @router.get("/teams/{team_id}", response_model=TeamOut)
 async def get_team(
     team_id: str,
-    current_user: User = Depends(get_current_admin_user)
+    current_user: User = Depends(get_current_user)
 ):
+    if not current_user.is_superuser:
+        raise HTTPException(status_code=403, detail="Not authorized")
     team = await supabase_client.from_("teams").select("*").eq("id", team_id).single().execute()
     if team.data:
         return TeamOut(**team.data)
@@ -138,8 +164,10 @@ async def get_team(
 async def update_team(
     team_id: str,
     team_update: TeamUpdate,
-    current_user: User = Depends(get_current_admin_user)
+    current_user: User = Depends(get_current_user)
 ):
+    if not current_user.is_superuser:
+        raise HTTPException(status_code=403, detail="Not authorized")
     updated_team = await supabase_client.from_("teams").update(team_update.dict(exclude_unset=True)).eq("id", team_id).execute()
     if updated_team.data:
         return TeamOut(**updated_team.data[0])
@@ -148,8 +176,10 @@ async def update_team(
 @router.delete("/teams/{team_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_team(
     team_id: str,
-    current_user: User = Depends(get_current_admin_user)
+    current_user: User = Depends(get_current_user)
 ):
+    if not current_user.is_superuser:
+        raise HTTPException(status_code=403, detail="Not authorized")
     await supabase_client.from_("teams").delete().eq("id", team_id).execute()
     return {"detail": "Team deleted successfully"}
 
@@ -158,24 +188,30 @@ async def delete_team(
 async def get_all_achievements(
     skip: int = 0,
     limit: int = 100,
-    current_user: User = Depends(get_current_admin_user)
+    current_user: User = Depends(get_current_user)
 ):
+    if not current_user.is_superuser:
+        raise HTTPException(status_code=403, detail="Not authorized")
     achievements = await supabase_client.from_("achievements").select("*").range(skip, skip + limit - 1).execute()
     return [AchievementOut(**achievement) for achievement in achievements.data]
 
 @router.post("/achievements", response_model=AchievementOut)
 async def create_achievement(
     achievement: AchievementCreate,
-    current_user: User = Depends(get_current_admin_user)
+    current_user: User = Depends(get_current_user)
 ):
+    if not current_user.is_superuser:
+        raise HTTPException(status_code=403, detail="Not authorized")
     new_achievement = await supabase_client.from_("achievements").insert(achievement.dict()).execute()
     return AchievementOut(**new_achievement.data[0])
 
 @router.get("/achievements/{achievement_id}", response_model=AchievementOut)
 async def get_achievement(
     achievement_id: str,
-    current_user: User = Depends(get_current_admin_user)
+    current_user: User = Depends(get_current_user)
 ):
+    if not current_user.is_superuser:
+        raise HTTPException(status_code=403, detail="Not authorized")
     achievement = await supabase_client.from_("achievements").select("*").eq("id", achievement_id).single().execute()
     if achievement.data:
         return AchievementOut(**achievement.data)
@@ -185,8 +221,10 @@ async def get_achievement(
 async def update_achievement(
     achievement_id: str,
     achievement_update: AchievementUpdate,
-    current_user: User = Depends(get_current_admin_user)
+    current_user: User = Depends(get_current_user)
 ):
+    if not current_user.is_superuser:
+        raise HTTPException(status_code=403, detail="Not authorized")
     updated_achievement = await supabase_client.from_("achievements").update(achievement_update.dict(exclude_unset=True)).eq("id", achievement_id).execute()
     if updated_achievement.data:
         return AchievementOut(**updated_achievement.data[0])
@@ -195,26 +233,34 @@ async def update_achievement(
 @router.delete("/achievements/{achievement_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_achievement(
     achievement_id: str,
-    current_user: User = Depends(get_current_admin_user)
+    current_user: User = Depends(get_current_user)
 ):
+    if not current_user.is_superuser:
+        raise HTTPException(status_code=403, detail="Not authorized")
     await supabase_client.from_("achievements").delete().eq("id", achievement_id).execute()
     return {"detail": "Achievement deleted successfully"}
 
 # Analytics
 @router.get("/analytics")
-async def get_analytics(current_user: User = Depends(get_current_admin_user)):
+async def get_analytics(current_user: User = Depends(get_current_user)):
+    if not current_user.is_superuser:
+        raise HTTPException(status_code=403, detail="Not authorized")
     # Implement analytics logic here
     return {"message": "Analytics data"}
 
 # Leaderboard
 @router.get("/leaderboard")
-async def get_leaderboard(current_user: User = Depends(get_current_admin_user)):
+async def get_leaderboard(current_user: User = Depends(get_current_user)):
+    if not current_user.is_superuser:
+        raise HTTPException(status_code=403, detail="Not authorized")
     # Implement leaderboard logic here
     return {"message": "Leaderboard data"}
 
 # System Health
 @router.get("/system-health")
-async def get_system_health(current_user: User = Depends(get_current_admin_user)):
+async def get_system_health(current_user: User = Depends(get_current_user)):
+    if not current_user.is_superuser:
+        raise HTTPException(status_code=403, detail="Not authorized")
     # Implement system health check logic here
     return {"status": "healthy"}
 
@@ -222,8 +268,11 @@ async def get_system_health(current_user: User = Depends(get_current_admin_user)
 @router.post("/generate-challenge")
 async def generate_challenge(
     prompt: str = Query(..., description="Prompt for generating a challenge"),
-    current_user: User = Depends(get_current_admin_user)
+    current_user: User = Depends(get_current_user)
 ):
+    if not current_user.is_superuser:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
     openai.api_key = settings.OPENAI_API_KEY
     try:
         response = openai.Completion.create(
