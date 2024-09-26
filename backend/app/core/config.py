@@ -10,6 +10,6 @@ class Settings:
     SECRET_KEY: str = os.getenv("SECRET_KEY", "your-secret-key")
     ALGORITHM: str = os.getenv("ALGORITHM", "HS256")
     ACCESS_TOKEN_EXPIRE_MINUTES: int = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30"))
-    OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
+    API_V1_STR: str = "/api/v1"
 
 settings = Settings()
