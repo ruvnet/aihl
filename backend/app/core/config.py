@@ -14,8 +14,8 @@ logger.debug(f"Current working directory: {os.getcwd()}")
 logger.debug(f".env file path: {dotenv_path}")
 
 class Settings:
-    SUPABASE_URL: str = os.getenv("SUPABASE_PROJECT_URL", "")
-    SUPABASE_KEY: str = os.getenv("SUPABASE_API_KEY", "")
+    SUPABASE_URL: str = os.getenv("SUPABASE_URL", "")
+    SUPABASE_KEY: str = os.getenv("SUPABASE_KEY", "")
     SUPABASE_SERVICE_ROLE_KEY: str = os.getenv("SUPABASE_SERVICE_ROLE_KEY", "")
     GITHUB_TOKEN: str = os.getenv("GITHUB_TOKEN", "")
     SECRET_KEY: str = os.getenv("SECRET_KEY", "your-secret-key")
