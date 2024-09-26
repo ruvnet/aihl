@@ -27,16 +27,8 @@ async def register(user_in: UserCreate) -> Any:
         if result.user is None:
             raise HTTPException(status_code=400, detail="Registration failed")
         
-        # Construct UserOut object manually
-        user_out = UserOut(
-            id=result.user.id,
-            username=result.user.user_metadata.get('username'),
-            email=result.user.email,
-            created_at=result.user.created_at,
-            is_active=True,
-            is_superuser=False
-        )
-        return user_out
+        # Return the user data
+        return UserOut(**result.user.user_metadata, id=result.user.id, email=result.user.email)
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
