@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from app.schemas.user import UserCreate, UserOut, UserLogin
-from app.core.security import create_access_token, get_password_hash, verify_password, get_current_user
+from app.core.security import create_access_token
 from app.services.supabase_service import supabase_client
 from app.models.user import User
 from app.core.config import settings
@@ -43,19 +43,20 @@ async def register(user_in: UserCreate) -> Any:
 @router.post("/login")
 async def login(user_credentials: UserLogin):
     try:
-        user = supabase_client.from_("users").select("*").eq("email", user_credentials.email).single().execute()
-        if not user.data:
-            raise HTTPException(status_code=400, detail="Incorrect email or password")
+        result = supabase_client.auth.sign_in_with_password({
+            "email": user_credentials.email,
+            "password": user_credentials.password
+        })
         
-        if not verify_password(user_credentials.password, user.data["hashed_password"]):
+        if result.user is None:
             raise HTTPException(status_code=400, detail="Incorrect email or password")
         
         access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
         access_token = create_access_token(
-            data={"sub": str(user.data["id"])}, expires_delta=access_token_expires
+            data={"sub": str(result.user.id)}, expires_delta=access_token_expires
         )
         return {"access_token": access_token, "token_type": "bearer"}
-    except APIError:
+    except APIError as e:
         raise HTTPException(status_code=400, detail="Incorrect email or password")
 
 @router.post("/logout")
