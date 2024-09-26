@@ -9,8 +9,8 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="AI Hacking League Backend")
 
-@app.get("/token")
+@app.api_route("/token", methods=["POST"])
 async def token_redirect(request: Request):
-    return RedirectResponse(url="/auth/token")
+    return RedirectResponse(url="/auth/token", status_code=307)
 
 app.include_router(api_router)
