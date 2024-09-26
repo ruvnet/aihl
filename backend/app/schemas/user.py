@@ -4,18 +4,18 @@ from datetime import datetime
 from typing import Optional
 
 class UserBase(BaseModel):
-    username: str = Field(..., example="johndoe")
-    email: EmailStr = Field(..., example="johndoe@example.com")
+    username: str
+    email: EmailStr
 
 class UserCreate(UserBase):
-    password: str = Field(..., example="securepassword123")
+    password: str
 
 class UserUpdate(BaseModel):
-    username: Optional[str] = Field(None, example="johndoe_updated")
-    email: Optional[EmailStr] = Field(None, example="johndoe_updated@example.com")
-    password: Optional[str] = Field(None, example="newsecurepassword456")
-    is_active: Optional[bool] = Field(None, example=True)
-    is_superuser: Optional[bool] = Field(None, example=False)
+    username: Optional[str] = None
+    email: Optional[EmailStr] = None
+    password: Optional[str] = None
+    is_active: Optional[bool] = None
+    is_superuser: Optional[bool] = None
 
 class UserOut(UserBase):
     id: UUID
@@ -30,5 +30,5 @@ class UserInDB(UserOut):
     hashed_password: str
 
 class UserLogin(BaseModel):
-    email: EmailStr = Field(..., example="johndoe@example.com")
-    password: str = Field(..., example="securepassword123")
+    email: EmailStr
+    password: str
