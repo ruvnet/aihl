@@ -32,6 +32,3 @@ class UserInDB(UserOut):
 class UserLogin(BaseModel):
     email: EmailStr
     password: str
-
-class ForgotPassword(BaseModel):
-    email: EmailStr
