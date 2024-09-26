@@ -7,6 +7,7 @@ from app.models.user import User
 from app.core.config import settings
 from datetime import timedelta
 from typing import Any
+from postgrest.exceptions import APIError
 
 router = APIRouter()
 
@@ -41,15 +42,21 @@ async def register(user_in: UserCreate) -> Any:
 
 @router.post("/login")
 async def login(user_credentials: UserLogin):
-    user = supabase_client.from_("users").select("*").eq("email", user_credentials.email).single().execute()
-    if not user.data or not verify_password(user_credentials.password, user.data["hashed_password"]):
+    try:
+        user = supabase_client.from_("users").select("*").eq("email", user_credentials.email).single().execute()
+        if not user.data:
+            raise HTTPException(status_code=400, detail="Incorrect email or password")
+        
+        if not verify_password(user_credentials.password, user.data["hashed_password"]):
+            raise HTTPException(status_code=400, detail="Incorrect email or password")
+        
+        access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+        access_token = create_access_token(
+            data={"sub": str(user.data["id"])}, expires_delta=access_token_expires
+        )
+        return {"access_token": access_token, "token_type": "bearer"}
+    except APIError:
         raise HTTPException(status_code=400, detail="Incorrect email or password")
-    
-    access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(
-        data={"sub": str(user.data["id"])}, expires_delta=access_token_expires
-    )
-    return {"access_token": access_token, "token_type": "bearer"}
 
 @router.post("/logout")
 async def logout():
