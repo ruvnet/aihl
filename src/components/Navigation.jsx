@@ -1,8 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Home, Trophy, BarChart2, Briefcase } from 'lucide-react';
-import { motion } from 'framer-motion';
 
-const Navigation = ({ isOpen }) => {
+const Navigation = () => {
   const location = useLocation();
 
   const navItems = [
@@ -13,27 +12,22 @@ const Navigation = ({ isOpen }) => {
   ];
 
   return (
-    <motion.nav
-      className="fixed top-14 right-0 bottom-0 bg-background border-l border-border/40 w-[300px] z-40 overflow-y-auto"
-      initial={{ x: '100%' }}
-      animate={{ x: isOpen ? 0 : '100%' }}
-      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-    >
-      <div className="flex flex-col h-full py-4">
+    <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 shadow-lg z-50">
+      <div className="flex justify-around items-center h-16">
         {navItems.map((item) => (
           <Link
             key={item.path}
             to={item.path}
-            className={`flex items-center px-4 py-2 ${
-              location.pathname === item.path ? 'text-primary' : 'text-foreground'
-            } hover:bg-accent hover:text-accent-foreground transition-colors`}
+            className={`flex flex-col items-center justify-center w-full h-full ${
+              location.pathname === item.path ? 'text-blue-500' : 'text-gray-500 dark:text-gray-400'
+            }`}
           >
-            <item.icon className="w-5 h-5 mr-3" />
-            <span>{item.label}</span>
+            <item.icon className="w-6 h-6" />
+            <span className="text-xs mt-1">{item.label}</span>
           </Link>
         ))}
       </div>
-    </motion.nav>
+    </nav>
   );
 };
 
