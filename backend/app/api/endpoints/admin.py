@@ -107,10 +107,98 @@ async def delete_challenge(
     return {"detail": "Challenge deleted successfully"}
 
 # Team Management
-# ... (similar CRUD operations for teams)
+@router.get("/teams", response_model=List[TeamOut])
+async def get_all_teams(
+    skip: int = 0,
+    limit: int = 100,
+    current_user: User = Depends(get_current_admin_user)
+):
+    teams = await supabase_client.from_("teams").select("*").range(skip, skip + limit - 1).execute()
+    return [TeamOut(**team) for team in teams.data]
+
+@router.post("/teams", response_model=TeamOut)
+async def create_team(
+    team: TeamCreate,
+    current_user: User = Depends(get_current_admin_user)
+):
+    new_team = await supabase_client.from_("teams").insert(team.dict()).execute()
+    return TeamOut(**new_team.data[0])
+
+@router.get("/teams/{team_id}", response_model=TeamOut)
+async def get_team(
+    team_id: str,
+    current_user: User = Depends(get_current_admin_user)
+):
+    team = await supabase_client.from_("teams").select("*").eq("id", team_id).single().execute()
+    if team.data:
+        return TeamOut(**team.data)
+    raise HTTPException(status_code=404, detail="Team not found")
+
+@router.put("/teams/{team_id}", response_model=TeamOut)
+async def update_team(
+    team_id: str,
+    team_update: TeamUpdate,
+    current_user: User = Depends(get_current_admin_user)
+):
+    updated_team = await supabase_client.from_("teams").update(team_update.dict(exclude_unset=True)).eq("id", team_id).execute()
+    if updated_team.data:
+        return TeamOut(**updated_team.data[0])
+    raise HTTPException(status_code=404, detail="Team not found")
+
+@router.delete("/teams/{team_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_team(
+    team_id: str,
+    current_user: User = Depends(get_current_admin_user)
+):
+    await supabase_client.from_("teams").delete().eq("id", team_id).execute()
+    return {"detail": "Team deleted successfully"}
 
 # Achievement Management
-# ... (similar CRUD operations for achievements)
+@router.get("/achievements", response_model=List[AchievementOut])
+async def get_all_achievements(
+    skip: int = 0,
+    limit: int = 100,
+    current_user: User = Depends(get_current_admin_user)
+):
+    achievements = await supabase_client.from_("achievements").select("*").range(skip, skip + limit - 1).execute()
+    return [AchievementOut(**achievement) for achievement in achievements.data]
+
+@router.post("/achievements", response_model=AchievementOut)
+async def create_achievement(
+    achievement: AchievementCreate,
+    current_user: User = Depends(get_current_admin_user)
+):
+    new_achievement = await supabase_client.from_("achievements").insert(achievement.dict()).execute()
+    return AchievementOut(**new_achievement.data[0])
+
+@router.get("/achievements/{achievement_id}", response_model=AchievementOut)
+async def get_achievement(
+    achievement_id: str,
+    current_user: User = Depends(get_current_admin_user)
+):
+    achievement = await supabase_client.from_("achievements").select("*").eq("id", achievement_id).single().execute()
+    if achievement.data:
+        return AchievementOut(**achievement.data)
+    raise HTTPException(status_code=404, detail="Achievement not found")
+
+@router.put("/achievements/{achievement_id}", response_model=AchievementOut)
+async def update_achievement(
+    achievement_id: str,
+    achievement_update: AchievementUpdate,
+    current_user: User = Depends(get_current_admin_user)
+):
+    updated_achievement = await supabase_client.from_("achievements").update(achievement_update.dict(exclude_unset=True)).eq("id", achievement_id).execute()
+    if updated_achievement.data:
+        return AchievementOut(**updated_achievement.data[0])
+    raise HTTPException(status_code=404, detail="Achievement not found")
+
+@router.delete("/achievements/{achievement_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_achievement(
+    achievement_id: str,
+    current_user: User = Depends(get_current_admin_user)
+):
+    await supabase_client.from_("achievements").delete().eq("id", achievement_id).execute()
+    return {"detail": "Achievement deleted successfully"}
 
 # Analytics
 @router.get("/analytics")
