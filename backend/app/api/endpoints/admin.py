@@ -12,17 +12,15 @@ import openai
 
 router = APIRouter()
 
-async def get_current_admin(current_user: User = Depends(get_current_user)):
-    if not current_user.is_superuser:
-        raise HTTPException(status_code=403, detail="Not authorized")
-    return current_user
-
+# User Management
 @router.get("/users", response_model=List[UserOut])
 async def get_all_users(
     skip: int = 0,
     limit: int = 100,
-    current_admin: User = Depends(get_current_admin)
+    current_user: User = Depends(get_current_user)
 ):
+    if not current_user.is_superuser:
+        raise HTTPException(status_code=403, detail="Not authorized")
     users = await supabase_client.from_("users").select("*").range(skip, skip + limit - 1).execute()
     return [UserOut(**user) for user in users.data]
 
@@ -266,11 +264,15 @@ async def get_system_health(current_user: User = Depends(get_current_user)):
     # Implement system health check logic here
     return {"status": "healthy"}
 
+# AI-powered features
 @router.post("/generate-challenge")
 async def generate_challenge(
     prompt: str = Query(..., description="Prompt for generating a challenge"),
-    current_admin: User = Depends(get_current_admin)
+    current_user: User = Depends(get_current_user)
 ):
+    if not current_user.is_superuser:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
     openai.api_key = settings.OPENAI_API_KEY
     try:
         response = openai.Completion.create(
