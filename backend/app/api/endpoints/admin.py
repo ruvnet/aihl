@@ -1,7 +1,5 @@
-# admin.py
-
 from fastapi import APIRouter, Depends, HTTPException, status, Query
-from typing import List
+from typing import List, Optional
 from app.core.security import get_current_admin_user
 from app.models.user import User
 from app.schemas.user import UserOut, UserCreate, UserUpdate
@@ -21,32 +19,25 @@ async def get_all_users(
     limit: int = 100,
     current_user: User = Depends(get_current_admin_user)
 ):
-    try:
-        response = await supabase_client.from_("users").select("*").range(skip, skip + limit - 1).execute()
-        return [UserOut(**user) for user in (response.data or [])]
-    except Exception as e:
-        print(f"Error fetching users: {str(e)}")
-        return []
+    users = await supabase_client.from_("users").select("*").range(skip, skip + limit - 1).execute()
+    return [UserOut(**user) for user in users.data]
 
 @router.post("/users", response_model=UserOut)
 async def create_user(
     user: UserCreate,
     current_user: User = Depends(get_current_admin_user)
 ):
-    try:
-        new_user = await supabase_client.auth.admin.create_user(user.dict())
-        return UserOut(**new_user.user)
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=f"Error creating user: {str(e)}")
+    new_user = await supabase_client.auth.admin.create_user(user.dict())
+    return UserOut(**new_user.user.dict())
 
 @router.get("/users/{user_id}", response_model=UserOut)
 async def get_user(
     user_id: str,
     current_user: User = Depends(get_current_admin_user)
 ):
-    response = await supabase_client.from_("users").select("*").eq("id", user_id).maybe_single().execute()
-    if response.data:
-        return UserOut(**response.data)
+    user = await supabase_client.from_("users").select("*").eq("id", user_id).single().execute()
+    if user.data:
+        return UserOut(**user.data)
     raise HTTPException(status_code=404, detail="User not found")
 
 @router.put("/users/{user_id}", response_model=UserOut)
@@ -55,9 +46,9 @@ async def update_user(
     user_update: UserUpdate,
     current_user: User = Depends(get_current_admin_user)
 ):
-    response = await supabase_client.from_("users").update(user_update.dict(exclude_unset=True)).eq("id", user_id).execute()
-    if response.data:
-        return UserOut(**response.data[0])
+    updated_user = await supabase_client.from_("users").update(user_update.dict(exclude_unset=True)).eq("id", user_id).execute()
+    if updated_user.data:
+        return UserOut(**updated_user.data[0])
     raise HTTPException(status_code=404, detail="User not found")
 
 @router.delete("/users/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -65,11 +56,8 @@ async def delete_user(
     user_id: str,
     current_user: User = Depends(get_current_admin_user)
 ):
-    try:
-        await supabase_client.auth.admin.delete_user(user_id)
-        return {"detail": "User deleted successfully"}
-    except Exception as e:
-        raise HTTPException(status_code=404, detail=f"User not found: {str(e)}")
+    await supabase_client.auth.admin.delete_user(user_id)
+    return {"detail": "User deleted successfully"}
 
 # Challenge Management
 @router.get("/challenges", response_model=List[ChallengeOut])
@@ -78,25 +66,25 @@ async def get_all_challenges(
     limit: int = 100,
     current_user: User = Depends(get_current_admin_user)
 ):
-    response = await supabase_client.from_("challenges").select("*").range(skip, skip + limit - 1).execute()
-    return [ChallengeOut(**challenge) for challenge in (response.data or [])]
+    challenges = await supabase_client.from_("challenges").select("*").range(skip, skip + limit - 1).execute()
+    return [ChallengeOut(**challenge) for challenge in challenges.data]
 
 @router.post("/challenges", response_model=ChallengeOut)
 async def create_challenge(
     challenge: ChallengeCreate,
     current_user: User = Depends(get_current_admin_user)
 ):
-    response = await supabase_client.from_("challenges").insert(challenge.dict()).execute()
-    return ChallengeOut(**response.data[0])
+    new_challenge = await supabase_client.from_("challenges").insert(challenge.dict()).execute()
+    return ChallengeOut(**new_challenge.data[0])
 
 @router.get("/challenges/{challenge_id}", response_model=ChallengeOut)
 async def get_challenge(
     challenge_id: str,
     current_user: User = Depends(get_current_admin_user)
 ):
-    response = await supabase_client.from_("challenges").select("*").eq("id", challenge_id).maybe_single().execute()
-    if response.data:
-        return ChallengeOut(**response.data)
+    challenge = await supabase_client.from_("challenges").select("*").eq("id", challenge_id).single().execute()
+    if challenge.data:
+        return ChallengeOut(**challenge.data)
     raise HTTPException(status_code=404, detail="Challenge not found")
 
 @router.put("/challenges/{challenge_id}", response_model=ChallengeOut)
@@ -105,9 +93,9 @@ async def update_challenge(
     challenge_update: ChallengeUpdate,
     current_user: User = Depends(get_current_admin_user)
 ):
-    response = await supabase_client.from_("challenges").update(challenge_update.dict(exclude_unset=True)).eq("id", challenge_id).execute()
-    if response.data:
-        return ChallengeOut(**response.data[0])
+    updated_challenge = await supabase_client.from_("challenges").update(challenge_update.dict(exclude_unset=True)).eq("id", challenge_id).execute()
+    if updated_challenge.data:
+        return ChallengeOut(**updated_challenge.data[0])
     raise HTTPException(status_code=404, detail="Challenge not found")
 
 @router.delete("/challenges/{challenge_id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -115,10 +103,8 @@ async def delete_challenge(
     challenge_id: str,
     current_user: User = Depends(get_current_admin_user)
 ):
-    response = await supabase_client.from_("challenges").delete().eq("id", challenge_id).execute()
-    if response.data:
-        return {"detail": "Challenge deleted successfully"}
-    raise HTTPException(status_code=404, detail="Challenge not found")
+    await supabase_client.from_("challenges").delete().eq("id", challenge_id).execute()
+    return {"detail": "Challenge deleted successfully"}
 
 # Team Management
 @router.get("/teams", response_model=List[TeamOut])
@@ -127,25 +113,25 @@ async def get_all_teams(
     limit: int = 100,
     current_user: User = Depends(get_current_admin_user)
 ):
-    response = await supabase_client.from_("teams").select("*").range(skip, skip + limit - 1).execute()
-    return [TeamOut(**team) for team in (response.data or [])]
+    teams = await supabase_client.from_("teams").select("*").range(skip, skip + limit - 1).execute()
+    return [TeamOut(**team) for team in teams.data]
 
 @router.post("/teams", response_model=TeamOut)
 async def create_team(
     team: TeamCreate,
     current_user: User = Depends(get_current_admin_user)
 ):
-    response = await supabase_client.from_("teams").insert(team.dict()).execute()
-    return TeamOut(**response.data[0])
+    new_team = await supabase_client.from_("teams").insert(team.dict()).execute()
+    return TeamOut(**new_team.data[0])
 
 @router.get("/teams/{team_id}", response_model=TeamOut)
 async def get_team(
     team_id: str,
     current_user: User = Depends(get_current_admin_user)
 ):
-    response = await supabase_client.from_("teams").select("*").eq("id", team_id).maybe_single().execute()
-    if response.data:
-        return TeamOut(**response.data)
+    team = await supabase_client.from_("teams").select("*").eq("id", team_id).single().execute()
+    if team.data:
+        return TeamOut(**team.data)
     raise HTTPException(status_code=404, detail="Team not found")
 
 @router.put("/teams/{team_id}", response_model=TeamOut)
@@ -154,9 +140,9 @@ async def update_team(
     team_update: TeamUpdate,
     current_user: User = Depends(get_current_admin_user)
 ):
-    response = await supabase_client.from_("teams").update(team_update.dict(exclude_unset=True)).eq("id", team_id).execute()
-    if response.data:
-        return TeamOut(**response.data[0])
+    updated_team = await supabase_client.from_("teams").update(team_update.dict(exclude_unset=True)).eq("id", team_id).execute()
+    if updated_team.data:
+        return TeamOut(**updated_team.data[0])
     raise HTTPException(status_code=404, detail="Team not found")
 
 @router.delete("/teams/{team_id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -164,10 +150,8 @@ async def delete_team(
     team_id: str,
     current_user: User = Depends(get_current_admin_user)
 ):
-    response = await supabase_client.from_("teams").delete().eq("id", team_id).execute()
-    if response.data:
-        return {"detail": "Team deleted successfully"}
-    raise HTTPException(status_code=404, detail="Team not found")
+    await supabase_client.from_("teams").delete().eq("id", team_id).execute()
+    return {"detail": "Team deleted successfully"}
 
 # Achievement Management
 @router.get("/achievements", response_model=List[AchievementOut])
@@ -176,25 +160,25 @@ async def get_all_achievements(
     limit: int = 100,
     current_user: User = Depends(get_current_admin_user)
 ):
-    response = await supabase_client.from_("achievements").select("*").range(skip, skip + limit - 1).execute()
-    return [AchievementOut(**achievement) for achievement in (response.data or [])]
+    achievements = await supabase_client.from_("achievements").select("*").range(skip, skip + limit - 1).execute()
+    return [AchievementOut(**achievement) for achievement in achievements.data]
 
 @router.post("/achievements", response_model=AchievementOut)
 async def create_achievement(
     achievement: AchievementCreate,
     current_user: User = Depends(get_current_admin_user)
 ):
-    response = await supabase_client.from_("achievements").insert(achievement.dict()).execute()
-    return AchievementOut(**response.data[0])
+    new_achievement = await supabase_client.from_("achievements").insert(achievement.dict()).execute()
+    return AchievementOut(**new_achievement.data[0])
 
 @router.get("/achievements/{achievement_id}", response_model=AchievementOut)
 async def get_achievement(
     achievement_id: str,
     current_user: User = Depends(get_current_admin_user)
 ):
-    response = await supabase_client.from_("achievements").select("*").eq("id", achievement_id).maybe_single().execute()
-    if response.data:
-        return AchievementOut(**response.data)
+    achievement = await supabase_client.from_("achievements").select("*").eq("id", achievement_id).single().execute()
+    if achievement.data:
+        return AchievementOut(**achievement.data)
     raise HTTPException(status_code=404, detail="Achievement not found")
 
 @router.put("/achievements/{achievement_id}", response_model=AchievementOut)
@@ -203,9 +187,9 @@ async def update_achievement(
     achievement_update: AchievementUpdate,
     current_user: User = Depends(get_current_admin_user)
 ):
-    response = await supabase_client.from_("achievements").update(achievement_update.dict(exclude_unset=True)).eq("id", achievement_id).execute()
-    if response.data:
-        return AchievementOut(**response.data[0])
+    updated_achievement = await supabase_client.from_("achievements").update(achievement_update.dict(exclude_unset=True)).eq("id", achievement_id).execute()
+    if updated_achievement.data:
+        return AchievementOut(**updated_achievement.data[0])
     raise HTTPException(status_code=404, detail="Achievement not found")
 
 @router.delete("/achievements/{achievement_id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -213,10 +197,8 @@ async def delete_achievement(
     achievement_id: str,
     current_user: User = Depends(get_current_admin_user)
 ):
-    response = await supabase_client.from_("achievements").delete().eq("id", achievement_id).execute()
-    if response.data:
-        return {"detail": "Achievement deleted successfully"}
-    raise HTTPException(status_code=404, detail="Achievement not found")
+    await supabase_client.from_("achievements").delete().eq("id", achievement_id).execute()
+    return {"detail": "Achievement deleted successfully"}
 
 # Analytics
 @router.get("/analytics")

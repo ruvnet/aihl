@@ -4,13 +4,15 @@ from supabase import create_client, Client
 from app.core.config import settings
 
 def get_supabase_client() -> Client:
-    if not settings.SUPABASE_URL or not settings.SUPABASE_KEY:
-        raise ValueError("Supabase URL or Key is missing.")
     try:
-        # Use is_async=True to create an asynchronous client
-        return create_client(settings.SUPABASE_URL, settings.SUPABASE_KEY, is_async=True)
+        if settings.SUPABASE_URL and settings.SUPABASE_KEY:
+            return create_client(settings.SUPABASE_URL, settings.SUPABASE_KEY)
+        else:
+            print("Warning: Supabase URL or Key is missing.")
+            return None
     except Exception as e:
-        raise ConnectionError(f"An error occurred while initializing Supabase client: {e}")
+        print(f"An error occurred while initializing Supabase client: {e}")
+        return None
 
 # Initialize the Supabase client
 supabase_client = get_supabase_client()
