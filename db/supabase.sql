@@ -1,10 +1,24 @@
 -- Enable UUID generation extension (if not already enabled)
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
+-- Create users table
+CREATE TABLE IF NOT EXISTS users (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  email TEXT UNIQUE NOT NULL,
+  username TEXT UNIQUE,
+  hashed_password TEXT NOT NULL,
+  is_active BOOLEAN DEFAULT TRUE,
+  is_superuser BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Enable RLS on users
+ALTER TABLE users ENABLE ROW LEVEL SECURITY;
+
 -- Create profiles table
-DROP TABLE IF EXISTS profiles;
-CREATE TABLE profiles (
-  id UUID REFERENCES auth.users(id) NOT NULL PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS profiles (
+  id UUID REFERENCES users(id) ON DELETE CASCADE PRIMARY KEY,
   username TEXT UNIQUE,
   full_name TEXT,
   avatar_url TEXT,
@@ -28,9 +42,8 @@ CREATE POLICY "Users can update own profile" ON profiles
   FOR UPDATE USING (auth.uid() = id);
 
 -- Create challenges table
-DROP TABLE IF EXISTS challenges;
-CREATE TABLE challenges (
-  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS challenges (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   title TEXT NOT NULL,
   description TEXT,
   difficulty TEXT CHECK (difficulty IN ('Easy', 'Medium', 'Hard', 'Expert')),
@@ -59,12 +72,11 @@ CREATE POLICY "Only admins can update challenges" ON challenges
   FOR UPDATE USING (auth.jwt() ->> 'role' = 'admin');
 
 -- Create teams table
-DROP TABLE IF EXISTS teams;
-CREATE TABLE teams (
-  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS teams (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   name TEXT NOT NULL UNIQUE,
   description TEXT,
-  created_by UUID REFERENCES auth.users(id),
+  created_by UUID REFERENCES users(id),
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
@@ -86,10 +98,9 @@ CREATE POLICY "Team members can update team info" ON teams
   );
 
 -- Create team_members table
-DROP TABLE IF EXISTS team_members;
-CREATE TABLE team_members (
+CREATE TABLE IF NOT EXISTS team_members (
   team_id UUID REFERENCES teams(id),
-  user_id UUID REFERENCES auth.users(id),
+  user_id UUID REFERENCES users(id),
   role TEXT CHECK (role IN ('Leader', 'Member')),
   joined_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (team_id, user_id)
@@ -106,10 +117,9 @@ CREATE POLICY "Users can join teams" ON team_members
   FOR INSERT WITH CHECK (auth.uid() = user_id);
 
 -- Create enrollments table
-DROP TABLE IF EXISTS enrollments;
-CREATE TABLE enrollments (
-  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-  user_id UUID REFERENCES auth.users(id),
+CREATE TABLE IF NOT EXISTS enrollments (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID REFERENCES users(id),
   challenge_id UUID REFERENCES challenges(id),
   team_id UUID REFERENCES teams(id),
   status TEXT CHECK (status IN ('Enrolled', 'In Progress', 'Completed', 'Disqualified')),
@@ -130,10 +140,9 @@ CREATE POLICY "Users can create own enrollments" ON enrollments
   FOR INSERT WITH CHECK (auth.uid() = user_id);
 
 -- Create leaderboard table
-DROP TABLE IF EXISTS leaderboard;
-CREATE TABLE leaderboard (
-  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-  user_id UUID REFERENCES auth.users(id),
+CREATE TABLE IF NOT EXISTS leaderboard (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID REFERENCES users(id),
   team_id UUID REFERENCES teams(id),
   challenge_id UUID REFERENCES challenges(id),
   score DECIMAL(5, 2),
@@ -150,9 +159,8 @@ CREATE POLICY "Leaderboard is viewable by everyone" ON leaderboard
   FOR SELECT USING (true);
 
 -- Create achievements table
-DROP TABLE IF EXISTS achievements;
-CREATE TABLE achievements (
-  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS achievements (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   name TEXT NOT NULL,
   description TEXT,
   icon_url TEXT
@@ -166,9 +174,8 @@ CREATE POLICY "Achievements are viewable by everyone" ON achievements
   FOR SELECT USING (true);
 
 -- Create user_achievements table
-DROP TABLE IF EXISTS user_achievements;
-CREATE TABLE user_achievements (
-  user_id UUID REFERENCES auth.users(id),
+CREATE TABLE IF NOT EXISTS user_achievements (
+  user_id UUID REFERENCES users(id),
   achievement_id UUID REFERENCES achievements(id),
   earned_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (user_id, achievement_id)
@@ -182,9 +189,8 @@ CREATE POLICY "Users can view own achievements" ON user_achievements
   FOR SELECT USING (auth.uid() = user_id);
 
 -- Create wallet table
-DROP TABLE IF EXISTS wallet;
-CREATE TABLE wallet (
-  user_id UUID PRIMARY KEY REFERENCES auth.users(id),
+CREATE TABLE IF NOT EXISTS wallet (
+  user_id UUID PRIMARY KEY REFERENCES users(id),
   balance DECIMAL(10, 2) DEFAULT 0,
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
@@ -200,10 +206,9 @@ CREATE POLICY "Users can update own wallet" ON wallet
   FOR UPDATE USING (auth.uid() = user_id);
 
 -- Create transactions table
-DROP TABLE IF EXISTS transactions;
-CREATE TABLE transactions (
-  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-  user_id UUID REFERENCES auth.users(id),
+CREATE TABLE IF NOT EXISTS transactions (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID REFERENCES users(id),
   amount DECIMAL(10, 2),
   type TEXT CHECK (type IN ('Deposit', 'Withdrawal', 'Prize', 'Buy-in')),
   description TEXT,
