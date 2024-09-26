@@ -65,7 +65,7 @@ const Navigation = ({ isOpen, onClose }) => {
         initial={{ y: '100%' }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
-        className="fixed bottom-0 left-0 right-0 bg-gray-800 border-t border-border/40 z-40"
+        className="fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-border/40 z-40"
       >
         <ul className="flex justify-around items-center h-14">
           {navItems.map((item) => (
