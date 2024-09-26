@@ -12,22 +12,25 @@ router = APIRouter()
 
 @router.post("/register", response_model=UserOut)
 async def register(user_in: UserCreate) -> Any:
-    existing_user = supabase_client.from_("users").select("*").eq("email", user_in.email).execute()
-    if existing_user.data:
-        raise HTTPException(status_code=400, detail="Email already registered")
-    
-    hashed_password = get_password_hash(user_in.password)
-    new_user = {
-        "email": user_in.email,
-        "username": user_in.username,
-        "hashed_password": hashed_password
-    }
-    result = supabase_client.from_("users").insert(new_user).execute()
-    
-    if result.error:
-        raise HTTPException(status_code=400, detail=str(result.error))
-    
-    return UserOut(**result.data[0])
+    try:
+        # Use Supabase's sign_up method instead of direct insertion
+        result = supabase_client.auth.sign_up({
+            "email": user_in.email,
+            "password": user_in.password,
+            "options": {
+                "data": {
+                    "username": user_in.username
+                }
+            }
+        })
+        
+        if result.error:
+            raise HTTPException(status_code=400, detail=str(result.error))
+        
+        # Return the user data
+        return UserOut(**result.user.user_metadata, id=result.user.id, email=result.user.email)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 @router.post("/login")
 async def login(user_credentials: UserLogin):
