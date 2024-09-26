@@ -10,8 +10,8 @@ logger = logging.getLogger(__name__)
 load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '..', '..', '.env'))
 
 class Settings:
-    SUPABASE_URL: str = os.getenv("SUPABASE_URL", "")
-    SUPABASE_KEY: str = os.getenv("SUPABASE_KEY", "")
+    SUPABASE_URL: str = os.getenv("SUPABASE_PROJECT_URL", "")
+    SUPABASE_KEY: str = os.getenv("SUPABASE_API_KEY", "")
     SUPABASE_SERVICE_ROLE_KEY: str = os.getenv("SUPABASE_SERVICE_ROLE_KEY", "")
     GITHUB_TOKEN: str = os.getenv("GITHUB_TOKEN", "")
     SECRET_KEY: str = os.getenv("SECRET_KEY", "your-secret-key")
