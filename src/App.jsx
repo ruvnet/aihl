@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from 'next-themes';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Navigation from './components/Navigation';
 import Header from './components/Header';
 import Home from './pages/Home';
@@ -40,6 +40,8 @@ const ScrollToTop = () => {
 };
 
 const App = () => {
+  const [isNavOpen, setIsNavOpen] = useState(false);
+
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
@@ -47,7 +49,7 @@ const App = () => {
           <Router>
             <ScrollToTop />
             <div className="flex flex-col min-h-screen bg-background text-foreground overflow-x-hidden">
-              <Header />
+              <Header onOpenNav={() => setIsNavOpen(true)} />
               <main className="flex-grow container mx-auto px-4 py-8 pb-24 max-w-[1200px]">
                 <Routes>
                   <Route path="/" element={<Home />} />
@@ -72,7 +74,7 @@ const App = () => {
                   <Route path="/admin-chat" element={<AdminChat />} />
                 </Routes>
               </main>
-              <Navigation />
+              <Navigation isOpen={isNavOpen} onClose={() => setIsNavOpen(false)} />
             </div>
           </Router>
           <Toaster />
