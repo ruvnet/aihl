@@ -3,8 +3,10 @@ from typing import List
 from app.core.security import get_current_admin_user
 from app.models.user import User
 from app.schemas.user import UserOut, UserCreate, UserUpdate
-from app.services.supabase_service import supabase_client
+from app.services.supabase_service import admin_supabase_client
 import logging
+import requests
+from app.core.config import settings
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
@@ -17,7 +19,7 @@ async def get_all_users(
 ):
     try:
         logger.info(f"Attempting to fetch users with skip={skip} and limit={limit}")
-        response = supabase_client.table("users").select("*").range(skip, skip + limit - 1).execute()
+        response = admin_supabase_client.table("users").select("*").range(skip, skip + limit - 1).execute()
         if response.error:
             logger.error(f"Supabase error: {response.error.message}")
             raise HTTPException(status_code=500, detail=f"Error fetching users: {response.error.message}")
@@ -34,8 +36,20 @@ async def create_user(
 ):
     try:
         logger.info(f"Creating user with email: {user.email}")
-        new_user = supabase_client.auth.admin.create_user(user.dict())
-        return UserOut(**new_user.user)
+        headers = {
+            "apiKey": settings.SUPABASE_SERVICE_ROLE_KEY,
+            "Authorization": f"Bearer {settings.SUPABASE_SERVICE_ROLE_KEY}",
+            "Content-Type": "application/json"
+        }
+        url = f"{settings.SUPABASE_URL}/auth/v1/admin/users"
+        response = requests.post(url, headers=headers, json=user.dict())
+        if response.status_code in [200, 201]:
+            new_user = response.json()
+            logger.info(f"User created with ID: {new_user['id']}")
+            return UserOut(**new_user)
+        else:
+            logger.error(f"Error creating user: {response.text}")
+            raise HTTPException(status_code=response.status_code, detail=response.text)
     except Exception as e:
         logger.exception(f"Error creating user: {str(e)}")
         raise HTTPException(status_code=400, detail=f"Error creating user: {str(e)}")
@@ -46,7 +60,7 @@ async def get_user(
     current_user: User = Depends(get_current_admin_user)
 ):
     logger.info(f"Fetching user with ID: {user_id}")
-    response = supabase_client.table("users").select("*").eq("id", user_id).execute()
+    response = admin_supabase_client.table("users").select("*").eq("id", user_id).execute()
     if response.data:
         return UserOut(**response.data[0])
     raise HTTPException(status_code=404, detail="User not found")
@@ -58,7 +72,7 @@ async def update_user(
     current_user: User = Depends(get_current_admin_user)
 ):
     logger.info(f"Updating user with ID: {user_id}")
-    response = supabase_client.table("users").update(user_update.dict(exclude_unset=True)).eq("id", user_id).execute()
+    response = admin_supabase_client.table("users").update(user_update.dict(exclude_unset=True)).eq("id", user_id).execute()
     if response.data:
         return UserOut(**response.data[0])
     raise HTTPException(status_code=404, detail="User not found")
@@ -70,8 +84,18 @@ async def delete_user(
 ):
     try:
         logger.info(f"Deleting user with ID: {user_id}")
-        supabase_client.auth.admin.delete_user(user_id)
-        return {"detail": "User deleted successfully"}
+        headers = {
+            "apiKey": settings.SUPABASE_SERVICE_ROLE_KEY,
+            "Authorization": f"Bearer {settings.SUPABASE_SERVICE_ROLE_KEY}",
+        }
+        url = f"{settings.SUPABASE_URL}/auth/v1/admin/users/{user_id}"
+        response = requests.delete(url, headers=headers)
+        if response.status_code == 204:
+            logger.info(f"User with ID {user_id} deleted successfully")
+            return {"detail": "User deleted successfully"}
+        else:
+            logger.error(f"Error deleting user: {response.text}")
+            raise HTTPException(status_code=response.status_code, detail=response.text)
     except Exception as e:
         logger.exception(f"Error deleting user: {str(e)}")
         raise HTTPException(status_code=404, detail=f"User not found: {str(e)}")
