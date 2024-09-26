@@ -5,8 +5,6 @@ from app.models.user import User
 from app.schemas.user import UserOut, UserCreate, UserUpdate
 from app.services.supabase_service import admin_supabase_client
 import logging
-import requests
-from app.core.config import settings
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
@@ -19,8 +17,6 @@ async def get_all_users(
 ):
     try:
         logger.info(f"Attempting to fetch users with skip={skip} and limit={limit}")
-        logger.debug(f"Using Supabase URL: {settings.SUPABASE_URL}")
-        logger.debug(f"API Key (last 4 chars): ...{settings.SUPABASE_SERVICE_ROLE_KEY[-4:]}")
         
         response = admin_supabase_client.table("users").select("*").range(skip, skip + limit - 1).execute()
         
@@ -42,29 +38,19 @@ async def create_user(
 ):
     try:
         logger.info(f"Creating user with email: {user.email}")
-        headers = {
-            "apiKey": settings.SUPABASE_SERVICE_ROLE_KEY,
-            "Authorization": f"Bearer {settings.SUPABASE_SERVICE_ROLE_KEY}",
-            "Content-Type": "application/json"
-        }
-        url = f"{settings.SUPABASE_URL}/auth/v1/admin/users"
+        response = admin_supabase_client.auth.admin.create_user({
+            "email": user.email,
+            "password": user.password,
+            "email_confirm": True
+        })
         
-        logger.debug(f"Request URL: {url}")
-        logger.debug(f"Request Headers: {headers}")
-        logger.debug(f"Request Body: {user.dict()}")
+        if response.error:
+            logger.error(f"Error creating user: {response.error.message}")
+            raise HTTPException(status_code=400, detail=response.error.message)
         
-        response = requests.post(url, headers=headers, json=user.dict())
-        
-        logger.debug(f"Response Status Code: {response.status_code}")
-        logger.debug(f"Response Content: {response.text}")
-        
-        if response.status_code in [200, 201]:
-            new_user = response.json()
-            logger.info(f"User created with ID: {new_user['id']}")
-            return UserOut(**new_user)
-        else:
-            logger.error(f"Error creating user: {response.text}")
-            raise HTTPException(status_code=response.status_code, detail=response.text)
+        new_user = response.user
+        logger.info(f"User created with ID: {new_user.id}")
+        return UserOut(**new_user.model_dump())
     except Exception as e:
         logger.exception(f"Error creating user: {str(e)}")
         raise HTTPException(status_code=400, detail=f"Error creating user: {str(e)}")
@@ -99,8 +85,10 @@ async def delete_user(
 ):
     try:
         logger.info(f"Deleting user with ID: {user_id}")
-        admin_supabase_client.auth.admin.delete_user(user_id)
+        response = admin_supabase_client.auth.admin.delete_user(user_id)
+        if response.error:
+            raise HTTPException(status_code=400, detail=response.error.message)
         return {"detail": "User deleted successfully"}
     except Exception as e:
         logger.exception(f"Error deleting user: {str(e)}")
-        raise HTTPException(status_code=404, detail=f"User not found: {str(e)}")
+        raise HTTPException(status_code=400, detail=f"Error deleting user: {str(e)}")
