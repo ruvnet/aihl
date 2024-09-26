@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, status, Depends
+from fastapi import APIRouter, HTTPException, status, Depends, Header
 from typing import List, Optional
 from app.schemas.user import UserOut, UserCreate, UserUpdate
 from app.schemas.challenge import ChallengeCreate, ChallengeOut, ChallengeUpdate
@@ -11,30 +11,14 @@ from gotrue.errors import AuthApiError
 
 router = APIRouter()
 
-def handle_supabase_error(func):
-    def wrapper(*args, **kwargs):
-        try:
-            return func(*args, **kwargs)
-        except AuthApiError as e:
-            if e.status == 403:
-                raise HTTPException(status_code=403, detail="Not authorized to perform this action. Admin privileges required.")
-            else:
-                raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
-    return wrapper
-
-@router.get("/users", response_model=List[UserOut])
-@handle_supabase_error
-def get_all_users(
-    skip: int = 0,
-    limit: int = 100,
-):
-    users = supabase_client.from_("users").select("*").range(skip, skip + limit - 1).execute()
-    if users.data:
-        return [UserOut(**user) for user in users.data]
-    return []
+async def verify_admin_token(api_key: str = Header(...)):
+    if api_key != settings.SUPABASE_SERVICE_ROLE_KEY:
+        raise HTTPException(status_code=403, detail="Not authorized")
 
 @router.post("/users", response_model=UserOut)
-async def create_user(user: UserCreate):
+async def create_user(user: UserCreate, api_key: str = Header(...)):
+    if api_key != settings.SUPABASE_SERVICE_ROLE_KEY:
+        raise HTTPException(status_code=403, detail="Not authorized")
     try:
         new_user = supabase_client.auth.admin.create_user({
             "email": user.email,
@@ -54,214 +38,253 @@ async def create_user(user: UserCreate):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@router.get("/users/{user_id}", response_model=UserOut)
-@handle_supabase_error
-def get_user(
-    user_id: str,
+@router.post("/challenges", response_model=ChallengeOut)
+async def create_challenge(challenge: ChallengeCreate, api_key: str = Header(...)):
+    if api_key != settings.SUPABASE_SERVICE_ROLE_KEY:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    new_challenge = supabase_client.from_("challenges").insert(challenge.dict()).execute()
+    if new_challenge.data:
+        return ChallengeOut(**new_challenge.data[0])
+    raise HTTPException(status_code=400, detail="Failed to create challenge")
+
+@router.post("/teams", response_model=TeamOut)
+async def create_team(team: TeamCreate, api_key: str = Header(...)):
+    if api_key != settings.SUPABASE_SERVICE_ROLE_KEY:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    new_team = supabase_client.from_("teams").insert(team.dict()).execute()
+    if new_team.data:
+        return TeamOut(**new_team.data[0])
+    raise HTTPException(status_code=400, detail="Failed to create team")
+
+@router.post("/achievements", response_model=AchievementOut)
+async def create_achievement(achievement: AchievementCreate, api_key: str = Header(...)):
+    if api_key != settings.SUPABASE_SERVICE_ROLE_KEY:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    new_achievement = supabase_client.from_("achievements").insert(achievement.dict()).execute()
+    if new_achievement.data:
+        return AchievementOut(**new_achievement.data[0])
+    raise HTTPException(status_code=400, detail="Failed to create achievement")
+
+@router.get("/users", response_model=List[UserOut])
+async def get_all_users(
+    skip: int = 0,
+    limit: int = 100,
+    api_key: str = Header(...)
 ):
+    if api_key != settings.SUPABASE_SERVICE_ROLE_KEY:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    users = supabase_client.from_("users").select("*").range(skip, skip + limit - 1).execute()
+    if users.data:
+        return [UserOut(**user) for user in users.data]
+    return []
+
+@router.get("/users/{user_id}", response_model=UserOut)
+async def get_user(
+    user_id: str,
+    api_key: str = Header(...)
+):
+    if api_key != settings.SUPABASE_SERVICE_ROLE_KEY:
+        raise HTTPException(status_code=403, detail="Not authorized")
     user = supabase_client.from_("users").select("*").eq("id", user_id).single().execute()
     if user.data:
         return UserOut(**user.data)
     raise HTTPException(status_code=404, detail="User not found")
 
 @router.put("/users/{user_id}", response_model=UserOut)
-@handle_supabase_error
-def update_user(
+async def update_user(
     user_id: str,
     user_update: UserUpdate,
+    api_key: str = Header(...)
 ):
+    if api_key != settings.SUPABASE_SERVICE_ROLE_KEY:
+        raise HTTPException(status_code=403, detail="Not authorized")
     updated_user = supabase_client.from_("users").update(user_update.dict(exclude_unset=True)).eq("id", user_id).execute()
     if updated_user.data:
         return UserOut(**updated_user.data[0])
     raise HTTPException(status_code=404, detail="User not found")
 
 @router.delete("/users/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
-@handle_supabase_error
-def delete_user(
+async def delete_user(
     user_id: str,
+    api_key: str = Header(...)
 ):
+    if api_key != settings.SUPABASE_SERVICE_ROLE_KEY:
+        raise HTTPException(status_code=403, detail="Not authorized")
     supabase_client.auth.admin.delete_user(user_id)
     return {"detail": "User deleted successfully"}
 
-# Challenge Management
 @router.get("/challenges", response_model=List[ChallengeOut])
-@handle_supabase_error
-def get_all_challenges(
+async def get_all_challenges(
     skip: int = 0,
     limit: int = 100,
+    api_key: str = Header(...)
 ):
+    if api_key != settings.SUPABASE_SERVICE_ROLE_KEY:
+        raise HTTPException(status_code=403, detail="Not authorized")
     challenges = supabase_client.from_("challenges").select("*").range(skip, skip + limit - 1).execute()
     if challenges.data:
         return [ChallengeOut(**challenge) for challenge in challenges.data]
     return []
 
-@router.post("/challenges", response_model=ChallengeOut)
-@handle_supabase_error
-def create_challenge(
-    challenge: ChallengeCreate,
-):
-    new_challenge = supabase_client.from_("challenges").insert(challenge.dict()).execute()
-    if new_challenge.data:
-        return ChallengeOut(**new_challenge.data[0])
-    raise HTTPException(status_code=400, detail="Failed to create challenge")
-
 @router.get("/challenges/{challenge_id}", response_model=ChallengeOut)
-@handle_supabase_error
-def get_challenge(
+async def get_challenge(
     challenge_id: str,
+    api_key: str = Header(...)
 ):
+    if api_key != settings.SUPABASE_SERVICE_ROLE_KEY:
+        raise HTTPException(status_code=403, detail="Not authorized")
     challenge = supabase_client.from_("challenges").select("*").eq("id", challenge_id).single().execute()
     if challenge.data:
         return ChallengeOut(**challenge.data)
     raise HTTPException(status_code=404, detail="Challenge not found")
 
 @router.put("/challenges/{challenge_id}", response_model=ChallengeOut)
-@handle_supabase_error
-def update_challenge(
+async def update_challenge(
     challenge_id: str,
     challenge_update: ChallengeUpdate,
+    api_key: str = Header(...)
 ):
+    if api_key != settings.SUPABASE_SERVICE_ROLE_KEY:
+        raise HTTPException(status_code=403, detail="Not authorized")
     updated_challenge = supabase_client.from_("challenges").update(challenge_update.dict(exclude_unset=True)).eq("id", challenge_id).execute()
     if updated_challenge.data:
         return ChallengeOut(**updated_challenge.data[0])
     raise HTTPException(status_code=404, detail="Challenge not found")
 
 @router.delete("/challenges/{challenge_id}", status_code=status.HTTP_204_NO_CONTENT)
-@handle_supabase_error
-def delete_challenge(
+async def delete_challenge(
     challenge_id: str,
+    api_key: str = Header(...)
 ):
+    if api_key != settings.SUPABASE_SERVICE_ROLE_KEY:
+        raise HTTPException(status_code=403, detail="Not authorized")
     supabase_client.from_("challenges").delete().eq("id", challenge_id).execute()
     return {"detail": "Challenge deleted successfully"}
 
-# Team Management
 @router.get("/teams", response_model=List[TeamOut])
-@handle_supabase_error
-def get_all_teams(
+async def get_all_teams(
     skip: int = 0,
     limit: int = 100,
+    api_key: str = Header(...)
 ):
+    if api_key != settings.SUPABASE_SERVICE_ROLE_KEY:
+        raise HTTPException(status_code=403, detail="Not authorized")
     teams = supabase_client.from_("teams").select("*").range(skip, skip + limit - 1).execute()
     if teams.data:
         return [TeamOut(**team) for team in teams.data]
     return []
 
-@router.post("/teams", response_model=TeamOut)
-@handle_supabase_error
-def create_team(
-    team: TeamCreate,
-):
-    new_team = supabase_client.from_("teams").insert(team.dict()).execute()
-    if new_team.data:
-        return TeamOut(**new_team.data[0])
-    raise HTTPException(status_code=400, detail="Failed to create team")
-
 @router.get("/teams/{team_id}", response_model=TeamOut)
-@handle_supabase_error
-def get_team(
+async def get_team(
     team_id: str,
+    api_key: str = Header(...)
 ):
+    if api_key != settings.SUPABASE_SERVICE_ROLE_KEY:
+        raise HTTPException(status_code=403, detail="Not authorized")
     team = supabase_client.from_("teams").select("*").eq("id", team_id).single().execute()
     if team.data:
         return TeamOut(**team.data)
     raise HTTPException(status_code=404, detail="Team not found")
 
 @router.put("/teams/{team_id}", response_model=TeamOut)
-@handle_supabase_error
-def update_team(
+async def update_team(
     team_id: str,
     team_update: TeamUpdate,
+    api_key: str = Header(...)
 ):
+    if api_key != settings.SUPABASE_SERVICE_ROLE_KEY:
+        raise HTTPException(status_code=403, detail="Not authorized")
     updated_team = supabase_client.from_("teams").update(team_update.dict(exclude_unset=True)).eq("id", team_id).execute()
     if updated_team.data:
         return TeamOut(**updated_team.data[0])
     raise HTTPException(status_code=404, detail="Team not found")
 
 @router.delete("/teams/{team_id}", status_code=status.HTTP_204_NO_CONTENT)
-@handle_supabase_error
-def delete_team(
+async def delete_team(
     team_id: str,
+    api_key: str = Header(...)
 ):
+    if api_key != settings.SUPABASE_SERVICE_ROLE_KEY:
+        raise HTTPException(status_code=403, detail="Not authorized")
     supabase_client.from_("teams").delete().eq("id", team_id).execute()
     return {"detail": "Team deleted successfully"}
 
-# Achievement Management
 @router.get("/achievements", response_model=List[AchievementOut])
-@handle_supabase_error
-def get_all_achievements(
+async def get_all_achievements(
     skip: int = 0,
     limit: int = 100,
+    api_key: str = Header(...)
 ):
+    if api_key != settings.SUPABASE_SERVICE_ROLE_KEY:
+        raise HTTPException(status_code=403, detail="Not authorized")
     achievements = supabase_client.from_("achievements").select("*").range(skip, skip + limit - 1).execute()
     if achievements.data:
         return [AchievementOut(**achievement) for achievement in achievements.data]
     return []
 
-@router.post("/achievements", response_model=AchievementOut)
-@handle_supabase_error
-def create_achievement(
-    achievement: AchievementCreate,
-):
-    new_achievement = supabase_client.from_("achievements").insert(achievement.dict()).execute()
-    if new_achievement.data:
-        return AchievementOut(**new_achievement.data[0])
-    raise HTTPException(status_code=400, detail="Failed to create achievement")
-
 @router.get("/achievements/{achievement_id}", response_model=AchievementOut)
-@handle_supabase_error
-def get_achievement(
+async def get_achievement(
     achievement_id: str,
+    api_key: str = Header(...)
 ):
+    if api_key != settings.SUPABASE_SERVICE_ROLE_KEY:
+        raise HTTPException(status_code=403, detail="Not authorized")
     achievement = supabase_client.from_("achievements").select("*").eq("id", achievement_id).single().execute()
     if achievement.data:
         return AchievementOut(**achievement.data)
     raise HTTPException(status_code=404, detail="Achievement not found")
 
 @router.put("/achievements/{achievement_id}", response_model=AchievementOut)
-@handle_supabase_error
-def update_achievement(
+async def update_achievement(
     achievement_id: str,
     achievement_update: AchievementUpdate,
+    api_key: str = Header(...)
 ):
+    if api_key != settings.SUPABASE_SERVICE_ROLE_KEY:
+        raise HTTPException(status_code=403, detail="Not authorized")
     updated_achievement = supabase_client.from_("achievements").update(achievement_update.dict(exclude_unset=True)).eq("id", achievement_id).execute()
     if updated_achievement.data:
         return AchievementOut(**updated_achievement.data[0])
     raise HTTPException(status_code=404, detail="Achievement not found")
 
 @router.delete("/achievements/{achievement_id}", status_code=status.HTTP_204_NO_CONTENT)
-@handle_supabase_error
-def delete_achievement(
+async def delete_achievement(
     achievement_id: str,
+    api_key: str = Header(...)
 ):
+    if api_key != settings.SUPABASE_SERVICE_ROLE_KEY:
+        raise HTTPException(status_code=403, detail="Not authorized")
     supabase_client.from_("achievements").delete().eq("id", achievement_id).execute()
     return {"detail": "Achievement deleted successfully"}
 
-# Analytics
 @router.get("/analytics")
-@handle_supabase_error
-def get_analytics():
+async def get_analytics(api_key: str = Header(...)):
+    if api_key != settings.SUPABASE_SERVICE_ROLE_KEY:
+        raise HTTPException(status_code=403, detail="Not authorized")
     # Implement analytics logic here
     return {"message": "Analytics data"}
 
-# Leaderboard
 @router.get("/leaderboard")
-@handle_supabase_error
-def get_leaderboard():
+async def get_leaderboard(api_key: str = Header(...)):
+    if api_key != settings.SUPABASE_SERVICE_ROLE_KEY:
+        raise HTTPException(status_code=403, detail="Not authorized")
     # Implement leaderboard logic here
     return {"message": "Leaderboard data"}
 
-# System Health
 @router.get("/system-health")
-@handle_supabase_error
-def get_system_health():
+async def get_system_health(api_key: str = Header(...)):
+    if api_key != settings.SUPABASE_SERVICE_ROLE_KEY:
+        raise HTTPException(status_code=403, detail="Not authorized")
     # Implement system health check logic here
     return {"status": "healthy"}
 
 @router.post("/generate-challenge")
-@handle_supabase_error
-def generate_challenge(
+async def generate_challenge(
     prompt: str,
+    api_key: str = Header(...)
 ):
+    if api_key != settings.SUPABASE_SERVICE_ROLE_KEY:
+        raise HTTPException(status_code=403, detail="Not authorized")
     openai.api_key = settings.OPENAI_API_KEY
     try:
         response = openai.Completion.create(
