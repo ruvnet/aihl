@@ -13,7 +13,7 @@ router = APIRouter()
 @router.post("/register", response_model=UserOut)
 async def register(user_in: UserCreate) -> Any:
     try:
-        result = supabase_client.auth.sign_up({
+        result = await supabase_client.auth.sign_up({
             "email": user_in.email,
             "password": user_in.password,
             "options": {
@@ -40,7 +40,7 @@ async def register(user_in: UserCreate) -> Any:
 @router.post("/login")
 async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     try:
-        result = supabase_client.auth.sign_in_with_password({
+        result = await supabase_client.auth.sign_in_with_password({
             "email": form_data.username,
             "password": form_data.password
         })
@@ -59,7 +59,7 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
 @router.post("/logout")
 async def logout():
     try:
-        supabase_client.auth.sign_out()
+        await supabase_client.auth.sign_out()
         return {"detail": "Successfully logged out"}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))

@@ -1,20 +1,12 @@
-# admin.py
-
-from fastapi import APIRouter, Depends, HTTPException, status, Query
+from fastapi import APIRouter, Depends, HTTPException, status
 from typing import List
 from app.core.security import get_current_admin_user
 from app.models.user import User
-from app.schemas.user import UserOut, UserCreate, UserUpdate
-from app.schemas.challenge import ChallengeCreate, ChallengeOut, ChallengeUpdate
-from app.schemas.team import TeamCreate, TeamOut, TeamUpdate
-from app.schemas.achievement import AchievementCreate, AchievementOut, AchievementUpdate
+from app.schemas.user import UserOut
 from app.services.supabase_service import supabase_client
-from app.core.config import settings
-import openai
 
 router = APIRouter()
 
-# User Management
 @router.get("/users", response_model=List[UserOut])
 async def get_all_users(
     skip: int = 0,
@@ -23,10 +15,11 @@ async def get_all_users(
 ):
     try:
         response = await supabase_client.from_("users").select("*").range(skip, skip + limit - 1).execute()
+        if response.error:
+            raise HTTPException(status_code=500, detail=f"Error fetching users: {response.error.message}")
         return [UserOut(**user) for user in (response.data or [])]
     except Exception as e:
-        print(f"Error fetching users: {str(e)}")
-        return []
+        raise HTTPException(status_code=503, detail=f"Error fetching users: {str(e)}")
 
 @router.post("/users", response_model=UserOut)
 async def create_user(
