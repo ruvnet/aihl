@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from typing import List
 from app.core.security import get_current_admin_user
 from app.models.user import User
-from app.schemas.user import UserOut
+from app.schemas.user import UserOut, UserCreate, UserUpdate
 from app.services.supabase_service import supabase_client
 
 router = APIRouter()
