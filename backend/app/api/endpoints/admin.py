@@ -19,7 +19,13 @@ async def get_all_users(
 ):
     try:
         logger.info(f"Attempting to fetch users with skip={skip} and limit={limit}")
+        logger.debug(f"Using Supabase URL: {settings.SUPABASE_URL}")
+        logger.debug(f"API Key (last 4 chars): ...{settings.SUPABASE_SERVICE_ROLE_KEY[-4:]}")
+        
         response = admin_supabase_client.table("users").select("*").range(skip, skip + limit - 1).execute()
+        
+        logger.debug(f"Supabase API Response: {response}")
+        
         if response.error:
             logger.error(f"Supabase error: {response.error.message}")
             raise HTTPException(status_code=500, detail=f"Error fetching users: {response.error.message}")
@@ -42,7 +48,16 @@ async def create_user(
             "Content-Type": "application/json"
         }
         url = f"{settings.SUPABASE_URL}/auth/v1/admin/users"
+        
+        logger.debug(f"Request URL: {url}")
+        logger.debug(f"Request Headers: {headers}")
+        logger.debug(f"Request Body: {user.dict()}")
+        
         response = requests.post(url, headers=headers, json=user.dict())
+        
+        logger.debug(f"Response Status Code: {response.status_code}")
+        logger.debug(f"Response Content: {response.text}")
+        
         if response.status_code in [200, 201]:
             new_user = response.json()
             logger.info(f"User created with ID: {new_user['id']}")
@@ -84,18 +99,8 @@ async def delete_user(
 ):
     try:
         logger.info(f"Deleting user with ID: {user_id}")
-        headers = {
-            "apiKey": settings.SUPABASE_SERVICE_ROLE_KEY,
-            "Authorization": f"Bearer {settings.SUPABASE_SERVICE_ROLE_KEY}",
-        }
-        url = f"{settings.SUPABASE_URL}/auth/v1/admin/users/{user_id}"
-        response = requests.delete(url, headers=headers)
-        if response.status_code == 204:
-            logger.info(f"User with ID {user_id} deleted successfully")
-            return {"detail": "User deleted successfully"}
-        else:
-            logger.error(f"Error deleting user: {response.text}")
-            raise HTTPException(status_code=response.status_code, detail=response.text)
+        admin_supabase_client.auth.admin.delete_user(user_id)
+        return {"detail": "User deleted successfully"}
     except Exception as e:
         logger.exception(f"Error deleting user: {str(e)}")
         raise HTTPException(status_code=404, detail=f"User not found: {str(e)}")
