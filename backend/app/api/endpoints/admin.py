@@ -7,10 +7,23 @@ from app.schemas.achievement import AchievementCreate, AchievementOut, Achieveme
 from app.services.supabase_service import supabase_client
 from app.core.config import settings
 import openai
+from gotrue.errors import AuthApiError
 
 router = APIRouter()
 
+def handle_supabase_error(func):
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except AuthApiError as e:
+            if e.status == 403:
+                raise HTTPException(status_code=403, detail="Not authorized to perform this action. Admin privileges required.")
+            else:
+                raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
+    return wrapper
+
 @router.get("/users", response_model=List[UserOut])
+@handle_supabase_error
 def get_all_users(
     skip: int = 0,
     limit: int = 100,
@@ -21,6 +34,7 @@ def get_all_users(
     return []
 
 @router.post("/users", response_model=UserOut)
+@handle_supabase_error
 def create_user(
     user: UserCreate,
 ):
@@ -30,6 +44,7 @@ def create_user(
     raise HTTPException(status_code=400, detail="Failed to create user")
 
 @router.get("/users/{user_id}", response_model=UserOut)
+@handle_supabase_error
 def get_user(
     user_id: str,
 ):
@@ -39,6 +54,7 @@ def get_user(
     raise HTTPException(status_code=404, detail="User not found")
 
 @router.put("/users/{user_id}", response_model=UserOut)
+@handle_supabase_error
 def update_user(
     user_id: str,
     user_update: UserUpdate,
@@ -49,6 +65,7 @@ def update_user(
     raise HTTPException(status_code=404, detail="User not found")
 
 @router.delete("/users/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
+@handle_supabase_error
 def delete_user(
     user_id: str,
 ):
@@ -57,6 +74,7 @@ def delete_user(
 
 # Challenge Management
 @router.get("/challenges", response_model=List[ChallengeOut])
+@handle_supabase_error
 def get_all_challenges(
     skip: int = 0,
     limit: int = 100,
@@ -67,6 +85,7 @@ def get_all_challenges(
     return []
 
 @router.post("/challenges", response_model=ChallengeOut)
+@handle_supabase_error
 def create_challenge(
     challenge: ChallengeCreate,
 ):
@@ -76,6 +95,7 @@ def create_challenge(
     raise HTTPException(status_code=400, detail="Failed to create challenge")
 
 @router.get("/challenges/{challenge_id}", response_model=ChallengeOut)
+@handle_supabase_error
 def get_challenge(
     challenge_id: str,
 ):
@@ -85,6 +105,7 @@ def get_challenge(
     raise HTTPException(status_code=404, detail="Challenge not found")
 
 @router.put("/challenges/{challenge_id}", response_model=ChallengeOut)
+@handle_supabase_error
 def update_challenge(
     challenge_id: str,
     challenge_update: ChallengeUpdate,
@@ -95,6 +116,7 @@ def update_challenge(
     raise HTTPException(status_code=404, detail="Challenge not found")
 
 @router.delete("/challenges/{challenge_id}", status_code=status.HTTP_204_NO_CONTENT)
+@handle_supabase_error
 def delete_challenge(
     challenge_id: str,
 ):
@@ -103,6 +125,7 @@ def delete_challenge(
 
 # Team Management
 @router.get("/teams", response_model=List[TeamOut])
+@handle_supabase_error
 def get_all_teams(
     skip: int = 0,
     limit: int = 100,
@@ -113,6 +136,7 @@ def get_all_teams(
     return []
 
 @router.post("/teams", response_model=TeamOut)
+@handle_supabase_error
 def create_team(
     team: TeamCreate,
 ):
@@ -122,6 +146,7 @@ def create_team(
     raise HTTPException(status_code=400, detail="Failed to create team")
 
 @router.get("/teams/{team_id}", response_model=TeamOut)
+@handle_supabase_error
 def get_team(
     team_id: str,
 ):
@@ -131,6 +156,7 @@ def get_team(
     raise HTTPException(status_code=404, detail="Team not found")
 
 @router.put("/teams/{team_id}", response_model=TeamOut)
+@handle_supabase_error
 def update_team(
     team_id: str,
     team_update: TeamUpdate,
@@ -141,6 +167,7 @@ def update_team(
     raise HTTPException(status_code=404, detail="Team not found")
 
 @router.delete("/teams/{team_id}", status_code=status.HTTP_204_NO_CONTENT)
+@handle_supabase_error
 def delete_team(
     team_id: str,
 ):
@@ -149,6 +176,7 @@ def delete_team(
 
 # Achievement Management
 @router.get("/achievements", response_model=List[AchievementOut])
+@handle_supabase_error
 def get_all_achievements(
     skip: int = 0,
     limit: int = 100,
@@ -159,6 +187,7 @@ def get_all_achievements(
     return []
 
 @router.post("/achievements", response_model=AchievementOut)
+@handle_supabase_error
 def create_achievement(
     achievement: AchievementCreate,
 ):
@@ -168,6 +197,7 @@ def create_achievement(
     raise HTTPException(status_code=400, detail="Failed to create achievement")
 
 @router.get("/achievements/{achievement_id}", response_model=AchievementOut)
+@handle_supabase_error
 def get_achievement(
     achievement_id: str,
 ):
@@ -177,6 +207,7 @@ def get_achievement(
     raise HTTPException(status_code=404, detail="Achievement not found")
 
 @router.put("/achievements/{achievement_id}", response_model=AchievementOut)
+@handle_supabase_error
 def update_achievement(
     achievement_id: str,
     achievement_update: AchievementUpdate,
@@ -187,6 +218,7 @@ def update_achievement(
     raise HTTPException(status_code=404, detail="Achievement not found")
 
 @router.delete("/achievements/{achievement_id}", status_code=status.HTTP_204_NO_CONTENT)
+@handle_supabase_error
 def delete_achievement(
     achievement_id: str,
 ):
@@ -195,23 +227,27 @@ def delete_achievement(
 
 # Analytics
 @router.get("/analytics")
+@handle_supabase_error
 def get_analytics():
     # Implement analytics logic here
     return {"message": "Analytics data"}
 
 # Leaderboard
 @router.get("/leaderboard")
+@handle_supabase_error
 def get_leaderboard():
     # Implement leaderboard logic here
     return {"message": "Leaderboard data"}
 
 # System Health
 @router.get("/system-health")
+@handle_supabase_error
 def get_system_health():
     # Implement system health check logic here
     return {"status": "healthy"}
 
 @router.post("/generate-challenge")
+@handle_supabase_error
 def generate_challenge(
     prompt: str,
 ):
