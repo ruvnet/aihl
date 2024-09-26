@@ -56,6 +56,29 @@ async def login(user_credentials: UserLogin):
     except Exception as e:
         raise HTTPException(status_code=400, detail="Incorrect email or password")
 
+@router.post("/token")
+async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
+    try:
+        result = supabase_client.auth.sign_in_with_password({
+            "email": form_data.username,
+            "password": form_data.password
+        })
+        
+        if result.user is None:
+            raise HTTPException(status_code=400, detail="Incorrect email or password")
+        
+        access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+        access_token = create_access_token(
+            data={"sub": str(result.user.id)}, expires_delta=access_token_expires
+        )
+        return {"access_token": access_token, "token_type": "bearer"}
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect username or password",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
 @router.post("/logout")
 async def logout():
     try:
