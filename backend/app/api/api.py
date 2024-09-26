@@ -1,6 +1,5 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter
 from app.api.endpoints import auth, challenges, leaderboard, teams, users, judge, enrollments, achievements, chat, replays, wallet, skill_profiles, ai_generated_challenges, admin
-from app.core.security import get_current_user
 
 api_router = APIRouter()
 api_router.include_router(auth.router, prefix="/auth", tags=["auth"])
@@ -16,4 +15,4 @@ api_router.include_router(replays.router, prefix="/replays", tags=["replays"])
 api_router.include_router(wallet.router, prefix="/wallet", tags=["wallet"])
 api_router.include_router(skill_profiles.router, prefix="/skill-profiles", tags=["skill-profiles"])
 api_router.include_router(ai_generated_challenges.router, prefix="/ai-generated-challenges", tags=["ai-generated-challenges"])
-api_router.include_router(admin.router, prefix="/admin", tags=["admin"], dependencies=[Depends(get_current_user)])
+api_router.include_router(admin.router, prefix="/admin", tags=["admin"])
