@@ -20,13 +20,10 @@ async def get_all_users(
 ):
     try:
         response = await supabase_client.from_("users").select("*").range(skip, skip + limit - 1).execute()
-        if response.data is None:
-            return []  # Return an empty list if no data is found
-        return [UserOut(**user) for user in response.data]
+        return [UserOut(**user) for user in (response.data or [])]
     except Exception as e:
-        # Log the error for debugging purposes
         print(f"Error fetching users: {str(e)}")
-        return []  # Return an empty list in case of any error
+        return []
 
 @router.post("/users", response_model=UserOut)
 async def create_user(
