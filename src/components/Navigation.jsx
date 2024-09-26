@@ -74,8 +74,8 @@ const Navigation = ({ isOpen, onClose }) => {
                 to={item.path}
                 className={`flex flex-col items-center p-2 ${
                   location.pathname === item.path
-                    ? 'text-primary'
-                    : 'text-muted-foreground'
+                    ? 'text-white'
+                    : 'text-gray-400'
                 }`}
               >
                 <item.icon className="w-6 h-6" />
