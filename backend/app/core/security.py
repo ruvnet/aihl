@@ -6,7 +6,7 @@ from app.core.config import settings
 from app.services.supabase_service import supabase_client
 from app.models.user import User
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
 
 def create_access_token(data: dict, expires_delta: timedelta = None):
     to_encode = data.copy()
@@ -29,13 +29,10 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     except JWTError:
         raise credentials_exception
     
-    try:
-        user = supabase_client.auth.get_user(token)
-        if user.user is None:
-            raise credentials_exception
-        return User(**user.user.dict())
-    except Exception:
+    user = await supabase_client.from_("users").select("*").eq("id", user_id).single().execute()
+    if user.data is None:
         raise credentials_exception
+    return User(**user.data)
 
 async def get_current_admin_user(current_user: User = Depends(get_current_user)):
     if not current_user.is_superuser:

@@ -12,7 +12,6 @@ import openai
 
 router = APIRouter()
 
-# User Management
 @router.get("/users", response_model=List[UserOut])
 async def get_all_users(
     skip: int = 0,
