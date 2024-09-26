@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Moon, Sun, Menu as MenuIcon } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { Link } from 'react-router-dom';
@@ -8,7 +8,7 @@ const Header = ({ onOpenNav }) => {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
 
-  useState(() => setMounted(true), []);
+  useEffect(() => setMounted(true), []);
 
   if (!mounted) return null;
 
