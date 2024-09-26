@@ -10,18 +10,13 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     password: str
 
-class UserUpdate(BaseModel):
-    username: Optional[str] = None
-    email: Optional[EmailStr] = None
-    password: Optional[str] = None
-    is_active: Optional[bool] = None
-    is_superuser: Optional[bool] = None
-
-class UserOut(UserBase):
+class UserOut(BaseModel):
     id: UUID
+    username: str
+    email: EmailStr
     created_at: datetime
-    is_active: bool
-    is_superuser: bool
+    is_active: bool = True
+    is_superuser: bool = False
 
     class Config:
         from_attributes = True
