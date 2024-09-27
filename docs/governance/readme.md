@@ -19,6 +19,7 @@ The AI Hacker League operates under the following key principles:
 - [Management To-Do List](02_management.md): Ongoing operational tasks and responsibilities.
 - [Recruitment To-Do List](03_recruitment.md): Strategies for attracting talent across various roles.
 - [Social Media Strategy](04_social_media.md): Guidelines for maintaining an effective online presence.
+- [Marketing and Distribution Plan](05_marketing_distribution.md): Structured approach to marketing and growing our user base.
 - [Team Structure](team.md): Overview of our leadership and key roles.
 - [Founding Charter](charter.md): Our guiding principles and organizational commitments.
 - [Code of Conduct](code_of_conduct.md): Guidelines for behavior and interaction within the league.
