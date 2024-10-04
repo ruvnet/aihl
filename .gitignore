@@ -23,3 +23,5 @@ dist-ssr
 *.sln
 *.sw?
 *auth.cpython*
+.venv/
+*__pycache__/
