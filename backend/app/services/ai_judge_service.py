@@ -1,5 +1,4 @@
 import asyncio
-from IPython.display import display, Markdown
 from lionagi import Branch, iModel
 from aiocache import cached
 from ai_judge.rubric import Rubric
@@ -15,7 +14,7 @@ async def judge_code(
     context: str = None,
     model_config: dict = None,
     display_message: bool = True,
-    verbose: bool = False,
+    verbose: bool = True,
     language: str = "Python",
 ) -> CodeAnalysisForm:
     branch = Branch(imodel=iModel(**(model_config or judge_model_config)))

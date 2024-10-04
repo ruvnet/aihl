@@ -523,5 +523,4 @@ class Component(Element):
 __all__ = ["Component"]
 
 # File: lion_core/generic/component.py
-
 '''
