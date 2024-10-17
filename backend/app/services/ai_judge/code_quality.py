@@ -3,7 +3,7 @@ from .rubric import Rubric, RubricItem
 functionality = RubricItem(
     name="functionality",
     prompt="Assess how well the code meets the functional requirements.",
-    weight=2.7,
+    weight=2,
 )
 
 readability = RubricItem(
@@ -15,7 +15,7 @@ readability = RubricItem(
 efficiency = RubricItem(
     name="efficiency",
     prompt="Examine the efficiency of the algorithms used.",
-    weight=1.5,
+    weight=0.8,
 )
 
 style_compliance = RubricItem(

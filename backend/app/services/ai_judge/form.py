@@ -10,11 +10,8 @@ class CodeAnalysisForm(Form):
     system_prompt: str = Field(
         """
         You are an AI code reviewer proficient in {language}.
-        Evaluate the following code submission based on the criteria below,
-        each independently scored from 0 to 100.
-        Note that you should be objective and fair in your evaluation, with 
-        focus around sophistication, usability, and correctness.
-        """.strip("        ")
+        Evaluate the following code submission based on the criteria below.
+        """
     )
     
     code_submission: str | None = Field(
@@ -54,7 +51,7 @@ class CodeAnalysisForm(Form):
             description += "response format: {score: number 0-100, comments: string}"
             self.add_field(item_name, value=None, annotation=dict, description=description)
             self.append_to_request(item_name)
-
+            
     @property
     def display_message(self) -> str:
         """
@@ -72,10 +69,10 @@ class CodeAnalysisForm(Form):
         rubric_msg = ""
         
         message_lines = [
-            f"Evaluation Results ({self.timestamp[:-7]}):\n",
+            f"Evaluation Results ({self.timestamp[:-6]}):\n",
             f"Language: {self.language}\n",
             f"Total Score: {ttl_score:.1f}/100\n",
-            "----------------------------------------",
+            "---"
             ""
         ]
         
@@ -101,7 +98,7 @@ class CodeAnalysisForm(Form):
                 rubric_msg += "There we go! You are a junior AI hacker! 🥳\n"
             elif ttl_score < 70:
                 rubric_msg += "Great Work! You are a graduated AI hacker! 🤩\n"
-            elif ttl_score < 88:
+            elif ttl_score < 90:
                 rubric_msg += "A master AI hacker! 🤯\n"
             else:
                 rubric_msg += "The Lion King of AI Hacking! 🚀🦁🚀\n"

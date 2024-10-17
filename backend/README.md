@@ -67,21 +67,17 @@ The response will include a detailed evaluation of the submission.
 ```bash
 backend/
 ├── app/
-│   �
 │   ├── api/                # API routers for various features
 │   │   ├── endpoints/      # Individual API endpoint modules
 │   └── core/               # Core configurations and security modules
-│   �
 │   └── db/                 # Database models and session management
 │   └── models/             # SQLAlchemy models for the database
 │   └── schemas/            # Pydantic schemas for request validation
-│   �
 │   └── services/           # Services handling external integrations (Supabase, GitHub, AI Judge)
 ├── tests/                  # Unit and integration tests
 ├── .env.example            # Example environment configuration
 ├── Dockerfile              # Dockerfile for containerizing the application
 ├── requirements.txt        # Python dependencies
-�
 └── poetry.lock             # Poetry lock file for dependency management
 ```
 
@@ -242,78 +238,6 @@ Configuration settings are managed via environment variables defined in the `.en
 - **Supabase**: Used for data storage. Ensure you have a valid Supabase project set up and configure it in the `.env` file.
 - **GitHub**: Handles repository creation for challenges.
 - **OpenAI**: Provides AI-based code evaluation for the judicial system.
-
-## Dependabot Configuration
-
-Dependabot is configured to automatically check for updates to your dependencies and create pull requests to keep them up to date. The configuration is defined in the `backend/.github/dependabot.yml` file.
-
-### Configuration File
-
-The `dependabot.yml` file is located in the `.github` directory and contains the following configuration:
-
-```yaml
-version: 2
-updates:
-  - package-ecosystem: "npm"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    target-branch: "main"
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    target-branch: "main"
-  - package-ecosystem: "poetry"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    target-branch: "main"
-```
-
-### Auto-Merge Workflow
-
-A GitHub Actions workflow is set up to automatically merge Dependabot pull requests if all checks pass. The workflow file is located in the `.github/workflows` directory and is named `dependabot-auto-merge.yml`.
-
-### Workflow File
-
-The `dependabot-auto-merge.yml` file contains the following configuration:
-
-```yaml
-name: Dependabot Auto Merge
-
-on:
-  pull_request:
-    types:
-      - opened
-    branches:
-      - main
-    paths:
-      - '.github/dependabot.yml'
-
-jobs:
-  auto-merge:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Auto-merge Dependabot PRs
-        uses: pascalgn/automerge-action@v0.14.3
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          mergeMethod: squash
-          commitMessage: 'Auto-merged by Dependabot'
-```
 
 ## Conclusion
 
