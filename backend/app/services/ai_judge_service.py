@@ -1,37 +1,46 @@
-import openai
-from app.core.config import settings
-from cachetools import TTLCache, cached
-import json
+import asyncio
+from lionagi import Branch, iModel
+from aiocache import cached
+from ai_judge.rubric import Rubric
+from ai_judge.form import CodeAnalysisForm
+from config import judge_model_config
 
-openai.api_key = settings.OPENAI_API_KEY
 
-# Cache for evaluations, max 1000 items, TTL of 1 hour
-evaluation_cache = TTLCache(maxsize=1000, ttl=3600)
-
-@cached(evaluation_cache)
-def evaluate_code_submission(code: str, language: str = "Python") -> dict:
-    prompt = f"""
-You are an AI code reviewer proficient in {language}. Evaluate the following code submission based on the following criteria:
-1. Functionality (40%): How well does the solution solve the given problem?
-2. Innovation (30%): Does the solution present novel approaches or creative use of AI technologies?
-3. Efficiency (20%): How optimized and performant is the code?
-4. Code Quality (10%): Is the code well-structured, readable, and following best practices?
-
-Provide a score out of 100 and detailed feedback for each criterion.
-
-Code Submission:
-{code}
-"""
-    try:
-        response = openai.ChatCompletion.create(
-            model=settings.AI_MODEL,
-            messages=[
-                {"role": "user", "content": prompt}
-            ]
-        )
-        evaluation = response['choices'][0]['message']['content']
-        return json.loads(evaluation)
-    except json.JSONDecodeError:
-        return {"error": "Failed to parse AI response as JSON."}
-    except Exception as e:
-        return {"error": str(e)}
+@cached(ttl=3600)
+async def judge_code(
+    code_submission: str,
+    rubric: Rubric,
+    instruction: str = None,
+    context: str = None,
+    model_config: dict = None,
+    display_message: bool = True,
+    verbose: bool = True,
+    language: str = "Python",
+) -> CodeAnalysisForm:
+    branch = Branch(imodel=iModel(**(model_config or judge_model_config)))
+    form = CodeAnalysisForm(
+        code_submission=code_submission,
+        rubric=rubric,
+        instruction=instruction,
+        context=context,
+        language=language,
+    )
+    if verbose:
+        print("Evaluating code submission...")
+    form = await branch.chat(form=form)
+    if display_message:
+        print(form.display_message)
+    return form.to_dict()
+    
+    
+async def main():
+    from ai_judge.code_quality import code_quality_rubric
+    from ai_judge.sample_codes import code1
+    
+    return await judge_code(
+        code_submission=code1,
+        rubric=code_quality_rubric,
+    )
+    
+if __name__ == "__main__":
+    asyncio.run(main())
