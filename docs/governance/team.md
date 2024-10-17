@@ -9,9 +9,9 @@
 - Twitter: [@twitter_handle]()
 
 ### Chief Technology Strategist
-- Name: [Full Name]
-- GitHub: [@github_username]
-- LinkedIn: [LinkedIn Profile URL]
+- Name: [Haiyang Li]
+- GitHub: [@ohdearquant]
+- LinkedIn: [https://www.linkedin.com/in/quantoceanli/]
 - Twitter: [@twitter_handle]
 
 ### Vice Commissioner
